@@ -16,4 +16,9 @@
         android:layout_height="40dp"
         android:id="@+id/grid_item_piece"
         />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/hint_image"
+        />
 </FrameLayout>
