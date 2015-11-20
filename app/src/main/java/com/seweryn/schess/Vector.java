@@ -23,10 +23,10 @@ public class Vector {
     public static Vector convertToVecotr(int width, int height, int position){
          int row = (int)Math.floor (position/(double)height);
          int column  = position%width;
-        return new Vector(row, column);
+        return new Vector(column,row);
     }
     public static int convertToScalar(int width, int height, Vector vector){
-        return Math.abs(vector.getX())*width + Math.abs(vector.getY());
+        return Math.abs(vector.getY())*height + Math.abs(vector.getX());
     }
     public int getX(){
         return this.x;

@@ -23,12 +23,22 @@ public class SCMainMenuActivity extends Activity {
         super.onCreate(savedInstanceeState);
         setContentView(R.layout.menu_main);
         Button quickPlayButton = (Button) findViewById(R.id.Button02);
+        Button createMapButton = (Button) findViewById(R.id.Button04);
         quickPlayButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent mainMenu = new Intent(SCMainMenuActivity.this, GameActivity.class);
                 SCMainMenuActivity.this.startActivity(mainMenu);
                 SCMainMenuActivity.this.finish();
+            }
+        });
+        createMapButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainMenu = new Intent(SCMainMenuActivity.this, GameActivity.class);
+                SCMainMenuActivity.this.startActivity(mainMenu);
+                SCMainMenuActivity.this.finish();
+
             }
         });
 

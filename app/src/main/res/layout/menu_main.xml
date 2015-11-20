@@ -24,10 +24,15 @@
 
         android:textSize="30sp" android:textStyle="bold" />
     <Button
-        android:id="@+id/Button03"
+    android:id="@+id/Button03"
+    android:layout_width="188dip"
+    android:layout_height="100dip"
+    android:text="Settings"
+    android:textSize="30sp" android:textStyle="bold" />
+    <Button
+        android:id="@+id/Button04"
         android:layout_width="188dip"
         android:layout_height="100dip"
-        android:text="Settings"
-
+        android:text="Create Map"
         android:textSize="30sp" android:textStyle="bold" />
 </LinearLayout>

@@ -29,8 +29,8 @@ import java.util.Map;
 public final class GameBoardAdapter extends BaseAdapter {
      private final int[][] board01 = {{0, 0, 0, 0},
              {0, 0, 1, 0},
-             {0, 0, 0, 0},
-             {2, 0, 0, 0}};
+             {0, 5, 4, 0},
+             {2, 0 , 3, 0}};
      Map<Integer,PieceType> map =  new HashMap<Integer,PieceType>();
 
      private final List<Item> boardFileds = new ArrayList<Item>();
@@ -42,6 +42,9 @@ public final class GameBoardAdapter extends BaseAdapter {
          this.context = context;
          map.put(1,PieceType.KING);
          map.put(2,PieceType.TOWER);
+         map.put(3,PieceType.PAWN);
+         map.put(4,PieceType.BISHOP);
+         map.put(5,PieceType.HORSE);
          boardLayoutInflater = LayoutInflater.from(context);
          for (int i = 0; i < size; i++) {
              for (int j = 0; j < size; j++) {
@@ -120,6 +123,11 @@ public final class GameBoardAdapter extends BaseAdapter {
                 break;
             case 2: resource =R.drawable.towerpiece;
                 break;
+            case 3: resource=R.drawable.pawnpiece;
+                break;
+            case 4: resource=R.drawable.bishoppiece;
+                break;
+            case 5: resource =R.drawable.horsepiece;
             default:
                 break;
         }
@@ -132,6 +140,13 @@ public final class GameBoardAdapter extends BaseAdapter {
             resource =R.drawable.king_white;
         else if(pieceType == PieceType.TOWER)
             resource = R.drawable.tower_white;
+        else if(pieceType == PieceType.PAWN)
+            resource=R.drawable.pawn_white;
+        else if(pieceType == PieceType.BISHOP)
+             resource = R.drawable.bishop_white;
+        else if(pieceType == PieceType.HORSE)
+             resource = R.drawable.horse_white;
+
         return  resource;
     }
      private static class Item {
@@ -151,7 +166,6 @@ public final class GameBoardAdapter extends BaseAdapter {
          for(int i =0;i<possiblePositions.length;i++){
              FrameLayout item2 = (FrameLayout)gridView.getChildAt(possiblePositions[i]);
              if(onOrOff ==true ) {
-
                         View view = item2.findViewById(R.id.hint_image);
                         if(view!=null){
 
@@ -191,6 +205,7 @@ public final class GameBoardAdapter extends BaseAdapter {
              }
          }
      }
+
      class MyDragListener implements View.OnDragListener {
          Drawable enterShape = context.getResources().getDrawable(R.drawable.shape_droptarget);
          Drawable normalShape = context.getResources().getDrawable(R.drawable.shape);
@@ -217,11 +232,28 @@ public final class GameBoardAdapter extends BaseAdapter {
                      owner.removeView(view);
                      //  view.setBackgroundResource(0);
                     //view.setTag("");
+                     int[] possiblePositions = logic.PossibleMoves(4,4,Vector.convertToVecotr(4,4,position),map.get((int)view.getTag()));
+                     setHintsBackground((GridView) owner.getParent(), position, false, map.get((int) view.getTag()));
 
-                     setHintsBackground((GridView) owner.getParent(), position, false, map.get((int)view.getTag()));
                      FrameLayout container = (FrameLayout) v;
-                     container.addView(view);
+                     int destinationPosition =  owner2.getPositionForView(container);
+                     boolean flag=false;
+                     for(int i =0;i<possiblePositions.length;i++){
+                         if(possiblePositions[i] == destinationPosition){
+                             flag=true;
+                         }
+                     }
+                     if(flag) {
+                        if(removePiece(destinationPosition)){
+                              container.removeViewAt(1);
+                        }
+                         container.addView(view);
+                     }
+                     else{
+                         owner.addView(view);
+                     }
                      view.setVisibility(View.VISIBLE);
+
                      break;
                  case DragEvent.ACTION_DRAG_ENDED:
                      v.setBackgroundDrawable(normalShape);
@@ -229,6 +261,15 @@ public final class GameBoardAdapter extends BaseAdapter {
                      break;
              }
              return true;
+         }
+         public boolean removePiece(int destinationPosition){
+             Vector destinationVector = Vector.convertToVecotr(4,4,destinationPosition);
+             int destinationPieceValue = board01[destinationVector.getX()][destinationVector.getY()];
+             if(destinationPosition!=0){
+                 board01[destinationVector.getX()][destinationVector.getY()]=0;
+                 return true;
+             }
+             return  false;
          }
      }
  }
