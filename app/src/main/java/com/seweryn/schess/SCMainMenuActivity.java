@@ -9,12 +9,6 @@ package com.seweryn.schess;
         import android.os.Bundle;
         import android.view.View;
         import android.widget.Button;
-        import android.os.Bundle;
-        import android.app.Activity;
-        import android.view.Menu;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.Toast;
         import android.view.View.OnClickListener;
 
 public class SCMainMenuActivity extends Activity {
@@ -35,7 +29,7 @@ public class SCMainMenuActivity extends Activity {
         createMapButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainMenu = new Intent(SCMainMenuActivity.this, GameActivity.class);
+                Intent mainMenu = new Intent(SCMainMenuActivity.this, CreateMapActivity.class);
                 SCMainMenuActivity.this.startActivity(mainMenu);
                 SCMainMenuActivity.this.finish();
 

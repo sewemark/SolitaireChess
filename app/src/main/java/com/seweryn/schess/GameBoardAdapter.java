@@ -4,7 +4,6 @@ package com.seweryn.schess;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,15 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.BaseAdapter;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.ObjectOutputStream;
 import java.lang.*;
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +26,6 @@ public final class GameBoardAdapter extends BaseAdapter {
              {0, 5, 4, 0},
              {2, 0 , 3, 0}};
      Map<Integer,PieceType> map =  new HashMap<Integer,PieceType>();
-
      private final List<Item> boardFileds = new ArrayList<Item>();
      private final LayoutInflater boardLayoutInflater;
      private final Context context;
@@ -116,7 +109,7 @@ public final class GameBoardAdapter extends BaseAdapter {
          //name.setText(item.name);
          return v;
      }
-    public  int getResource(int tabValue){
+    public static int getResource(int tabValue){
        int resource = 0;
         switch (tabValue){
             case 1: resource =R.drawable.kingpiece;
@@ -133,7 +126,7 @@ public final class GameBoardAdapter extends BaseAdapter {
         }
         return  resource;
     }
-    public  int getResource(PieceType pieceType){
+    public static int getResource(PieceType pieceType){
         int resource = 0;
 
         if(pieceType ==PieceType.KING)
