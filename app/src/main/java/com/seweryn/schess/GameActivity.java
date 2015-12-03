@@ -13,22 +13,17 @@ public class GameActivity  extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameboard_main);
-
-
-        // findViewById(R.id.myimage1).setOnTouchListener(new MyTouchListener());
-        // findViewById(R.id.myimage2).setOnTouchListener(new MyTouchListener());
-        // findViewById(R.id.myimage3).setOnTouchListener(new MyTouchListener());
-        // findViewById(R.id.myimage4).setOnTouchListener(new MyTouchListener());
-        // findViewById(R.id.topleft).setOnDragListener(new MyDragListener());
-        // findViewById(R.id.topright).setOnDragListener(new MyDragListener());
-        // findViewById(R.id.bottomleft).setOnDragListener(new MyDragListener());
-        // findViewById(R.id.bottomright).setOnDragListener(new MyDragListener());
-        // ImageView myImage = (ImageView) findViewById(R.id.myimage1);
-        // myImage.setAlpha(127);*/
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setNumColumns(4);
-        gridView.setAdapter(new GameBoardAdapter(this, 4));
-
+      //  String boardName= "dsa";
+        if(getIntent().getExtras()!=null) {
+            String boardName = (String) getIntent().getExtras().get("boardName");
+            PuzzleType boardType = (PuzzleType) getIntent().getExtras().get("boardType");
+            gridView.setAdapter(new GameBoardAdapter(this, 4, boardName, boardType));
+        }
+        else{
+            gridView.setAdapter(new GameBoardAdapter(this,4, "1E",PuzzleType.EASY));
+        }
 
     }
 }
