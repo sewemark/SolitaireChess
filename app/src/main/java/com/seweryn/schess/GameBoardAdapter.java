@@ -124,6 +124,8 @@ public final class GameBoardAdapter extends BaseAdapter {
             case 4: resource=R.drawable.bishoppiece;
                 break;
             case 5: resource =R.drawable.horsepiece;
+                break;
+            case 6: resource=R.drawable.queenpiece;
             default:
                 break;
         }
@@ -142,6 +144,8 @@ public final class GameBoardAdapter extends BaseAdapter {
              resource = R.drawable.bishop_white;
         else if(pieceType == PieceType.HORSE)
              resource = R.drawable.horse_white;
+        else if(pieceType == PieceType.QUEEN)
+             resource = R.drawable.queen_white;
 
         return  resource;
     }
@@ -158,7 +162,7 @@ public final class GameBoardAdapter extends BaseAdapter {
      }
      public void setHintsBackground(GridView gridView,int position, boolean onOrOff, PieceType pieceType){
 
-         int[] possiblePositions = logic.PossibleMoves(4,4,Vector.convertToVecotr(4,4,position),pieceType);
+         Integer[] possiblePositions = logic.PossibleMoves(4,4,Vector.convertToVecotr(4,4,position),pieceType);
          for(int i =0;i<possiblePositions.length;i++){
              FrameLayout item2 = (FrameLayout)gridView.getChildAt(possiblePositions[i]);
              if(onOrOff ==true ) {
@@ -226,22 +230,25 @@ public final class GameBoardAdapter extends BaseAdapter {
                      int position = owner2.getPositionForView(view);
                      owner.removeView(view);
 
-                    int[] possiblePositions = logic.PossibleMoves(4,4,Vector.convertToVecotr(4,4,position),map.get((int)view.getTag()));
+                     Integer[] possiblePositions = logic.PossibleMoves(4,4,Vector.convertToVecotr(4,4,position),map.get((int)view.getTag()));
                      setHintsBackground((GridView) owner.getParent(), position, false, map.get((int) view.getTag()));
 
                      FrameLayout container = (FrameLayout) v;
                      int destinationPosition =  owner2.getPositionForView(container);
-                     boolean flag=false;
-                     for(int i =0;i<possiblePositions.length;i++){
-                         if(possiblePositions[i] == destinationPosition){
-                             if(removePiece(destinationPosition,(int)view.getTag())){
-                                 if(container.getChildCount() > 2) {
-                                     container.removeViewAt(2);
+                     if(!Lodash.HasElement(possiblePositions,destinationPosition) ){
+                         owner.addView(view);
+                     }
+                     else {
+                         for(int i = 0; i < possiblePositions.length; i++) {
+                             if (possiblePositions[i] == destinationPosition) {
+                                 if (removePiece(position,destinationPosition, (int) view.getTag())) {
+                                     if (container.getChildCount() > 2) {
+                                         container.removeViewAt(2);
+                                     }
+                                     container.addView(view);
+                                 } else {
+                                     owner.addView(view);
                                  }
-                                 container.addView(view);
-                             }
-                             else{
-                                 owner.addView(view);
                              }
                          }
                      }
@@ -255,11 +262,13 @@ public final class GameBoardAdapter extends BaseAdapter {
              }
              return true;
          }
-         public boolean removePiece(int destinationPosition, int newPieceValue){
+         public boolean removePiece(int position, int destinationPosition, int newPieceValue){
              Vector destinationVector = Vector.convertToVecotr(4,4,destinationPosition);
+             Vector basePostionVector = Vector.convertToVecotr(4,4,position);
              int destinationPieceValue = board01[destinationVector.getX()][destinationVector.getY()];
              if(board01[destinationVector.getX()][destinationVector.getY()]!=0){
                  board01[destinationVector.getX()][destinationVector.getY()]=newPieceValue;
+                 board01[basePostionVector.getX()][basePostionVector.getY()] =0;
                  return true;
              }
              return  false;

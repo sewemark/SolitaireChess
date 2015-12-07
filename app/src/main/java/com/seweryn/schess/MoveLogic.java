@@ -38,7 +38,7 @@ public class MoveLogic {
     };
     private int width;
     private int height;
-    public int[] PossibleMoves(int width, int height, Vector position, PieceType pieceType){
+    public Integer[] PossibleMoves(int width, int height, Vector position, PieceType pieceType){
         this.width=width;
         this.height =height;
         if(pieceType==PieceType.KING) {
@@ -57,10 +57,10 @@ public class MoveLogic {
             return getForHorse(position);
         }
         else {
-            return new int[]{};
+            return new Integer[]{};
         }
     }
-    public int[] getForKing(Vector piecePosition){
+    public Integer[] getForKing(Vector piecePosition){
 
         List<Integer> listOfPossibleMoves = new LinkedList<Integer>();
         for(int i =0; i < kingVectors.length; i++){
@@ -71,7 +71,7 @@ public class MoveLogic {
         return toIntArray(listOfPossibleMoves);
       //  return new int[]{5,10,4};
     }
-    public int[] getForTower(Vector piecePosition){
+    public Integer[] getForTower(Vector piecePosition){
         List<Integer> listOfPossibleMoves = new LinkedList<Integer>();
         Vector yLine = new Vector(piecePosition.getX(), 0);
         Vector xLine = new Vector(0, piecePosition.getY());
@@ -87,7 +87,7 @@ public class MoveLogic {
         }
         return toIntArray(listOfPossibleMoves);
     }
-    public int[] getForPawn(Vector piecePosition){
+    public Integer[] getForPawn(Vector piecePosition){
         List<Integer> listOfPossibleMoves = new LinkedList<Integer>();
         for(int i =0; i < pawnVectors.length; i++){
             Vector vector = piecePosition.minus(pawnVectors[i]);
@@ -96,7 +96,7 @@ public class MoveLogic {
         }
         return toIntArray(listOfPossibleMoves);
     }
-    public int[] getForBishop(Vector piecePosition){
+    public Integer[] getForBishop(Vector piecePosition){
         Vector leftCorner = getLastCoordinate(piecePosition,new Vector(1,-1));
         Vector rightCorner = getLastCoordinate(piecePosition,new Vector(1,1));
         List<Integer> listOfPossibleMoves = new LinkedList<Integer>();
@@ -110,7 +110,7 @@ public class MoveLogic {
         }
         return toIntArray(listOfPossibleMoves);
     }
-    public  int[] getForHorse(Vector piecePosition){
+    public  Integer[] getForHorse(Vector piecePosition){
         List<Integer> listOfPossibleMoves = new LinkedList<Integer>();
         for(int i =0; i < horseVectors.length; i++){
             Vector vector = piecePosition.minus(horseVectors[i]);
@@ -126,13 +126,13 @@ public class MoveLogic {
            position= position.plus(vector);
         }
         return position;
-    }
-   public int[] toIntArray(List<Integer> list){
-        int[] ret = new int[list.size()];
+    }  public Integer[] toIntArray(List<Integer> list){
+        Integer[] ret = new Integer[list.size()];
         for(int i = 0;i < ret.length;i++)
             ret[i] = list.get(i);
         return ret;
     }
+
 
     public boolean checkRange(Vector position){
            if(position.getX()>= 0 && position.getX() < this.width){

@@ -28,12 +28,14 @@ public class CreateMapActivity extends Activity {
     private  LayoutInflater boardLayoutInflater;
     private PopupWindow pwindo;
     Map<Integer,PieceType> map =  new HashMap<Integer,PieceType>();
+
     public  CreateMapActivity(){
         map.put(1,PieceType.KING);
         map.put(2,PieceType.TOWER);
         map.put(3,PieceType.PAWN);
         map.put(4,PieceType.BISHOP);
         map.put(5,PieceType.HORSE);
+        map.put(6, PieceType.QUEEN);
 
     }
     @Override
@@ -105,16 +107,8 @@ public class CreateMapActivity extends Activity {
                     //File mydir = getDir("mydir", Context.MODE_PRIVATE); //Creating an internal dir;
                     //File fileWithinMyDir = new File(mydir, "myfile");+ //Getting a file within the dir.
                     //FileOutputStream out = new FileOutputStream(fileWithinMyDir); //Use the stream as usual to write into the file.
-                   FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);
                     int[][] board = gridViewAdapter.getCreateBoard();
-                    oos.writeObject(gridViewAdapter.getCreateBoard());
-                    oos.close();
-                    fos.close();
-                     for(int i =0;i < fileList().length;i++) {
-                       System.out.println(fileList()[i]);
-                      System.out.println(getFilesDir());
-                    }
+
                 }
                 catch(Exception e){
                 }
