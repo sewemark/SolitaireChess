@@ -3,8 +3,10 @@ package com.seweryn.schess;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +15,10 @@ import android.widget.FrameLayout;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.lang.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +46,7 @@ public final class GameBoardAdapter extends BaseAdapter {
          map.put(3,PieceType.PAWN);
          map.put(4,PieceType.BISHOP);
          map.put(5,PieceType.HORSE);
+         map.put(6, PieceType.QUEEN);
          boardLayoutInflater = LayoutInflater.from(context);
          for (int i = 0; i < size; i++) {
              for (int j = 0; j < size; j++) {
@@ -253,7 +259,15 @@ public final class GameBoardAdapter extends BaseAdapter {
                          }
                      }
                      view.setVisibility(View.VISIBLE);
+                     if(checkIfWin()){
+                         View layout = boardLayoutInflater.inflate(R.layout.win_popup,(ViewGroup)v.findViewById(R.id.popup));
+                         PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
+                         pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+                         Intent mainMenu = new Intent(context, ChooseMapActivity.class);
+                         context.startActivity(mainMenu);
 
+
+                     }
                      break;
                  case DragEvent.ACTION_DRAG_ENDED:
                      v.setBackgroundDrawable(normalShape);
@@ -261,6 +275,17 @@ public final class GameBoardAdapter extends BaseAdapter {
                      break;
              }
              return true;
+         }
+         public  boolean checkIfWin(){
+             int numOfPieces=0;
+             for(int i=0;i < board01[0].length;i++){
+                 for(int j=0; j<board01.length;j++){
+                     if(board01[i][j] !=0){
+                         numOfPieces++;
+                     }
+                 }
+             }
+             return  numOfPieces==1 ? true: false;
          }
          public boolean removePiece(int position, int destinationPosition, int newPieceValue){
              Vector destinationVector = Vector.convertToVecotr(4,4,destinationPosition);

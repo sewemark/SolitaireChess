@@ -20,7 +20,7 @@ public class DatabaseHandler {
     private Context context;
     private String rootPath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private final String rootDirectory ="puzzles30";
+    private final String rootDirectory ="puzzles33";
 
     public  void CreateDatabaseIfNotExists() {
 
@@ -84,10 +84,10 @@ public class DatabaseHandler {
         InitializeMediumPuzzleDataBase();
     }
     public void InitializeEasyPuzzleDataBase(){
-        int[][] board01 = {{0, 4, 0, 0},
-                {0, 0, 0, 0},
-                {0, 0, 1, 4},
-                {2, 0 , 0, 0}};
+        int[][] board01 = {{0, 0, 0, 2},
+                {4, 0, 0, 0},
+                {0, 6, 0, 0},
+                {0, 0 , 4, 0}};
          int[][] board02 = {{0, 0, 5, 0},
                 {4, 0, 0, 0},
                 {0, 3, 0, 0},

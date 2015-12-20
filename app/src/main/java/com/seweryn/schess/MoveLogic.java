@@ -2,6 +2,8 @@ package com.seweryn.schess;
 
 import android.os.Build;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,6 +58,9 @@ public class MoveLogic {
         else if(pieceType == pieceType.HORSE){
             return getForHorse(position);
         }
+        else if(pieceType ==pieceType.QUEEN){
+            return getForQueen(position);
+        }
         else {
             return new Integer[]{};
         }
@@ -109,6 +114,16 @@ public class MoveLogic {
             rightCorner = rightCorner.minus(new Vector(1,1));
         }
         return toIntArray(listOfPossibleMoves);
+    }
+
+    public Integer[] getForQueen(Vector piecePosition){
+           Integer[] bishopPositions = getForBishop(piecePosition);
+           Integer[] towerPositions = getForTower(piecePosition);
+           Integer[] queenPositions = new Integer[bishopPositions.length + towerPositions.length];
+            System.arraycopy(bishopPositions, 0,queenPositions, 0, bishopPositions.length);
+            System.arraycopy(towerPositions, 0, queenPositions, bishopPositions.length, towerPositions.length);
+            return  queenPositions;
+
     }
     public  Integer[] getForHorse(Vector piecePosition){
         List<Integer> listOfPossibleMoves = new LinkedList<Integer>();
