@@ -1,34 +1,61 @@
 package com.seweryn.schess;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * Created by sew on 2015-12-07.
  */
-public class LinkedListHandler {
+public class LinkedListHandler  implements Runnable {
     private LinkedListNode rootNode;
     private LinkedListNode currentNode;
-
-
+    private int maxDepth;
+    private int maxWidth;
+    public  int expadnedCount=0;
     private int NumOfSolutions;
-
+    public int numOfSol =-1;
     public LinkedListHandler(int[][]board){
         rootNode = new LinkedListNode(board,null,true,-1);
         currentNode  = rootNode;
+        maxDepth = 0;
+        maxWidth = 0;
     }
-    public int DFSSearch(){
+    @Override
+    public void run() {
+     this.numOfSol=    this.DFSSearch();
+    }
+
+    private int DFSSearch(){
 
        if(this.currentNode.WasExpanded() ==false) {
            this.currentNode.expandChild();
+            this.expadnedCount++;
+          if(this.currentNode.childes.size()==0 && this.currentNode.IsRoot()==true)
+              return 0;
+           maxDepth++;
+           if(this.currentNode.childes.size()>maxWidth){
+               maxWidth=this.currentNode.childes.size();
+           }
        }
 
         if(this.currentNode.childes.size()>0){
             this.currentNode = this.currentNode.childes.get(0);
             this.currentNode.parent.childes.remove(0);
             // this.currentNode.childes.remove(0);
+            if(expadnedCount>=287){
+                System.out.println("lalal");
+
+
+            }
+            System.out.println("Child DFS");
+            System.out.println(expadnedCount);
             DFSSearch();
         }
         else{
@@ -36,7 +63,17 @@ public class LinkedListHandler {
                  NumOfSolutions++;
              }
              if(this.currentNode.parent !=null && this.currentNode.IsRoot() ==false){
+
+                 this.currentNode.childes.removeAll(this.currentNode.childes);
+
                   this.currentNode = this.currentNode.parent;
+
+                 System.out.println(expadnedCount);
+                 System.out.println("Up trre DFS");
+                 if(expadnedCount>=287){
+                  // System.out.println(ActivityManager.getMyMemoryState(););
+                     System.out.println("lalal");
+                 }
                  DFSSearch();
              }
             else{
@@ -57,6 +94,12 @@ public class LinkedListHandler {
             }
         }
         return numOfPieces==1 ? true : false;
+    }
+    public int getTreeDepth(){
+       return this.maxDepth;
+    }
+    public int getMaxWidth(){
+        return this.maxWidth;
     }
 
 }

@@ -24,7 +24,7 @@ public class SCMainMenuActivity extends Activity {
             public void onClick(View view) {
                 Intent mainMenu = new Intent(SCMainMenuActivity.this, GameActivity.class);
                 SCMainMenuActivity.this.startActivity(mainMenu);
-                SCMainMenuActivity.this.finish();
+
             }
         });
         createMapButton.setOnClickListener(new OnClickListener() {
@@ -32,7 +32,7 @@ public class SCMainMenuActivity extends Activity {
             public void onClick(View v) {
                 Intent mainMenu = new Intent(SCMainMenuActivity.this, CreateMapActivity.class);
                 SCMainMenuActivity.this.startActivity(mainMenu);
-                SCMainMenuActivity.this.finish();
+
 
             }
         });
@@ -41,7 +41,7 @@ public class SCMainMenuActivity extends Activity {
             public void onClick(View v) {
                 Intent mainMenu = new Intent(SCMainMenuActivity.this, ChooseMapActivity.class);
                 SCMainMenuActivity.this.startActivity(mainMenu);
-                SCMainMenuActivity.this.finish();
+
 
             }
         });

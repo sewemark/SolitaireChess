@@ -2,6 +2,8 @@ package com.seweryn.schess;
 
 import android.widget.LinearLayout;
 
+import org.w3c.dom.Node;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,32 +45,54 @@ public class LinkedListNode {
         }
     public void expandChild(){
         this.wasExpanded=true;
-            if(this.getCurrentPiece() ==null){
-                this.setPiece(this.getNextPiece());
-            }
-            this.possibleMoves = Arrays.asList(logic.PossibleMoves(board[0].length, board.length, getCurrentPiece(), getPiceType()));
-            if(this.possibleMoves.size() <=0){
 
-            }
-            else{
-                for(int i=0;i<possibleMoves.size();i++) {
+            Vector[] allPieces = this.getPieces();
+        for(int j=0;j<allPieces.length;j++) {
+            this.setPiece(allPieces[j]);
+            this.setPieceType(map.get(board[allPieces[j].getX()][allPieces[j].getY()]));
+            this.possibleMoves = Arrays.asList(logic.PossibleMoves(board[0].length, board.length, getCurrentPiece(), getPiceType()));
+            if (this.possibleMoves.size() <= 0) {
+
+            } else {
+                for (int i = 0; i < possibleMoves.size(); i++) {
 
                     Integer destinationPosition = possibleMoves.get(i);
-                    if(canMove(destinationPosition)) {
+                    if (canMove(destinationPosition)) {
                         LinkedListNode nextChild = new LinkedListNode(this.performMove(destinationPosition), this, false, destinationPosition);
                         this.childes.add(nextChild);
                     }
                 }
             }
+        }
+
     }
     public boolean canMove(int destinationPosition){
+        CollisionLogic logic = new CollisionLogic();
+
         Vector destinationVector = Vector.convertToVecotr(board[0].length, board.length,destinationPosition);
         if (destinationVector.equals(this.currentPiece)) {
 
             return false;
         }
-        if(board[destinationVector.getX()][destinationVector.getY()] != 0)
-            return true;
+        if(board[destinationVector.getX()][destinationVector.getY()] != 0) {
+            if(this.getPiceType()!=PieceType.HORSE) {
+                List<Vector> listOfpossibleCollistions = logic.checkIfCollision(getCurrentPiece(), destinationVector);
+                for (int j = 0; j < listOfpossibleCollistions.size(); j++) {
+                    Vector v = listOfpossibleCollistions.get(j);
+                    if (board[v.getX()][v.getY()] != 0) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else{
+                Vector v = Vector.convertToVecotr(4,4,destinationPosition);
+                if (board[v.getX()][v.getY()] != 0) {
+                    return true;
+                }
+                else return false;
+            }
+        }
         else
             return false;
     }
@@ -80,17 +104,19 @@ public class LinkedListNode {
         temp[getCurrentPiece().getX()][getCurrentPiece().getY()]=0;
         return  temp;
     }
-    public Vector getNextPiece(){
+    public Vector[] getPieces(){
+
+        List<Vector> pieces = new ArrayList<>();
 
         for(int i=0;i < board.length;i++){
             for(int j=0; j<board[0].length;j++){
                 if(board[i][j] !=0){
-                    setPieceType(map.get(board[i][j]));
-                    return new Vector(i,j);
+                 //   setPieceType(map.get(board[i][j]));
+                    pieces.add(new Vector(i,j));
                 }
             }
         }
-        return null;
+        return pieces.toArray(new Vector[pieces.size()]);
     }
     public  boolean IsRoot(){return this.isRoot;}
     public Vector getCurrentPiece(){

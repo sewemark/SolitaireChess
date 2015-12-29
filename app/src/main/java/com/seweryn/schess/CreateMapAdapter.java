@@ -121,8 +121,6 @@ public class CreateMapAdapter extends  BaseAdapter {
 
         public boolean onTouch(View view, MotionEvent motionEvent) {
 
-
-
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 return true;
             } else {

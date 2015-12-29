@@ -107,9 +107,45 @@ public class CreateMapActivity extends Activity {
                 String FILENAME = "board04.data";
                 String string = "hello world!";
                 try {
+                    System.out.println("dsadsasdasd");
+
+
                     LinkedListHandler handler = new LinkedListHandler(gridViewAdapter.getCreateBoard());
-                    int solutionNumber = handler.DFSSearch();
-                    System.out.println(solutionNumber);
+                    //int solutionNumber = handler.DFSSearch();
+                    ThreadGroup group = new ThreadGroup("threadGroup");
+                     Thread t = new Thread(group, handler, "YourThreadName", 2000000);
+                    t.start();
+                    t.join();
+
+                    int solutionNumber = handler.numOfSol;
+                    System.out.println("solution number " + solutionNumber);
+                    System.out.println(handler.expadnedCount);
+                    if(solutionNumber<=0){
+                        System.out.println("Nie ma rozwiazania");
+                        PuzzleHardnessDialog dialog = new
+                                PuzzleHardnessDialog();
+                        dialog.show(getFragmentManager(),"dialog");
+                    }
+                    else{
+                        double wage = solutionNumber *0.3 + handler.getMaxWidth()*0.4 + handler.getTreeDepth()*0.3;
+                        PuzzleType type;
+                        if(wage<=10){
+                            type= PuzzleType.EASY;
+                        }else if(wage>10 && wage<=14){
+                            type=PuzzleType.MEDIUM;
+                        }else if(wage<16 && wage>14){
+                            type= PuzzleType.HARD;
+                        }else{
+                            type = PuzzleType.VERYHARD;
+                        }
+                        PuzzleHardnessClasificationDialog dialog = new
+                                PuzzleHardnessClasificationDialog();
+                        dialog.setPuzleType(type.toString());
+                        dialog.show(getFragmentManager(), "dialog");
+                        DatabaseHandler databaseHandler = new DatabaseHandler(context);
+                        databaseHandler.savePuzzle(type, gridViewAdapter.getCreateBoard());
+
+                    }
                     //File mydir = getDir("mydir", Context.MODE_PRIVATE); //Creating an internal dir;
                     //File fileWithinMyDir = new File(mydir, "myfile");+ //Getting a file within the dir.
                     //FileOutputStream out = new FileOutputStream(fileWithinMyDir); //Use the stream as usual to write into the file.
