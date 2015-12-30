@@ -47,9 +47,16 @@ public class CreateMapActivity extends Activity {
         setContentView(R.layout.create_map_main);
 
         final GridView gridView = (GridView) findViewById(R.id.createMapGridView);
+        Bundle extras = getIntent().getExtras();
+        int boardWidth=4;
+        int boardHeight=4;
+        if (extras != null) {
+            boardHeight = (int)extras.get("BoardWidth");
+            boardWidth = (int)extras.get("BoardHeight");
 
-        gridView.setNumColumns(4);
-        final CreateMapAdapter gridViewAdapter = new CreateMapAdapter(this,4);
+        }
+        gridView.setNumColumns(boardWidth);
+        final CreateMapAdapter gridViewAdapter = new CreateMapAdapter(this,boardWidth,boardHeight);
         gridView.setAdapter(gridViewAdapter);
         try {
 
@@ -57,7 +64,7 @@ public class CreateMapActivity extends Activity {
            // FileInputStream fis = openFileInput(FILENAME);
             //ObjectInputStream iis = new ObjectInputStream(fis);
             //int[][] board = (int[][])iis.readObject();
-            gridViewAdapter.setBoardToCreate(new int[4][4]);
+            gridViewAdapter.setBoardToCreate(new int[boardWidth][boardHeight]);
             gridViewAdapter.notifyDataSetChanged();
            // iis.close();
            /// fis.close();
@@ -108,8 +115,6 @@ public class CreateMapActivity extends Activity {
                 String string = "hello world!";
                 try {
                     System.out.println("dsadsasdasd");
-
-
                     LinkedListHandler handler = new LinkedListHandler(gridViewAdapter.getCreateBoard());
                     //int solutionNumber = handler.DFSSearch();
                     ThreadGroup group = new ThreadGroup("threadGroup");

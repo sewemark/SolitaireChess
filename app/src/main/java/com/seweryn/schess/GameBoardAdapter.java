@@ -41,12 +41,7 @@ public final class GameBoardAdapter extends BaseAdapter {
          this.context = context;
          this.dbContext = new DatabaseHandler(this.context);
          board01 = dbContext.readPuzzle(puzleType,boardName );
-         map.put(1,PieceType.KING);
-         map.put(2,PieceType.TOWER);
-         map.put(3,PieceType.PAWN);
-         map.put(4,PieceType.BISHOP);
-         map.put(5,PieceType.HORSE);
-         map.put(6, PieceType.QUEEN);
+        
          boardLayoutInflater = LayoutInflater.from(context);
          for (int i = 0; i < size; i++) {
              for (int j = 0; j < size; j++) {
@@ -102,7 +97,6 @@ public final class GameBoardAdapter extends BaseAdapter {
          int tabValue = board01[position.getX()][position.getY()];
          //int tempValue = board01[1][2];
          if(tabValue>0){
-         map.get(tabValue);
              resource = this.getResource(tabValue);
              v.findViewById(R.id.grid_item_piece).setBackgroundResource(resource);
              v.findViewById(R.id.grid_item_piece).setTag(tabValue);

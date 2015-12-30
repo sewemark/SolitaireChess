@@ -29,6 +29,16 @@ public class Lodash {
         map.put(Directions.NW, new Vector(-1,-1));
         return  map.get(direction);
     }
+    public static PieceType getPiecType(int key){
+        Map<Integer,PieceType> map =  new HashMap<Integer,PieceType>();
+        map.put(1,PieceType.KING);
+        map.put(2,PieceType.TOWER);
+        map.put(3,PieceType.PAWN);
+        map.put(4,PieceType.BISHOP);
+        map.put(5,PieceType.HORSE);
+        map.put(6, PieceType.QUEEN);
+        return map.get(key);
+    }
     public static int[][] deepCopyIntMatrix(int[][] input) {
         if (input == null)
             return null;

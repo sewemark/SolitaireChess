@@ -25,13 +25,17 @@ public class CreateMapAdapter extends  BaseAdapter {
     private final List<Item> boardFileds = new ArrayList<Item>();
     private final LayoutInflater boardLayoutInflater;
     private final Context context;
-    public CreateMapAdapter(Context context, int size) {
+    private int width;
+    private int height;
+    public CreateMapAdapter(Context context, int _width, int _height) {
 
         this.context = context;
+        this.width = _width;
+        this.height = _height;
         boardLayoutInflater = LayoutInflater.from(context);
 
-            for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+            for (int i = 0; i < width; i++) {
+            for (int j = 0; j < width; j++) {
                 int fieldId = i + j;
                 if (i % 2 == 0) {
                     {
@@ -53,7 +57,7 @@ public class CreateMapAdapter extends  BaseAdapter {
     }
 
     public  void setPieceOnPosition(int position, int pieceId){
-        Vector vector = Vector.convertToVecotr(4, 4, position);
+        Vector vector = Vector.convertToVecotr(width, height, position);
         boardToCreate[vector.getX()][vector.getY()] =pieceId;
     }
     @Override
@@ -83,7 +87,7 @@ public class CreateMapAdapter extends  BaseAdapter {
         }
         picture = (ImageView) v.getTag(R.id.picture);
         Item item = getItem(i);
-        Vector position = Vector.convertToVecotr(4, 4, i);
+        Vector position = Vector.convertToVecotr(width, height, i);
         int tabValue = boardToCreate[position.getX()][position.getY()];
         //int tempValue = board01[1][2];
         if(tabValue>0) {
