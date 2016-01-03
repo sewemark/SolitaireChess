@@ -108,7 +108,7 @@ public final class GameBoardAdapter extends BoardAdapter {
         }
     }
     public void showNextMove(){
-        
+
     }
 
      private final class MyTouchListener implements View.OnTouchListener {
