@@ -20,7 +20,6 @@ public class LinkedListNode {
     public List<LinkedListNode> childes;
     public List<Integer> possibleMoves;
     private PieceType currentPiecType;
-    Map<Integer,PieceType> map =  new HashMap<Integer,PieceType>();
     private boolean wasExpanded;
     private MoveLogic logic;
     private Vector currentPiece;
@@ -32,12 +31,6 @@ public class LinkedListNode {
         logic = new MoveLogic();
         this.childes = new ArrayList<LinkedListNode>();
         this.wasExpanded =false;
-        map.put(1,PieceType.KING);
-        map.put(2,PieceType.TOWER);
-        map.put(3,PieceType.PAWN);
-        map.put(4,PieceType.BISHOP);
-        map.put(5,PieceType.HORSE);
-        map.put(6, PieceType.QUEEN);
         if(destinationPosition>=0) {
             this.currentPiece = Vector.convertToVecotr(board[0].length, board.length, destinationPosition);
         }
@@ -49,7 +42,7 @@ public class LinkedListNode {
             Vector[] allPieces = this.getPieces();
         for(int j=0;j<allPieces.length;j++) {
             this.setPiece(allPieces[j]);
-            this.setPieceType(map.get(board[allPieces[j].getX()][allPieces[j].getY()]));
+            this.setPieceType(Lodash.getPiecType(board[allPieces[j].getX()][allPieces[j].getY()]));
             this.possibleMoves = Arrays.asList(logic.PossibleMoves(board[0].length, board.length, getCurrentPiece(), getPiceType()));
             if (this.possibleMoves.size() <= 0) {
 

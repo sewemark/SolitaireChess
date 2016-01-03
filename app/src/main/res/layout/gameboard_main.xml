@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <GridView
         android:id="@+id/gridview"
         android:tag="gridview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:verticalSpacing="0dp"
         android:horizontalSpacing="0dp"
         android:stretchMode="columnWidth"
         />
+    <Button
+    android:id="@+id/undoButton"
+    android:layout_width="50dip"
+    android:layout_height="50dip"
+    android:text="Undo"
+    android:textSize="10sp" android:textStyle="bold" />
+    <Button
+        android:id="@+id/hintButton"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:text="Hints"
+        android:textSize="10sp" android:textStyle="bold" />
 
-</FrameLayout>
+</LinearLayout>

@@ -3,6 +3,8 @@ package com.seweryn.schess;
 import android.app.Activity;
 import android.app.ActivityManager;
 
+import org.w3c.dom.Node;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import java.util.concurrent.Callable;
 public class LinkedListHandler  implements Runnable {
     private LinkedListNode rootNode;
     private LinkedListNode currentNode;
+    private List<Solution> solutions;
     private int maxDepth;
     private int maxWidth;
     public  int expadnedCount=0;
@@ -23,6 +26,7 @@ public class LinkedListHandler  implements Runnable {
     public int numOfSol =-1;
     public LinkedListHandler(int[][]board){
         rootNode = new LinkedListNode(board,null,true,-1);
+        solutions = new ArrayList<>();
         currentNode  = rootNode;
         maxDepth = 0;
         maxWidth = 0;
@@ -49,11 +53,6 @@ public class LinkedListHandler  implements Runnable {
             this.currentNode = this.currentNode.childes.get(0);
             this.currentNode.parent.childes.remove(0);
             // this.currentNode.childes.remove(0);
-            if(expadnedCount>=287){
-                System.out.println("lalal");
-
-
-            }
             System.out.println("Child DFS");
             System.out.println(expadnedCount);
             DFSSearch();
@@ -61,6 +60,13 @@ public class LinkedListHandler  implements Runnable {
         else{
              if(checkIfSolutionFounded()) {
                  NumOfSolutions++;
+                 LinkedListNode pointer = this.currentNode;
+                 Solution solution =new Solution();
+                 while (pointer.parent !=null){
+                     solution.boards.add(pointer.board);
+                     pointer = pointer.parent;
+                 }
+                 solutions.add(solution);
              }
              if(this.currentNode.parent !=null && this.currentNode.IsRoot() ==false){
 
