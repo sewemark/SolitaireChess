@@ -48,4 +48,18 @@ public class Lodash {
         }
         return result;
     }
+    public static boolean areBoardsEqual(int[][] board, int[][]nextboard){
+        if(board.length != nextboard.length)
+            return false;
+        if(board[0].length != nextboard[0].length)
+            return  false;
+        for(int i=0;i<board.length ;i++){
+            for(int j=0;j<board[0].length;j++){
+                if(board[i][j]!=nextboard[i][j]){
+                    return false;
+                }
+            }
+        }
+        return  true;
+    }
 }

@@ -1,6 +1,9 @@
 package com.seweryn.schess;
 
 import android.content.Context;
+import android.provider.ContactsContract;
+
+import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -8,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.ConsoleHandler;
+
 /**
  * Created by sew on 2015-11-23.
  */
@@ -20,7 +25,7 @@ public class DatabaseHandler {
     private Context context;
     private String rootPath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private final String rootDirectory ="puzzles33";
+    private final String rootDirectory ="puzzles56";
 
     public  void CreateDatabaseIfNotExists() {
 
@@ -48,9 +53,12 @@ public class DatabaseHandler {
              if(!fileToCreate.exists()){
                  fileToCreate.createNewFile();
              }
+             LinkedListHandler handler= SolutionFinder.findSolution(puzzleToSave);
+             DatabaseObject objectToSave = new DatabaseObject(puzzleToSave,handler.getSolutions());
+
              FileOutputStream fos = new FileOutputStream(fileToCreate);
              ObjectOutputStream oos = new ObjectOutputStream(fos);
-             oos.writeObject(puzzleToSave);
+             oos.writeObject(objectToSave);
              oos.close();
              fos.close();
              String [] pliki = parrentDir.list();
@@ -59,16 +67,16 @@ public class DatabaseHandler {
 
          }
      }
-    public  int [][] readPuzzle(PuzzleType puzzleType, String fileName ) {
+    public  DatabaseObject readPuzzle(PuzzleType puzzleType, String fileName ) {
         try{
             File fileToRead = new File(context.getCacheDir() + "/" + rootDirectory + "/" + puzzleType.toString() + "/"  + fileName);
             FileInputStream fis = new FileInputStream(fileToRead);
             ObjectInputStream iis = new ObjectInputStream(fis);
-            int[][] board = (int[][])iis.readObject();
-            return  board;
+            DatabaseObject databaseObject= (DatabaseObject)iis.readObject();
+            return  databaseObject;
         }
         catch (Exception ex){
-
+            System.out.println(ex);
         }
         return  null;
     }

@@ -19,7 +19,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import java.lang.*;
 import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
+import java.util.List;
 
 
 public final class GameBoardAdapter extends BoardAdapter {
@@ -27,11 +30,13 @@ public final class GameBoardAdapter extends BoardAdapter {
 
      MoveLogic logic = new MoveLogic();
      BoardLogic boargLogic;
-
+     List<Solution> solutions;
      Deque<Move> moves = new ArrayDeque<Move>();
-     public GameBoardAdapter(Context context,int[][] _board, int width,int height, String boardName,   PuzzleType puzleType) {
-         super(context,width, height);
-         this.board = _board;
+     public GameBoardAdapter(Context context,DatabaseObject databaseObject, String boardName,   PuzzleType puzleType) {
+         super(context,databaseObject.getBoard()[0].length, databaseObject.getBoard().length);
+         this.board = Lodash.deepCopyIntMatrix(databaseObject.getBoard());
+         this.solutions = databaseObject.getSolutions();
+         Collections.reverse(this.solutions.get(0).boards);
          this.boargLogic = new BoardLogic(board);
 
      }
@@ -85,7 +90,7 @@ public final class GameBoardAdapter extends BoardAdapter {
              }
          }
      }
-    public void UndoMove(GridView gridView){
+    public void undoMove(GridView gridView){
         if(this.moves.size()>0){
             Move lastMove = moves.pop();
             FrameLayout itemSource = (FrameLayout)gridView.getChildAt(lastMove.sourPositon);
@@ -107,10 +112,49 @@ public final class GameBoardAdapter extends BoardAdapter {
 
         }
     }
-    public void showNextMove(){
+    public void showNextMove(GridView gridView){
+        for(int i=0;i<this.solutions.size();i++){
 
+            for(int j=0;j<this.solutions.get(i).boards.size();j++){
+                if(Lodash.areBoardsEqual(this.solutions.get(i).boards.get(j),boargLogic.getBoard())) {
+                    if (j+ 1 < this.solutions.get(i).boards.size()) {
+                        Move m = Move.extractMove(boargLogic.getBoard(), this.solutions.get(i).boards.get(j + 1));
+                        FrameLayout itemSource = (FrameLayout) gridView.getChildAt(m.sourPositon);
+                        View viewToDelete = itemSource.getChildAt(2);
+                        itemSource.removeViewAt(2);
+
+                        if(m.destinatioPosition>=0) {
+                            FrameLayout itemdesination = (FrameLayout) gridView.getChildAt(m.destinatioPosition);
+                            View view2 = itemdesination.findViewById(R.id.grid_item_piece);
+                            if (view2 != null) {
+                                int resource = this.getResource(m.pieceType);
+                                view2.setBackgroundResource(resource);
+                                view2.setTag(m.pieceType);
+                                //view2.findViewById(R.id.grid_item_piece).setOnTouchListener(new MyTouchListener());
+                            }
+                            boargLogic.setPieceAtPosition(m.destinatioPosition, m.pieceType);
+                        }
+                        boargLogic.setPieceAtPosition(m.sourPositon, 0);
+                        moves.push(new Move(viewToDelete,m.beatedPieceType, m.pieceType,m.sourPositon, m.destinatioPosition));
+
+                        System.out.println(2);
+                        return;
+                     //   if(boargLogic.checkIfWin()){
+                       //     showWinDialog(gridView);
+                       // }
+                    }
+                }
+            }
+        }
+        this.undoMove(gridView);
     }
-
+    public void showWinDialog(View v){
+        View layout = boardLayoutInflater.inflate(R.layout.win_popup,(ViewGroup)v.findViewById(R.id.popup));
+        PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
+        pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+        Intent mainMenu = new Intent(context, ChooseMapActivity.class);
+        context.startActivity(mainMenu);
+    }
      private final class MyTouchListener implements View.OnTouchListener {
 
          public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -183,11 +227,7 @@ public final class GameBoardAdapter extends BoardAdapter {
                      }
                      view.setVisibility(View.VISIBLE);
                      if(boargLogic.checkIfWin()){
-                         View layout = boardLayoutInflater.inflate(R.layout.win_popup,(ViewGroup)v.findViewById(R.id.popup));
-                         PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
-                         pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
-                         Intent mainMenu = new Intent(context, ChooseMapActivity.class);
-                         context.startActivity(mainMenu);
+                         showWinDialog(v);
                      }
                      break;
                  case DragEvent.ACTION_DRAG_ENDED:

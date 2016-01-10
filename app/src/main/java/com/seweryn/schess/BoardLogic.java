@@ -44,4 +44,7 @@ public class BoardLogic {
         Vector positionVector = Vector.convertToVecotr(boardWidth,boardHeight,position);
          this.board[positionVector.getX()][positionVector.getY()]= pieceValue;
     }
+    public int[][]getBoard(){
+        return  this.board;
+    }
 }

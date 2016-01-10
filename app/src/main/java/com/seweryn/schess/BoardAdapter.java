@@ -171,13 +171,13 @@ public class BoardAdapter extends  BaseAdapter {
         switch (tabValue){
             case 1: resource =R.drawable.kingpiece;
                 break;
-            case 2: resource =R.drawable.towerpiece;
+            case 2: resource =R.drawable.rockpiece;
                 break;
             case 3: resource=R.drawable.pawnpiece;
                 break;
             case 4: resource=R.drawable.bishoppiece;
                 break;
-            case 5: resource =R.drawable.horsepiece;
+            case 5: resource =R.drawable.knightpiece;
                 break;
             case 6: resource=R.drawable.queenpiece;
             default:
@@ -191,13 +191,13 @@ public class BoardAdapter extends  BaseAdapter {
         if(pieceType ==PieceType.KING)
             resource =R.drawable.king_white;
         else if(pieceType == PieceType.TOWER)
-            resource = R.drawable.tower_white;
+            resource = R.drawable.rock_white;
         else if(pieceType == PieceType.PAWN)
             resource=R.drawable.pawn_white;
         else if(pieceType == PieceType.BISHOP)
             resource = R.drawable.bishop_white;
         else if(pieceType == PieceType.HORSE)
-            resource = R.drawable.horse_white;
+            resource = R.drawable.knight_white;
         else if(pieceType == PieceType.QUEEN)
             resource = R.drawable.queen_white;
 

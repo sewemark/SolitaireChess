@@ -25,10 +25,10 @@ public class GameActivity  extends Activity {
             String boardName = (String) getIntent().getExtras().get("boardName");
             PuzzleType boardType = (PuzzleType) getIntent().getExtras().get("boardType");
             DatabaseHandler dbContext = new DatabaseHandler(this);
+            DatabaseObject databaseObject =  dbContext.readPuzzle(boardType,boardName );
 
-             int [][]board = dbContext.readPuzzle(boardType,boardName );
-            gridView.setNumColumns(board[0].length);
-             gameBoardAdapter = new GameBoardAdapter(this,board,board[0].length,board.length,boardName, boardType);
+            gridView.setNumColumns(databaseObject.getBoard()[0].length);
+            gameBoardAdapter = new GameBoardAdapter(this,databaseObject,boardName, boardType);
             gridView.setAdapter(gameBoardAdapter);
         }
         else{
@@ -37,14 +37,13 @@ public class GameActivity  extends Activity {
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameBoardAdapter.UndoMove(gridView);
-
+                gameBoardAdapter.undoMove(gridView);
             }
         });
         hintsButton.setOnClickListener(new View.OnClickListener(){
            @Override
             public void onClick(View v){
-               gameBoardAdapter.showNextMove();
+               gameBoardAdapter.showNextMove(gridView);
            }
         });
 

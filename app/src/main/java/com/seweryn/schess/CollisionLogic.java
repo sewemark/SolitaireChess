@@ -18,7 +18,7 @@ public class CollisionLogic {
           List<Vector> possibleCollisions = new ArrayList<>();
           Directions direction = getDirection(diffrenceVector);
           Vector vector= Lodash.getVectorForDirection(direction);
-        sourcePosition= sourcePosition.plus(vector);
+          sourcePosition= sourcePosition.plus(vector);
           while(!sourcePosition.equals(destinationPosition)){
 
 

@@ -115,16 +115,12 @@ public class CreateMapActivity extends Activity {
                 String string = "hello world!";
                 try {
                     System.out.println("dsadsasdasd");
-                    LinkedListHandler handler = new LinkedListHandler(gridViewAdapter.getCreateBoard());
-                    //int solutionNumber = handler.DFSSearch();
-                    ThreadGroup group = new ThreadGroup("threadGroup");
-                     Thread t = new Thread(group, handler, "YourThreadName", 2000000);
-                    t.start();
-                    t.join();
+                    LinkedListHandler handler= SolutionFinder.findSolution(gridViewAdapter.getCreateBoard());
 
                     int solutionNumber = handler.numOfSol;
                     System.out.println("solution number " + solutionNumber);
                     System.out.println(handler.expadnedCount);
+
                     if(solutionNumber<=0){
                         System.out.println("Nie ma rozwiazania");
                         PuzzleHardnessDialog dialog = new

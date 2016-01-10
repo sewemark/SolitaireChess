@@ -66,7 +66,7 @@ public class LinkedListHandler  implements Runnable {
                      solution.boards.add(pointer.board);
                      pointer = pointer.parent;
                  }
-                 solutions.add(solution);
+                 solutions.add(0,solution);
              }
              if(this.currentNode.parent !=null && this.currentNode.IsRoot() ==false){
 
@@ -100,6 +100,9 @@ public class LinkedListHandler  implements Runnable {
             }
         }
         return numOfPieces==1 ? true : false;
+    }
+    public List<Solution> getSolutions(){
+        return  this.solutions;
     }
     public int getTreeDepth(){
        return this.maxDepth;
