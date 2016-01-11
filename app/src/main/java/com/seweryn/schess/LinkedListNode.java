@@ -1,15 +1,14 @@
 package com.seweryn.schess;
 
-import android.widget.LinearLayout;
+import com.seweryn.schess.Enums.PieceType;
+import com.seweryn.schess.Logic.CollisionLogic;
+import com.seweryn.schess.Logic.MoveLogic;
+import com.seweryn.schess.Models.Vector;
+import com.seweryn.schess.Static.Lodash;
 
-import org.w3c.dom.Node;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by sew on 2015-12-07.
@@ -32,7 +31,7 @@ public class LinkedListNode {
         this.childes = new ArrayList<LinkedListNode>();
         this.wasExpanded =false;
         if(destinationPosition>=0) {
-            this.currentPiece = Vector.convertToVecotr(board[0].length, board.length, destinationPosition);
+            this.currentPiece = Vector.convertToVector(board[0].length, board.length, destinationPosition);
         }
         else currentPiece= null;
         }
@@ -62,7 +61,7 @@ public class LinkedListNode {
     public boolean canMove(int destinationPosition){
         CollisionLogic logic = new CollisionLogic();
 
-        Vector destinationVector = Vector.convertToVecotr(board[0].length, board.length,destinationPosition);
+        Vector destinationVector = Vector.convertToVector(board[0].length, board.length, destinationPosition);
         if (destinationVector.equals(this.currentPiece)) {
 
             return false;
@@ -79,7 +78,7 @@ public class LinkedListNode {
                 return true;
             }
             else{
-                Vector v = Vector.convertToVecotr(4,4,destinationPosition);
+                Vector v = Vector.convertToVector(4, 4, destinationPosition);
                 if (board[v.getX()][v.getY()] != 0) {
                     return true;
                 }
@@ -90,7 +89,7 @@ public class LinkedListNode {
             return false;
     }
     public int[][] performMove(int destinationPosition){
-        Vector destinationVector = Vector.convertToVecotr(board[0].length, board.length,destinationPosition);
+        Vector destinationVector = Vector.convertToVector(board[0].length, board.length, destinationPosition);
         int[][]temp =Lodash.deepCopyIntMatrix(board);
         int value = board[getCurrentPiece().getX()][getCurrentPiece().getY()];
         temp[destinationVector.getX()][destinationVector.getY()] =value;

@@ -1,16 +1,9 @@
 package com.seweryn.schess;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-
-import org.w3c.dom.Node;
+import com.seweryn.schess.Models.Solution;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
 
 /**
  * Created by sew on 2015-12-07.

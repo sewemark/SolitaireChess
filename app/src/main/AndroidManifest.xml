@@ -11,9 +11,9 @@
         android:largeHeap="true">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.seweryn.schess.SCMainMenuActivity"
+            android:parentActivityName=".Activities.SCMainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,25 +22,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SCMainMenuActivity"
+            android:name=".Activities.SCMainMenuActivity"
             android:label="@string/app_name">
 
         </activity>
         <activity
-            android:name=".GameActivity"
-            android:parentActivityName="com.seweryn.schess.SCMainMenuActivity"
+            android:name=".Activities.GameActivity"
+            android:parentActivityName=".Activities.SCMainMenuActivity"
             android:label="@string/app_name">
 
         </activity>
         <activity
-            android:name=".CreateMapActivity"
-            android:parentActivityName="com.seweryn.schess.MainActivity"
+            android:name=".Activities.CreateMapActivity"
+            android:parentActivityName=".Activities.MainActivity"
             android:label="@string/app_name">
 
         </activity>
         <activity
-            android:name=".ChooseMapActivity"
-            android:parentActivityName="com.seweryn.schess.SCMainMenuActivity"
+            android:name=".Activities.ChooseMapActivity"
+            android:parentActivityName=".Activities.SCMainMenuActivity"
             android:label="@string/app_name">
         </activity>
     </application>

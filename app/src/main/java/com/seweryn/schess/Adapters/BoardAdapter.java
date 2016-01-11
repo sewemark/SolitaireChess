@@ -1,0 +1,165 @@
+package com.seweryn.schess.Adapters;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.view.DragEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.seweryn.schess.Controllers.IBoardLogicController;
+import com.seweryn.schess.Models.Vector;
+import com.seweryn.schess.R;
+import com.seweryn.schess.Static.Lodash;
+
+import java.lang.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class BoardAdapter extends  BaseAdapter {
+
+
+    protected   int[][] board;
+    private final List<Item> boardFileds = new ArrayList<Item>();
+    protected final LayoutInflater boardLayoutInflater;
+    protected final Context context;
+    protected int width;
+    protected int height;
+    protected IBoardLogicController controller;
+
+    public BoardAdapter( IBoardLogicController _controller,Context _context, int _width, int _height) {
+        this.context = _context;
+        this.controller = _controller;
+        this.width = _width;
+        this.height = _height;
+        boardLayoutInflater = LayoutInflater.from(context);
+        setBackgroundFields();
+    }
+    private void setBackgroundFields(){
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < width; j++) {
+                int fieldId = i + j;
+                if (i % 2 == 0) {
+                    {
+                        if (j % 2 == 0) {
+                            boardFileds.add(new Item("WhiteField", R.drawable.shape_white, fieldId));
+                        } else {
+                            boardFileds.add(new Item("BlueField", R.drawable.shape_white, fieldId));
+                        }
+                    }
+                } else {
+                    if (j % 2 == 0) {
+                        boardFileds.add(new Item("BlueField", R.drawable.shape, fieldId));
+                    } else {
+                        boardFileds.add(new Item("WhiteField", R.drawable.shape, fieldId));
+                    }
+                }
+            }
+        }
+    }
+    @Override
+    public int getCount() {
+        return boardFileds.size();
+    }
+
+    @Override
+    public Item getItem(int i) {
+        return boardFileds.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return boardFileds.get(i).drawableId;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        View v = view;
+        ImageView picture;
+        TextView name;
+        int resource;
+        if (v == null) {
+            v = boardLayoutInflater.inflate(R.layout.grid_item_blue, viewGroup, false);
+            v.setTag(R.id.picture, v.findViewById(R.id.picture));
+        }
+        picture = (ImageView) v.getTag(R.id.picture);
+        Item item = getItem(i);
+        Vector position = Vector.convertToVector(width, height, i);
+        int tabValue = board[position.getX()][position.getY()];
+        if(tabValue>0) {
+            resource = Lodash.getResource(tabValue);
+            v.findViewById(R.id.grid_item_piece).setBackgroundResource(resource);
+            v.findViewById(R.id.grid_item_piece).setTag(tabValue);
+        }
+        if (item.name.equals("WhiteField")) {
+            picture.setImageResource(R.drawable.shape_white);
+        } else {
+            picture.setImageResource(R.drawable.shape);
+        }
+        return v;
+    }
+
+    protected static class Item {
+        public final String name;
+        public final int fieldId;
+        public final int drawableId;
+
+        Item(String name, int drawableId, int fieldId) {
+            this.name = name;
+            this.fieldId = fieldId;
+            this.drawableId = drawableId;
+        }
+    }
+
+    private final class MyTouchListener implements View.OnTouchListener {
+
+
+
+
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+
+
+
+        class MyDragListener implements View.OnDragListener {
+            Drawable enterShape = context.getResources().getDrawable(R.drawable.shape_droptarget);
+            Drawable normalShape = context.getResources().getDrawable(R.drawable.shape);
+
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                int action = event.getAction();
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        // do nothing
+                        break;
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        v.setBackgroundDrawable(enterShape);
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        v.setBackgroundDrawable(normalShape);
+                        break;
+                    case DragEvent.ACTION_DROP:
+                        System.out.println("dass");
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        v.setBackgroundDrawable(normalShape);
+                    default:
+                        break;
+                }
+                return true;
+            }
+    }
+}
+
