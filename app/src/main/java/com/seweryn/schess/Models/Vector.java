@@ -24,13 +24,13 @@ public class Vector {
     };
 
     public static Vector convertToVector(int width, int height, int position){
-         int row = (int)Math.floor (position/(double)height);
-         int column  = position%width;
+       int  row = (int) Math.floor((position)/width);
+       int column = position % width;
         return new Vector(column,row);
     }
 
     public static int convertToScalar(int width, int height, Vector vector){
-        return Math.abs(vector.getY())*height + Math.abs(vector.getX());
+        return Math.abs(vector.getY())*width + Math.abs(vector.getX());
     }
 
     public int getX(){

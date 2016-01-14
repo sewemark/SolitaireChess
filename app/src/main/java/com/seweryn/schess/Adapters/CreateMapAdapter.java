@@ -40,7 +40,7 @@ public class CreateMapAdapter extends  BaseAdapter {
         this.height = _height;
         boardLayoutInflater = LayoutInflater.from(context);
 
-            for (int i = 0; i < width; i++) {
+            for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int fieldId = i + j;
                 if (i % 2 == 0) {
@@ -48,12 +48,12 @@ public class CreateMapAdapter extends  BaseAdapter {
                         if (j % 2 == 0) {
                             boardFileds.add(new Item("WhiteField", R.drawable.shape_white, fieldId));
                         } else {
-                            boardFileds.add(new Item("BlueField", R.drawable.shape_white, fieldId));
+                            boardFileds.add(new Item("BlueField", R.drawable.shape, fieldId));
                         }
                     }
                 } else {
                     if (j % 2 == 0) {
-                        boardFileds.add(new Item("BlueField", R.drawable.shape, fieldId));
+                        boardFileds.add(new Item("BlueField", R.drawable.shape_white, fieldId));
                     } else {
                         boardFileds.add(new Item("WhiteField", R.drawable.shape, fieldId));
                     }
@@ -64,7 +64,7 @@ public class CreateMapAdapter extends  BaseAdapter {
 
     public  void setPieceOnPosition(int position, int pieceId){
         Vector vector = Vector.convertToVector(width, height, position);
-        boardToCreate[vector.getX()][vector.getY()] =pieceId;
+        boardToCreate[vector.getY()][vector.getX()] =pieceId;
     }
     @Override
     public int getCount() {
@@ -94,12 +94,15 @@ public class CreateMapAdapter extends  BaseAdapter {
         picture = (ImageView) v.getTag(R.id.picture);
         Item item = getItem(i);
         Vector position = Vector.convertToVector(width, height, i);
-        int tabValue = boardToCreate[position.getX()][position.getY()];
+        int tabValue = boardToCreate[position.getY()][position.getX()];
         //int tempValue = board01[1][2];
         if(tabValue>0) {
-            map.get(tabValue);
             resource = Lodash.getResource(tabValue);
             v.findViewById(R.id.grid_item_piece).setBackgroundResource(resource);
+            v.findViewById(R.id.grid_item_piece).setTag(tabValue);
+        }else if(tabValue==0){
+            resource = Lodash.getResource(tabValue);
+            v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
             v.findViewById(R.id.grid_item_piece).setTag(tabValue);
         }
 

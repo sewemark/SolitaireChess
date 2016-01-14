@@ -85,7 +85,7 @@ public class MoveLogic {
                 listOfPossibleMoves.add(Vector.convertToScalar(width, height,vector));
         }
         for(int i =0 ;i < this.height; i++){
-            Vector vector = yLine.plus(new Vector(0, i * 1));
+            Vector vector = yLine.plus(new Vector(0, i));
             if(checkRange(vector))
                 listOfPossibleMoves.add(Vector.convertToScalar(width, height,vector));
         }
@@ -101,12 +101,12 @@ public class MoveLogic {
         return toIntArray(listOfPossibleMoves);
     }
     public Integer[] getForBishop(Vector piecePosition){
-        Vector leftCorner = getLastCoordinate(piecePosition,new Vector(1,-1));
+        Vector leftCorner = getLastCoordinate(piecePosition,new Vector(-1,1));
         Vector rightCorner = getLastCoordinate(piecePosition,new Vector(1,1));
         List<Integer> listOfPossibleMoves = new LinkedList<Integer>();
         while(checkRange(leftCorner)){
             listOfPossibleMoves.add(Vector.convertToScalar(width, height,leftCorner));
-            leftCorner =leftCorner.minus((new Vector(1,-1)));
+            leftCorner =leftCorner.minus((new Vector(-1,1)));
         }
         while(checkRange(rightCorner)){
             listOfPossibleMoves.add(Vector.convertToScalar(width, height,rightCorner));

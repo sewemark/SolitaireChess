@@ -3,7 +3,9 @@ package com.seweryn.schess.Controllers;
 import android.content.Context;
 
 import com.seweryn.schess.DAL.DatabaseHandler;
+import com.seweryn.schess.Enums.PieceType;
 import com.seweryn.schess.Enums.PuzzleType;
+import com.seweryn.schess.Models.DatabaseObject;
 
 /**
  * Created by sew on 2016-01-10.
@@ -15,13 +17,14 @@ public class DatabaseContextController implements IDatabaseContextController {
         handler = new DatabaseHandler(context);
     }
     @Override
-    public int[][] read() {
-        return new int[0][];
+    public DatabaseObject read(PuzzleType puzzleType, String fileName) {
+
+       return handler.readPuzzle(puzzleType,fileName);
     }
 
     @Override
-    public void save(int[][] t1) {
-
+    public void save(PuzzleType puzzleType, int[][] board) {
+            handler.savePuzzle(puzzleType,board);
     }
 
     @Override

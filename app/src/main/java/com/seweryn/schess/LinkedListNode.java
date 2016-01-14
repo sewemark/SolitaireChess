@@ -41,7 +41,7 @@ public class LinkedListNode {
             Vector[] allPieces = this.getPieces();
         for(int j=0;j<allPieces.length;j++) {
             this.setPiece(allPieces[j]);
-            this.setPieceType(Lodash.getPiecType(board[allPieces[j].getX()][allPieces[j].getY()]));
+            this.setPieceType(Lodash.getPiecType(board[allPieces[j].getY()][allPieces[j].getX()]));
             this.possibleMoves = Arrays.asList(logic.PossibleMoves(board[0].length, board.length, getCurrentPiece(), getPiceType()));
             if (this.possibleMoves.size() <= 0) {
 
@@ -66,12 +66,12 @@ public class LinkedListNode {
 
             return false;
         }
-        if(board[destinationVector.getX()][destinationVector.getY()] != 0) {
+        if(board[destinationVector.getY()][destinationVector.getX()] != 0) {
             if(this.getPiceType()!=PieceType.HORSE) {
                 List<Vector> listOfpossibleCollistions = logic.checkIfCollision(getCurrentPiece(), destinationVector);
                 for (int j = 0; j < listOfpossibleCollistions.size(); j++) {
                     Vector v = listOfpossibleCollistions.get(j);
-                    if (board[v.getX()][v.getY()] != 0) {
+                    if (board[v.getY()][v.getX()] != 0) {
                         return false;
                     }
                 }
@@ -79,7 +79,7 @@ public class LinkedListNode {
             }
             else{
                 Vector v = Vector.convertToVector(4, 4, destinationPosition);
-                if (board[v.getX()][v.getY()] != 0) {
+                if (board[v.getY()][v.getX()] != 0) {
                     return true;
                 }
                 else return false;
@@ -91,9 +91,9 @@ public class LinkedListNode {
     public int[][] performMove(int destinationPosition){
         Vector destinationVector = Vector.convertToVector(board[0].length, board.length, destinationPosition);
         int[][]temp =Lodash.deepCopyIntMatrix(board);
-        int value = board[getCurrentPiece().getX()][getCurrentPiece().getY()];
-        temp[destinationVector.getX()][destinationVector.getY()] =value;
-        temp[getCurrentPiece().getX()][getCurrentPiece().getY()]=0;
+        int value = board[getCurrentPiece().getY()][getCurrentPiece().getX()];
+        temp[destinationVector.getY()][destinationVector.getX()] =value;
+        temp[getCurrentPiece().getY()][getCurrentPiece().getX()]=0;
         return  temp;
     }
     public Vector[] getPieces(){
@@ -104,7 +104,7 @@ public class LinkedListNode {
             for(int j=0; j<board[0].length;j++){
                 if(board[i][j] !=0){
                  //   setPieceType(map.get(board[i][j]));
-                    pieces.add(new Vector(i,j));
+                    pieces.add(new Vector(j,i));
                 }
             }
         }

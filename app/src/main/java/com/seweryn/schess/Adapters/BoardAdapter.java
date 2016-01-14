@@ -40,7 +40,7 @@ public class BoardAdapter extends  BaseAdapter {
         setBackgroundFields();
     }
     private void setBackgroundFields(){
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int fieldId = i + j;
                 if (i % 2 == 0) {

@@ -3,7 +3,8 @@ package com.seweryn.schess.DAL;
 import android.content.Context;
 
 import com.seweryn.schess.Enums.PuzzleType;
-import com.seweryn.schess.LinkedListHandler;
+import com.seweryn.schess.DFSTree;
+import com.seweryn.schess.ISearchTree;
 import com.seweryn.schess.Models.DatabaseObject;
 import com.seweryn.schess.SolutionFinder;
 
@@ -25,7 +26,7 @@ public class DatabaseHandler {
     private Context context;
     private String rootPath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private final String rootDirectory ="puzzles56";
+    private final String rootDirectory ="puzzles61";
 
     public  void CreateDatabaseIfNotExists() {
 
@@ -53,8 +54,8 @@ public class DatabaseHandler {
              if(!fileToCreate.exists()){
                  fileToCreate.createNewFile();
              }
-             LinkedListHandler handler= SolutionFinder.findSolution(puzzleToSave);
-             DatabaseObject objectToSave = new DatabaseObject(puzzleToSave,handler.getSolutions());
+             ISearchTree handler= SolutionFinder.findSolution(new DFSTree(puzzleToSave));
+             DatabaseObject objectToSave = new DatabaseObject(puzzleToSave,handler.getSolutoins());
 
              FileOutputStream fos = new FileOutputStream(fileToCreate);
              ObjectOutputStream oos = new ObjectOutputStream(fos);

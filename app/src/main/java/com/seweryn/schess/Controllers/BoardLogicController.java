@@ -21,7 +21,7 @@ public class BoardLogicController implements  IBoardLogicController {
         int numOfPieces=0;
         for(int i=0;i < board[0].length;i++){
             for(int j=0; j<board.length;j++){
-                if(board[i][j] !=0){
+                if(board[j][i] !=0){
                     numOfPieces++;
                 }
             }

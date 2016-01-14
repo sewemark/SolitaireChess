@@ -26,5 +26,23 @@
         android:layout_height="50dip"
         android:text="Hints"
         android:textSize="10sp" android:textStyle="bold" />
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:text="Reset"
+        android:textSize="10sp" android:textStyle="bold" />
+    <Button
+        android:id="@+id/nextBoardButton"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:text="Next"
+        android:textSize="10sp" android:textStyle="bold" />
+    <Button
+        android:id="@+id/previousButton"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:text="Prev"
+        android:textSize="10sp" android:textStyle="bold" />
 
 </LinearLayout>

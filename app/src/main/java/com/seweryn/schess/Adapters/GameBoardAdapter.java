@@ -63,7 +63,7 @@ public final class GameBoardAdapter extends BoardAdapter {
         }
         v.setOnDragListener(new GameBoardDragListener());
         Vector position = Vector.convertToVector(width, height, i);
-        int tabValue = board[position.getX()][position.getY()];
+        int tabValue = board[position.getY()][position.getX()];
         //int tempValue = board01[1][2];
         if(tabValue>0){
             resource = Lodash.getResource(tabValue);
