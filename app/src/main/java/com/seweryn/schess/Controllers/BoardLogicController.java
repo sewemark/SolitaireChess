@@ -11,10 +11,8 @@ public class BoardLogicController implements  IBoardLogicController {
     private int boardWidth;
     private int boardHeight;
 
-    public BoardLogicController(int[][] _board){
-        this.board = _board;
-        this.boardWidth = this.board[0].length;
-        this.boardHeight = this.board.length;
+    public BoardLogicController(){
+
     }
 
     public  boolean checkIfWinPosition(){
@@ -28,26 +26,26 @@ public class BoardLogicController implements  IBoardLogicController {
         }
         return  numOfPieces==1 ? true: false;
     }
-    public boolean removePiece(int position, int destinationPosition, int newPieceValue){
+    public void removePiece(int position, int destinationPosition, int newPieceValue){
         Vector destinationVector = Vector.convertToVector(boardWidth, boardHeight, destinationPosition);
         Vector basePostionVector = Vector.convertToVector(boardWidth, boardHeight, position);
-        int destinationPieceValue = board[destinationVector.getX()][destinationVector.getY()];
-        if(board[destinationVector.getX()][destinationVector.getY()]!=0){
-            board[destinationVector.getX()][destinationVector.getY()]=newPieceValue;
-            board[basePostionVector.getX()][basePostionVector.getY()] =0;
-            return true;
-        }
-        return  false;
+        board[destinationVector.getY()][destinationVector.getX()]=newPieceValue;
+        board[basePostionVector.getY()][basePostionVector.getX()] =0;
     }
     public  int getPieceAtPosition(int position){
         Vector positionVector = Vector.convertToVector(boardWidth, boardHeight, position);
-        return this.board[positionVector.getX()][positionVector.getY()];
+        return this.board[positionVector.getY()][positionVector.getX()];
     }
     public void setPieceAtPosition(int position, int pieceValue){
         Vector positionVector = Vector.convertToVector(boardWidth, boardHeight, position);
-         this.board[positionVector.getX()][positionVector.getY()]= pieceValue;
+         this.board[positionVector.getY()][positionVector.getX()]= pieceValue;
     }
     public int[][]getBoard(){
         return  this.board;
+    }
+    public  void setBoard(int[][] _board){
+        this.board = _board;
+        this.boardWidth = this.board[0].length;
+        this.boardHeight = this.board.length;
     }
 }

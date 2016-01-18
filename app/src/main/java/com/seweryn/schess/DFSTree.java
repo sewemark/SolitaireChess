@@ -91,7 +91,7 @@ public class DFSTree implements ISearchTree<Solution> {
     private  void extractSolution(){
         LinkedListNode pointer = this.currentNode;
         Solution solution =new Solution();
-        while (pointer.parent !=null){
+        while (pointer !=null){
             solution.boards.add(pointer.board);
             pointer = pointer.parent;
         }

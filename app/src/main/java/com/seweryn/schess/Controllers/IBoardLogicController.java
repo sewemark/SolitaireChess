@@ -5,8 +5,10 @@ package com.seweryn.schess.Controllers;
  */
 public  interface  IBoardLogicController {
     boolean checkIfWinPosition();
-    boolean removePiece(int t1, int t2, int t3);
+    void removePiece(int t1, int t2, int t3);
     int getPieceAtPosition(int t1);
     void setPieceAtPosition(int t1, int t2);
+
     int[][] getBoard();
+    void setBoard(int[][] t1);
 }

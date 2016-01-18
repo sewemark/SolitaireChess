@@ -168,9 +168,6 @@ public class CreateMapAdapter extends  BaseAdapter {
             return true;
         }
 
-        public boolean removePiece(int destinationPosition) {
-            return false;
-        }
 
     }
     public  int[][] getCreateBoard(){

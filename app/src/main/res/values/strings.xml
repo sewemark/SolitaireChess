@@ -2,6 +2,7 @@
     <string name="app_name">SChess</string>
     <string name="action_settings">Settings</string>
     <string name="cancel">Cancel</string>
-    <string name="ok">Ok</string>
+    <string name="ok">Ok</string>\
+    <string name="puzzle_hardness">Puzzle Hardness</string>
     <string name="negativmess">The puzzle you created has no solution. Reinvent the puzzle</string>
 </resources>

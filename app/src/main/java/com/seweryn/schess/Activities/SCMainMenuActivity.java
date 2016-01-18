@@ -42,9 +42,17 @@ public class SCMainMenuActivity extends Activity {
             @Override
             public void onClick(View v) {
                 final View layout = boardLayoutInflater.inflate(R.layout.choose_board_size_popup,(ViewGroup)v.findViewById(R.id.popup));
-                PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
+                final PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
                 pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+                Button cancelButton = (Button)layout.findViewById(R.id.cancelButton);
+                cancelButton.setOnClickListener(new OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                    pwindo.dismiss();
+                    }
+                });
                 Button gotToCreateMapButton = (Button)layout.findViewById(R.id.goToCreateMap);
+
                 gotToCreateMapButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {

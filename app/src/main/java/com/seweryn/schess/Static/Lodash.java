@@ -67,6 +67,7 @@ public class Lodash {
         return  true;
     }
 
+
     public static int getResource(PieceType pieceType){
         int resource = 0;
 

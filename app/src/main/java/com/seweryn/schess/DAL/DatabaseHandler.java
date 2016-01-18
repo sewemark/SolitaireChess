@@ -26,7 +26,7 @@ public class DatabaseHandler {
     private Context context;
     private String rootPath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private final String rootDirectory ="puzzles61";
+    private final String rootDirectory ="puzzles66";
 
     public  void CreateDatabaseIfNotExists() {
 
@@ -46,6 +46,20 @@ public class DatabaseHandler {
         }
 
       }
+    public void updatePuzzle(DatabaseObject objectToUpdate){
+        try{
+            File fileToUpdate = new File(context.getCacheDir() + "/" + rootDirectory + "/" + objectToUpdate.getPuzzleType().toString() + "/"  + objectToUpdate.getFileName());
+
+            FileOutputStream fos = new FileOutputStream(fileToUpdate);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(objectToUpdate);
+            oos.close();
+            fos.close();
+        }
+        catch(Exception ex){
+
+        }
+    }
      public  void savePuzzle(PuzzleType puzleType, int[][] puzzleToSave ) {
          try{
              File parrentDir = new File(context.getCacheDir() +  "/" +  rootDirectory + "/" + puzleType.toString());
@@ -55,7 +69,7 @@ public class DatabaseHandler {
                  fileToCreate.createNewFile();
              }
              ISearchTree handler= SolutionFinder.findSolution(new DFSTree(puzzleToSave));
-             DatabaseObject objectToSave = new DatabaseObject(puzzleToSave,handler.getSolutoins());
+             DatabaseObject objectToSave = new DatabaseObject(puzzleToSave,handler.getSolutoins(),puzleType,fileName);
 
              FileOutputStream fos = new FileOutputStream(fileToCreate);
              ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -68,6 +82,38 @@ public class DatabaseHandler {
 
          }
      }
+    public DatabaseObject readNextOrPreviousPuzzle(PuzzleType puzzleType, String fileName,int prevOrNext){
+        char puzzleTypeName = fileName.charAt(fileName.length()-1);
+        String nextfileName = String.valueOf(Integer.valueOf(fileName.substring(0, fileName.length() - 1)) +prevOrNext) + puzzleTypeName;
+        File fileToRead = new File(context.getCacheDir() + "/" + rootDirectory + "/" + puzzleType.toString() + "/"  + nextfileName);
+        if(fileToRead.exists()){
+            return readPuzzle(puzzleType, nextfileName);
+        }
+        else
+        {
+            if(prevOrNext==1) {
+             PuzzleType type = getPuzzleType(puzzleType, prevOrNext);
+                int ia=0;
+                return readPuzzle(getPuzzleType(puzzleType, prevOrNext), getPuzzleListByType(getPuzzleType(puzzleType, prevOrNext))[0]);
+            }
+                else
+                return  readPuzzle(getPuzzleType(puzzleType,prevOrNext),getPuzzleListByType(getPuzzleType(puzzleType,prevOrNext))[0]);
+
+        }
+
+    }
+    private PuzzleType getPuzzleType(PuzzleType puzzleType, int prevOrNext){
+        for(int i=0;i<PuzzleType.values().length;i++){
+            if(PuzzleType.values()[i]==puzzleType){
+                if(( (i+prevOrNext) <puzzleType.values().length) && ((i+prevOrNext) >=0)){
+                    PuzzleType type =  PuzzleType.values()[i+prevOrNext];
+                    return type;
+                }
+            }
+        }
+        return PuzzleType.values()[0];
+
+    }
     public  DatabaseObject readPuzzle(PuzzleType puzzleType, String fileName ) {
         try{
             File fileToRead = new File(context.getCacheDir() + "/" + rootDirectory + "/" + puzzleType.toString() + "/"  + fileName);
@@ -80,6 +126,20 @@ public class DatabaseHandler {
             System.out.println(ex);
         }
         return  null;
+    }
+    public DatabaseObject[] getPuzzleObjecyByType(PuzzleType puzzleType){
+
+
+        String[] puzzleByTypeNames = this.getPuzzleListByType(puzzleType);
+        DatabaseObject[] databaseObjects= new DatabaseObject[puzzleByTypeNames.length];
+        for(int i=0;i<puzzleByTypeNames.length;i++){
+            databaseObjects[i] = this.readPuzzle(puzzleType,puzzleByTypeNames[i]);
+            //if(databaseObjects[i]!=null)
+              //  databaseObjects[i].resetBoard();
+        }
+        return  databaseObjects;
+
+
     }
     public  String[] getPuzzleListByType(PuzzleType puzzleType){
         File parrentDir = new File(context.getCacheDir().toString() + '/' + rootDirectory + '/' + puzzleType.toString());

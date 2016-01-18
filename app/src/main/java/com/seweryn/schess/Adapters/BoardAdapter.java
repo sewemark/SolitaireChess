@@ -29,11 +29,11 @@ public class BoardAdapter extends  BaseAdapter {
     protected final Context context;
     protected int width;
     protected int height;
-    protected IBoardLogicController controller;
 
-    public BoardAdapter( IBoardLogicController _controller,Context _context, int _width, int _height) {
+
+    public BoardAdapter(Context _context, int _width, int _height) {
         this.context = _context;
-        this.controller = _controller;
+
         this.width = _width;
         this.height = _height;
         boardLayoutInflater = LayoutInflater.from(context);

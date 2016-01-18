@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
              public void run() {
                 Intent mainMenu = new Intent(MainActivity.this, SCMainMenuActivity.class);
                 MainActivity.this.startActivity(mainMenu);
-               MainActivity.this.finish();
+                MainActivity.this.finish();
                 overridePendingTransition(R.animator.fadein, R.animator.fadeout);
 
                   }

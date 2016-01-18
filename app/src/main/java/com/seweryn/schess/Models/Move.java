@@ -25,13 +25,13 @@ public class Move {
         Move m = new Move(-1,-1,-1,-1);
         for(int i=0;i< board[0].length; i++){
             for(int j=0;j< board.length;j++){
-                   if(nextboard[i][j] != board[i][j])
-                    if(nextboard[i][j]==0){
+                   if(nextboard[j][i] != board[j][i])
+                    if(nextboard[j][i]==0){
                         m.sourPositon= Vector.convertToScalar(board[0].length, board.length, new Vector(i, j));
-                        m.pieceType = board[i][j];
+                        m.pieceType = board[j][i];
                     }else {
                         m.destinatioPosition = Vector.convertToScalar(board[0].length,board.length,new Vector(i,j));
-                        m.beatedPieceType = board[i][j];
+                        m.beatedPieceType = board[j][i];
                     }
 
             }

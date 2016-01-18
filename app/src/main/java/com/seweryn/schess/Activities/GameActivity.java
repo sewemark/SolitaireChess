@@ -10,10 +10,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
+import com.seweryn.schess.Controllers.BoardLogicController;
 import com.seweryn.schess.Controllers.DatabaseContextController;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
-import com.seweryn.schess.DAL.DatabaseHandler;
 import com.seweryn.schess.Models.DatabaseObject;
 import com.seweryn.schess.Enums.PuzzleType;
 import com.seweryn.schess.Adapters.GameBoardAdapter;
@@ -22,6 +23,8 @@ import com.seweryn.schess.R;
 public class GameActivity  extends Activity {
     GameBoardAdapter gameBoardAdapter=null;
     IDatabaseContextController databaseContextController;
+    String boardName;
+   //public PuzzleType boardType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,44 +35,51 @@ public class GameActivity  extends Activity {
         Button resetButton =(Button) findViewById(R.id.resetButton);
         Button nextButton = (Button) findViewById(R.id.nextBoardButton);
         Button previousButton = (Button) findViewById(R.id.previousButton);
+        final TextView textView = (TextView) findViewById(R.id.puzzleHardnessLevel);
+
+
       //
       //  String boardName= "dsa";
         if(getIntent().getExtras()!=null) {
-            String boardName = (String) getIntent().getExtras().get("boardName");
-            PuzzleType boardType = (PuzzleType) getIntent().getExtras().get("boardType");
+            boardName = (String) getIntent().getExtras().get("boardName");
+            PuzzleType boardType =  PuzzleType.valueOf(getIntent().getExtras().getString("boardType"));
             databaseContextController = new DatabaseContextController(this);
             DatabaseObject databaseObject = databaseContextController.read(boardType, boardName);
+            gameBoardAdapter = new GameBoardAdapter(this,gridView,new BoardLogicController(),new DatabaseContextController(this),boardName, boardType);
 
-           // gridView.setNumColumns(databaseObject.getBoard()[0].length);
-            gameBoardAdapter = new GameBoardAdapter(this,databaseObject,boardName, boardType);
             gridView.setNumColumns(databaseObject.getBoard()[0].length);
             gridView.setAdapter(gameBoardAdapter);
+            textView.setText(gameBoardAdapter.puzzleType.toString());
+
         }
         else{
            // gridView.setAdapter(new GameBoardAdapter(this, "1E",PuzzleType.EASY));
         }
+
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameBoardAdapter.undoMove(gridView);
+                gameBoardAdapter.undoMove();
             }
         });
         hintsButton.setOnClickListener(new View.OnClickListener(){
            @Override
             public void onClick(View v){
-               gameBoardAdapter.showNextMove(gridView);
+               gameBoardAdapter.performNextMove();
            }
         });
         resetButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                gameBoardAdapter.resetBoard();
             }
         });
         nextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-              //  gameBoardAdapter.setNextBoard();
+                gameBoardAdapter.setNextBoard();
+                textView.setText(gameBoardAdapter.puzzleType.toString());
+                textView.invalidate();
             }
 
         });
@@ -77,6 +87,9 @@ public class GameActivity  extends Activity {
             @Override
             public void onClick(View v){
 
+                gameBoardAdapter.setPreviousBoard();
+                textView.setText(gameBoardAdapter.puzzleType.toString());
+                textView.invalidate();
             }
         });
 
