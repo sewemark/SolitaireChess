@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#fff"
     android:orientation="vertical">
-
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        </LinearLayout>
     <GridView
         android:id="@+id/gridview"
         android:tag="gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
         android:verticalSpacing="0dp"
         android:horizontalSpacing="0dp"
         android:stretchMode="columnWidth"
@@ -18,42 +26,48 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
     <Button
     android:id="@+id/undoButton"
-    android:layout_width="50dip"
-    android:layout_height="50dip"
-    android:text="Undo"
-    android:textSize="10sp" android:textStyle="bold" />
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:background="@drawable/icon_undo"
+    />
     <Button
         android:id="@+id/hintButton"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:text="Hints"
-        android:textSize="10sp" android:textStyle="bold" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/hint_icon"
+        />
     <Button
         android:id="@+id/resetButton"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:text="Reset"
-        android:textSize="10sp" android:textStyle="bold" />
-    <Button
-        android:id="@+id/nextBoardButton"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:text="Next"
-        android:textSize="10sp" android:textStyle="bold" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/refresh_icon"
+      />
+
     <Button
         android:id="@+id/previousButton"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:text="Prev"
-        android:textSize="10sp" android:textStyle="bold" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/back_icon" />
+        <Button
+            android:id="@+id/nextBoardButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/next_icon" />
+        <Button
+            android:id="@+id/menuButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/menu_icon" />
 </LinearLayout>
     <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:orientation="horizontal">
         <TextView
 

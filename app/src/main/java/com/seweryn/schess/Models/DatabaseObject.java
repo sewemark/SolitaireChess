@@ -29,6 +29,7 @@ public class DatabaseObject  implements java.io.Serializable{
     public void setHintsUsed(){
         this.wasHintUses=true;
     }
+    public boolean isPuzzleSolved() {return this.isSolved;}
     public int[][]getBoard(){
         return this.object;
     }

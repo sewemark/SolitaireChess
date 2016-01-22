@@ -87,6 +87,9 @@ public final class GameBoardAdapter extends BoardAdapter {
             v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
             v.findViewById(R.id.grid_item_piece).setTag(-2);
         }
+        ImageView imageView = (ImageView)v.findViewById(R.id.hint_image);
+        imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
+        imageView.getLayoutParams().height= dpToPx((int)Math.ceil(50.0 * (4.0/this.height)));
         picture = (ImageView) v.getTag(R.id.picture);
         Item item = getItem(i);
         if (item.name.equals("WhiteField")) {

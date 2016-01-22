@@ -8,13 +8,13 @@
 
     <gradient
         android:angle="225"
-        android:endColor="#FFFFFF"
-        android:startColor="#EEEEEE" />
+        android:endColor="#314570"
+        android:startColor="#314570" />
 
     <corners
-        android:bottomLeftRadius="7dp"
-        android:bottomRightRadius="7dp"
-        android:topLeftRadius="7dp"
-        android:topRightRadius="7dp" />
+        android:bottomLeftRadius="6dp"
+        android:bottomRightRadius="6dp"
+        android:topLeftRadius="6dp"
+        android:topRightRadius="6dp" />
 
 </shape>

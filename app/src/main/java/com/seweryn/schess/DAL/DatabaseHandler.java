@@ -26,7 +26,7 @@ public class DatabaseHandler {
     private Context context;
     private String rootPath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private final String rootDirectory ="puzzles66";
+    private final String rootDirectory ="puzzles67";
 
     public  void CreateDatabaseIfNotExists() {
 

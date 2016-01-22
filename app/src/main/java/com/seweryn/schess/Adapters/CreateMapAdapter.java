@@ -1,6 +1,7 @@
 package com.seweryn.schess.Adapters;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,7 +24,7 @@ import java.util.Map;
 /**
  * Created by sew on 2015-11-20.
  */
-public class CreateMapAdapter extends  BaseAdapter {
+public class CreateMapAdapter extends  BoardAdapter {
 
 
     private  int[][] boardToCreate;
@@ -34,6 +35,7 @@ public class CreateMapAdapter extends  BaseAdapter {
     private int width;
     private int height;
     public CreateMapAdapter(Context context, int _width, int _height) {
+        super(context, _height, _width);
 
         this.context = context;
         this.width = _width;
@@ -66,20 +68,7 @@ public class CreateMapAdapter extends  BaseAdapter {
         Vector vector = Vector.convertToVector(width, height, position);
         boardToCreate[vector.getY()][vector.getX()] =pieceId;
     }
-    @Override
-    public int getCount() {
-        return boardFileds.size();
-    }
 
-    @Override
-    public Item getItem(int i) {
-        return boardFileds.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return boardFileds.get(i).drawableId;
-    }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
@@ -104,6 +93,12 @@ public class CreateMapAdapter extends  BaseAdapter {
             resource = Lodash.getResource(tabValue);
             v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
             v.findViewById(R.id.grid_item_piece).setTag(tabValue);
+            ImageView imageView = (ImageView)v.findViewById(R.id.grid_item_piece);
+          imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
+            imageView.getLayoutParams().height= dpToPx((int)Math.ceil(50.0 * (4.0/this.height)));
+            //imageView.getLayoutParams().width= 60;
+           // imageView.getLayoutParams().height= 60;
+
         }
 
         if (item.name.equals("WhiteField")) {
@@ -113,18 +108,6 @@ public class CreateMapAdapter extends  BaseAdapter {
         }
         //name.setText(item.name);
         return v;
-    }
-
-    private static class Item {
-        public final String name;
-        public final int fieldId;
-        public final int drawableId;
-
-        Item(String name, int drawableId, int fieldId) {
-            this.name = name;
-            this.fieldId = fieldId;
-            this.drawableId = drawableId;
-        }
     }
 
     private final class MyTouchListener implements View.OnTouchListener {

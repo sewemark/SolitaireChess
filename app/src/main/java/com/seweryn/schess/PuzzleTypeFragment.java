@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.seweryn.schess.Activities.GameActivity;
+import com.seweryn.schess.Adapters.ChoosMapListViewAdapter;
 import com.seweryn.schess.Enums.PuzzleType;
+import com.seweryn.schess.Models.DataContainer;
 import com.seweryn.schess.Models.DatabaseObject;
 
 import java.util.ArrayList;
@@ -32,30 +35,28 @@ public class PuzzleTypeFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.puzzletype_fragment, container, false);
 
-        GridView easyGridView = (GridView)rootView.findViewById(R.id.chooseMapGridView);
+        ListView easyGridView = (ListView)rootView.findViewById(R.id.chooseMapList);
       //  String[] easyPuzzles = controller.getPuzzleListByType(PuzzleType.EASY);
         //this.helperFunction(easyPuzzles,"E");
         //String[] mediumPuzzles = controller.getPuzzleListByType(PuzzleType.MEDIUM);
         //this.helperFunction(mediumPuzzles, "M");
         DatabaseObject[] databaseObjects = (DatabaseObject[])getArguments().getSerializable("list");
         if(databaseObjects!=null) {
-            ArrayList<String> lista = new ArrayList<String>();
-            for(int i =1;i<=databaseObjects.length;i++){
-                lista.add(String.valueOf(i));
+            ArrayList<DataContainer> lista = new ArrayList<DataContainer>();
+            //lista.add(new DataContainer("",false));
+            for(int i =0;i<databaseObjects.length;i++){
+                lista.add(new DataContainer(databaseObjects[i].getFileName(), databaseObjects[i].isPuzzleSolved()));
             }
 
-            //lista.addAll(0, Arrays.asList(easyPuzzles));
-            //lista.addAll(Arrays.asList(mediumPuzzles));
-            // String[] easyPuzzles = new String[]{"bla","bla","bla"};
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, lista);
+            ChoosMapListViewAdapter adapter = new ChoosMapListViewAdapter(this.getActivity(),lista);
             easyGridView.setAdapter(adapter);
             easyGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long id) {
                 FragmentActivity fra = getActivity();
                 Intent chooseBoard = new Intent(getActivity(), GameActivity.class);
-
-                chooseBoard.putExtra("boardName", ((TextView) v).getText() + String.valueOf(getArguments().getChar("puzzleType")));
+                TextView boardNameTextView = (TextView)v.findViewById(R.id.boardName);
+                chooseBoard.putExtra("boardName", (boardNameTextView.getText()));
                String val = getArguments().getString("type");
                 chooseBoard.putExtra("boardType", getArguments().getString("type"));;
 
@@ -67,4 +68,5 @@ public class PuzzleTypeFragment extends Fragment {
         }
         return rootView;
     }
+
 }

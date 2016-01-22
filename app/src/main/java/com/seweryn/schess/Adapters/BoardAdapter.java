@@ -2,6 +2,7 @@ package com.seweryn.schess.Adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -60,6 +61,11 @@ public class BoardAdapter extends  BaseAdapter {
                 }
             }
         }
+    }
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = this.context.getResources().getDisplayMetrics();
+        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
     }
     @Override
     public int getCount() {

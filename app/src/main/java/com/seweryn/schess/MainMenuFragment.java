@@ -1,11 +1,6 @@
-package com.seweryn.schess.Activities;
+package com.seweryn.schess;
 
-/**
- * Created by sew on 2015-10-25.
- */
-
-import android.app.Activity;
-import android.app.FragmentManager;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,42 +10,44 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+
+import com.seweryn.schess.Activities.ChooseMapActivity;
+import com.seweryn.schess.Activities.CreateMapActivity;
+import com.seweryn.schess.Activities.GameActivity;
+import com.seweryn.schess.Activities.SCMainMenuActivity;
 import com.seweryn.schess.R;
 
-
-public class SCMainMenuActivity extends Activity {
-    private  LayoutInflater boardLayoutInflater;
+/**
+ * Created by sew on 2016-01-20.
+ */
+public class MainMenuFragment extends Fragment {
     @Override
-    public void onCreate(Bundle savedInstanceeState) {
+    public View onCreateView(final LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceeState);
-        setContentView(R.layout.menu_main);
-
-
-        boardLayoutInflater = LayoutInflater.from(this);
-        Button selectChallengeButton  = (Button)findViewById(R.id.Button01);
-        Button quickPlayButton = (Button) findViewById(R.id.Button02);
-        Button createMapButton = (Button) findViewById(R.id.Button04);
-        boardLayoutInflater = LayoutInflater.from(this);
+        final View rootView = inflater.inflate(R.layout.main_menu, container, false);
+        Button selectChallengeButton  = (Button)rootView.findViewById(R.id.Button01);
+        Button quickPlayButton = (Button) rootView.findViewById(R.id.Button02);
+        Button createMapButton = (Button) rootView.findViewById(R.id.Button04);
         quickPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mainMenu = new Intent(SCMainMenuActivity.this, GameActivity.class);
-                SCMainMenuActivity.this.startActivity(mainMenu);
+                Intent mainMenu = new Intent(getActivity(), GameActivity.class);
+                startActivity(mainMenu);
 
             }
         });
         createMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final View layout = boardLayoutInflater.inflate(R.layout.choose_board_size_popup,(ViewGroup)v.findViewById(R.id.popup));
+                final View layout = inflater.inflate(R.layout.choose_board_size_popup,(ViewGroup)v.findViewById(R.id.popup));
                 final PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
                 pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
                 Button cancelButton = (Button)layout.findViewById(R.id.cancelButton);
                 cancelButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                    pwindo.dismiss();
+                        pwindo.dismiss();
                     }
                 });
                 Button gotToCreateMapButton = (Button)layout.findViewById(R.id.goToCreateMap);
@@ -59,12 +56,12 @@ public class SCMainMenuActivity extends Activity {
                     @Override
                     public void onClick(View v) {
 
-                        Intent mainMenu = new Intent(SCMainMenuActivity.this, CreateMapActivity.class);
+                        Intent mainMenu = new Intent(getActivity(), CreateMapActivity.class);
                         EditText boardWidthTextView = (EditText) layout.findViewById(R.id.widthTextView);
                         EditText boardHeightTextView = (EditText) layout.findViewById(R.id.heightTextView);
                         mainMenu.putExtra("BoardWidth", Integer.valueOf(boardWidthTextView.getText().toString()));
                         mainMenu.putExtra("BoardHeight", Integer.valueOf(boardHeightTextView.getText().toString()));
-                        SCMainMenuActivity.this.startActivity(mainMenu);
+                        startActivity(mainMenu);
                     }
                 });
 
@@ -75,14 +72,13 @@ public class SCMainMenuActivity extends Activity {
         selectChallengeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainMenu = new Intent(SCMainMenuActivity.this, ChooseMapActivity.class);
-                SCMainMenuActivity.this.startActivity(mainMenu);
+                Intent mainMenu = new Intent(getActivity(), ChooseMapActivity.class);
+                startActivity(mainMenu);
 
 
             }
         });
-
-
+        return rootView;
     }
 
 }
