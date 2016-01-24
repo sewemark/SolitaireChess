@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.seweryn.schess.Controllers.IBoardLogicController;
 import com.seweryn.schess.Enums.PieceType;
 import com.seweryn.schess.Models.Vector;
 import com.seweryn.schess.R;
@@ -27,29 +28,23 @@ import java.util.Map;
 public class CreateMapAdapter extends  BoardAdapter {
 
 
-    private  int[][] boardToCreate;
+    public IBoardLogicController boardLogicController;
     private final Context context;
     private int width;
     private int height;
-    public CreateMapAdapter(Context context, int _width, int _height) {
+    public CreateMapAdapter(Context context,IBoardLogicController _boardLogicController, int _width, int _height) {
         super(context, _width, _height);
-
+        boardLogicController = _boardLogicController;
         this.context = context;
         this.width = _width;
         this.height = _height;
+        boardLogicController.setBoard(new int[height][width]);
+        boardLogicController.initializeBoard();
     }
-
-    public  void setPieceOnPosition(int position, int pieceId){
-        Vector vector = Vector.convertToVector(width, height, position);
-        boardToCreate[vector.getY()][vector.getX()] =pieceId;
-    }
-
-
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = view;
         ImageView picture;
-        TextView name;
         int resource;
         if (v == null) {
             v = boardLayoutInflater.inflate(R.layout.grid_item_blue, viewGroup, false);
@@ -58,8 +53,7 @@ public class CreateMapAdapter extends  BoardAdapter {
         picture = (ImageView) v.getTag(R.id.picture);
         Item item = getItem(i);
         Vector position = Vector.convertToVector(width, height, i);
-        int tabValue = boardToCreate[position.getY()][position.getX()];
-        //int tempValue = board01[1][2];
+        int tabValue = boardLogicController.getBoard()[position.getY()][position.getX()];
         if(tabValue>0) {
             resource = Lodash.getResource(tabValue);
             v.findViewById(R.id.grid_item_piece).setBackgroundResource(resource);
@@ -68,11 +62,8 @@ public class CreateMapAdapter extends  BoardAdapter {
             resource = Lodash.getResource(tabValue);
             v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
             v.findViewById(R.id.grid_item_piece).setTag(tabValue);
-
-            //imageView.getLayoutParams().width= 60;
-           // imageView.getLayoutParams().height= 60;
-
         }
+
         ImageView imageView = (ImageView)v.findViewById(R.id.grid_item_piece);
         imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.height)));
         imageView.getLayoutParams().height= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
@@ -82,7 +73,6 @@ public class CreateMapAdapter extends  BoardAdapter {
         } else {
             picture.setImageResource(R.drawable.shape);
         }
-        //name.setText(item.name);
         return v;
     }
 
@@ -97,7 +87,6 @@ public class CreateMapAdapter extends  BoardAdapter {
             }
         }
     }
-
 
     class MyDragListener implements View.OnDragListener {
         Drawable enterShape = context.getResources().getDrawable(R.drawable.shape_droptarget);
@@ -126,15 +115,7 @@ public class CreateMapAdapter extends  BoardAdapter {
             }
             return true;
         }
+    }
 
-
-    }
-    public  int[][] getCreateBoard(){
-        return boardToCreate;
-    }
-    public void setBoardToCreate(int[][]val){
-        if(val!=null)
-            boardToCreate= val;
-    }
 }
 

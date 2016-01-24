@@ -40,6 +40,16 @@ public class BoardLogicController implements  IBoardLogicController {
         Vector positionVector = Vector.convertToVector(boardWidth, boardHeight, position);
          this.board[positionVector.getY()][positionVector.getX()]= pieceValue;
     }
+
+    @Override
+    public void initializeBoard() {
+        for(int i=0;i < board[0].length;i++){
+            for(int j=0; j<board.length;j++){
+                board[j][i] =0;
+            }
+        }
+    }
+
     public int[][]getBoard(){
         return  this.board;
     }

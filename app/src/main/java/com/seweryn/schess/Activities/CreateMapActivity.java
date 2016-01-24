@@ -5,6 +5,7 @@ package com.seweryn.schess.Activities;
  */
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.PopupWindow;
 
 import com.seweryn.schess.Adapters.CreateMapAdapter;
 import com.seweryn.schess.Adapters.CreateMapPopupListViewAdapter;
+import com.seweryn.schess.Controllers.BoardLogicController;
 import com.seweryn.schess.Controllers.DatabaseContextController;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
 import com.seweryn.schess.Dialogs.PuzzleHardnessClasificationDialog;
@@ -26,14 +28,17 @@ import com.seweryn.schess.Enums.PieceType;
 import com.seweryn.schess.Enums.PuzzleType;
 import com.seweryn.schess.DFSTree;
 import com.seweryn.schess.ISearchTree;
+import com.seweryn.schess.PuzzleTypeCalsificator;
 import com.seweryn.schess.R;
 import com.seweryn.schess.SolutionFinder;
+import com.seweryn.schess.Static.IPuzzleTypeCalsificator;
 
 
 public class CreateMapActivity extends Activity {
     private  LayoutInflater boardLayoutInflater;
     private PopupWindow pwindo;
     private IDatabaseContextController databaseContextController;
+    private IPuzzleTypeCalsificator puzzleTypeCalsificator;
     Context context;
     public  CreateMapActivity(){
         context =this;
@@ -45,7 +50,7 @@ public class CreateMapActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_map_main);
         databaseContextController = new DatabaseContextController(this);
-
+        puzzleTypeCalsificator = new PuzzleTypeCalsificator();
         final GridView gridView = (GridView) findViewById(R.id.createMapGridView);
         Bundle extras = getIntent().getExtras();
         int boardWidth=4;
@@ -56,15 +61,9 @@ public class CreateMapActivity extends Activity {
 
         }
         gridView.setNumColumns(boardWidth);
-        final CreateMapAdapter gridViewAdapter = new CreateMapAdapter(this,boardWidth,boardHeight);
+        final CreateMapAdapter gridViewAdapter = new CreateMapAdapter(this,new BoardLogicController(),boardWidth,boardHeight);
         gridView.setAdapter(gridViewAdapter);
-        try {
-            gridViewAdapter.setBoardToCreate(new int[boardHeight][boardWidth]);
-            gridViewAdapter.notifyDataSetChanged();
-        }
-        catch (Exception e){
-
-        }
+        gridViewAdapter.notifyDataSetChanged();
         boardLayoutInflater = LayoutInflater.from(this);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -79,13 +78,12 @@ public class CreateMapActivity extends Activity {
                         pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
                         popupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             public void onItemClick(AdapterView<?> av, View view, int i, long l) {
-                                gridViewAdapter.setPieceOnPosition(position, i);
+                                gridViewAdapter.boardLogicController.setPieceAtPosition(position, i);
                                 gridViewAdapter.notifyDataSetChanged();
-                                //  Toast.makeText(CreateMapActivity.this, "myPos " + i, Toast.LENGTH_LONG).show();
+
                             }
                         });
-                         Button btnClosePopup = (Button) layout.findViewById(R.id.popupCloseButton);
-                        // btnClosePopup.setOnClickListener(cancel_button_click_listener);
+                        Button btnClosePopup = (Button) layout.findViewById(R.id.popupCloseButton);
                         btnClosePopup.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -99,56 +97,41 @@ public class CreateMapActivity extends Activity {
             }
         });
         Button saveButton = (Button) findViewById(R.id.saveButton);
-        Button savePuzzleButton = (Button) findViewById(R.id.savePuzzleButton);
-        // btnClosePopup.setOnClickListener(cancel_button_click_listener);
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 try {
 
-                    ISearchTree handler= SolutionFinder.findSolution(new DFSTree(gridViewAdapter.getCreateBoard()));
-
+                    ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
                     int solutionNumber = handler.getNumberOfResults();
                     System.out.println("solution number " + solutionNumber);
                     System.out.println(handler.getTreeLeaves());
 
-                    if(solutionNumber<=0){
+                    if (solutionNumber <= 0) {
                         System.out.println("Nie ma rozwiazania");
                         PuzzleHardnessDialog dialog = new
                                 PuzzleHardnessDialog();
-                        dialog.show(getFragmentManager(),"dialog");
-                    }
-                    else{
-                        double wage = solutionNumber *0.3 + handler.getTreeWidth()*0.4 + handler.getTreeHeight()*0.3;
-                        PuzzleType type;
-                        if(wage<=10){
-                            type= PuzzleType.EASY;
-                        }else if(wage>10 && wage<=14){
-                            type=PuzzleType.MEDIUM;
-                        }else if(wage<16 && wage>14){
-                            type= PuzzleType.HARD;
-                        }else{
-                            type = PuzzleType.VERYHARD;
-                        }
+                        dialog.show(getFragmentManager(), "dialog");
+                    } else {
+                        PuzzleType type = puzzleTypeCalsificator.clasify(solutionNumber,handler.getTreeWidth(),handler.getTreeLeaves());
                         PuzzleHardnessClasificationDialog dialog = new
                                 PuzzleHardnessClasificationDialog();
                         dialog.setPuzleType(type.toString());
                         dialog.show(getFragmentManager(), "dialog");
-
-                        databaseContextController.save(type, gridViewAdapter.getCreateBoard());
+                        databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
 
                     }
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                 }
             }
         });
 
-        savePuzzleButton.setOnClickListener(new View.OnClickListener(){
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseContextController.save(PuzzleType.EASY, gridViewAdapter.getCreateBoard());
+
             }
         });
 
