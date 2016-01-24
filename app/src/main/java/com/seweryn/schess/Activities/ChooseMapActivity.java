@@ -1,35 +1,20 @@
 package com.seweryn.schess.Activities;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.AdapterView;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-
 import com.seweryn.schess.Adapters.PuzzleTabsAdapter;
 import com.seweryn.schess.Controllers.DatabaseContextController;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
 import com.seweryn.schess.Enums.PuzzleType;
 import com.seweryn.schess.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ChooseMapActivity extends AppCompatActivity  {
 
@@ -49,8 +34,8 @@ public class ChooseMapActivity extends AppCompatActivity  {
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(puzzleTabsAdapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().hide();
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         for (PuzzleType type: PuzzleType.values()) {
             tabLayout.addTab(tabLayout.newTab().setText(String.valueOf(type)));

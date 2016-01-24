@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
 
-    android:layout_gravity="center_horizontal"
-    android:gravity="center_vertical|center"
-    android:background="@drawable/back3"
-    android:minWidth="25px"
-    android:minHeight="25px"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+android:layout_gravity="center_horizontal"
+android:gravity="center_vertical|center"
+android:background="@drawable/back3"
+android:minWidth="25px"
+android:minHeight="25px"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/imgLogo"
@@ -23,33 +24,40 @@
         android:layout_width="188dip"
         android:layout_height="100dip"
         android:layout_marginTop="5dip"
-        android:text="Challange"
+        android:text="@string/quickQame"
+        android:drawableLeft="@drawable/quickgame_icon"
         android:background="@drawable/buttonshape"
-        android:textSize="30sp" android:textStyle="bold" />
+        android:paddingLeft="5dp"
+        android:textSize="20sp" android:textStyle="bold" />
     <Button
         android:id="@+id/Button01"
         android:layout_width="188dip"
         android:layout_height="100dip"
         android:layout_marginTop="5dip"
         android:background="@drawable/buttonshape"
-        android:text="Quick Game"
-
-        android:textSize="30sp" android:textStyle="bold" />
+        android:text="@string/selectPuzzle"
+        android:paddingLeft="5dp"
+        android:drawableLeft="@drawable/icon_select"
+        android:textSize="20sp" android:textStyle="bold" />
     <Button
         android:id="@+id/Button03"
         android:layout_width="188dip"
         android:layout_marginTop="5dip"
         android:layout_height="100dip"
         android:background="@drawable/buttonshape"
-        android:text="Settings"
-        android:textSize="30sp" android:textStyle="bold" />
+        android:drawableLeft="@drawable/setting"
+        android:text="@string/settings"
+        android:paddingLeft="5dp"
+        android:textSize="20sp" android:textStyle="bold" />
     <Button
         android:id="@+id/Button04"
         android:layout_width="188dip"
         android:layout_marginTop="5dip"
         android:layout_height="100dip"
-        android:text="Create Map"
+        android:drawableLeft="@drawable/icon_edit"
+
+        android:text="@string/createPuzzle"
 
         android:background="@drawable/buttonshape"
-        android:textSize="30sp" android:textStyle="bold" />
+        android:textSize="20sp" android:textStyle="bold" />
 </LinearLayout>

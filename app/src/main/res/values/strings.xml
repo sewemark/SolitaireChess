@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">SChess</string>
     <string name="action_settings">Settings</string>
+    <string name="settings">Settings</string>
+    <string name="selectPuzzle">Select Puzzle</string>
+    <string name="createPuzzle">Create Puzzle</string>
+    <string name="quickQame">Quick Qame</string>
+    <string name="puzzle">Puzzle</string>
+    <string name="wasHintsUsed">Hints</string>
+    <string name="wasSolved">Solved</string>
+    <string name="boardWidth">Board Width</string>
+    <string name="boardHeight">Board Height</string>
+    <string name="chooseBoardSizeDialog">Board size dialog</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>\
     <string name="puzzle_hardness">Puzzle Hardness</string>

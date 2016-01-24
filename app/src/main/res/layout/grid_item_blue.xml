@@ -13,9 +13,8 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/hint_image"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_alignParentTop="false"
@@ -23,8 +22,8 @@
 
         />
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/grid_item_piece"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_alignParentTop="false"

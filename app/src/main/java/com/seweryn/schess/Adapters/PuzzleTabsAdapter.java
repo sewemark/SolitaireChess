@@ -13,10 +13,8 @@ import com.seweryn.schess.PuzzleTypeFragment;
 
 import java.util.List;
 
-/**
- * Created by sew on 2016-01-16.
- */
-        public class PuzzleTabsAdapter extends FragmentStatePagerAdapter   {
+
+public class PuzzleTabsAdapter extends FragmentStatePagerAdapter   {
 
     private int numberOfTabs;
     private IDatabaseContextController databaseContextController;

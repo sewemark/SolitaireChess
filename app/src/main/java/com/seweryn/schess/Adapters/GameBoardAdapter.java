@@ -87,6 +87,11 @@ public final class GameBoardAdapter extends BoardAdapter {
             v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
             v.findViewById(R.id.grid_item_piece).setTag(-2);
         }
+        ImageView imageView2 = (ImageView)v.findViewById(R.id.grid_item_piece);
+        imageView2.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
+        imageView2.getLayoutParams().height= dpToPx((int)Math.ceil(50.0 * (4.0/this.height)));
+      ;
+
         ImageView imageView = (ImageView)v.findViewById(R.id.hint_image);
         imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
         imageView.getLayoutParams().height= dpToPx((int)Math.ceil(50.0 * (4.0/this.height)));
@@ -214,6 +219,9 @@ public final class GameBoardAdapter extends BoardAdapter {
         pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
         Intent mainMenu = new Intent(context, ChooseMapActivity.class);
         context.startActivity(mainMenu);
+    }
+    public PuzzleType getCurrentPuzzleType(){
+        return  this.puzzleType;
     }
 
 

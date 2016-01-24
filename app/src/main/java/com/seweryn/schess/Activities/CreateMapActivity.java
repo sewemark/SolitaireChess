@@ -20,7 +20,6 @@ import com.seweryn.schess.Adapters.CreateMapAdapter;
 import com.seweryn.schess.Adapters.CreateMapPopupListViewAdapter;
 import com.seweryn.schess.Controllers.DatabaseContextController;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
-import com.seweryn.schess.DAL.DatabaseHandler;
 import com.seweryn.schess.Dialogs.PuzzleHardnessClasificationDialog;
 import com.seweryn.schess.Dialogs.PuzzleHardnessDialog;
 import com.seweryn.schess.Enums.PieceType;
@@ -30,8 +29,6 @@ import com.seweryn.schess.ISearchTree;
 import com.seweryn.schess.R;
 import com.seweryn.schess.SolutionFinder;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class CreateMapActivity extends Activity {
     private  LayoutInflater boardLayoutInflater;

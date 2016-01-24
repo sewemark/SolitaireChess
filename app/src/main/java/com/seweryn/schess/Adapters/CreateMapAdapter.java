@@ -28,40 +28,15 @@ public class CreateMapAdapter extends  BoardAdapter {
 
 
     private  int[][] boardToCreate;
-    Map<Integer, PieceType> map = new HashMap<Integer, PieceType>();
-    private final List<Item> boardFileds = new ArrayList<Item>();
-    private final LayoutInflater boardLayoutInflater;
     private final Context context;
     private int width;
     private int height;
     public CreateMapAdapter(Context context, int _width, int _height) {
-        super(context, _height, _width);
+        super(context, _width, _height);
 
         this.context = context;
         this.width = _width;
         this.height = _height;
-        boardLayoutInflater = LayoutInflater.from(context);
-
-            for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                int fieldId = i + j;
-                if (i % 2 == 0) {
-                    {
-                        if (j % 2 == 0) {
-                            boardFileds.add(new Item("WhiteField", R.drawable.shape_white, fieldId));
-                        } else {
-                            boardFileds.add(new Item("BlueField", R.drawable.shape, fieldId));
-                        }
-                    }
-                } else {
-                    if (j % 2 == 0) {
-                        boardFileds.add(new Item("BlueField", R.drawable.shape_white, fieldId));
-                    } else {
-                        boardFileds.add(new Item("WhiteField", R.drawable.shape, fieldId));
-                    }
-                }
-            }
-        }
     }
 
     public  void setPieceOnPosition(int position, int pieceId){
@@ -93,13 +68,14 @@ public class CreateMapAdapter extends  BoardAdapter {
             resource = Lodash.getResource(tabValue);
             v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
             v.findViewById(R.id.grid_item_piece).setTag(tabValue);
-            ImageView imageView = (ImageView)v.findViewById(R.id.grid_item_piece);
-          imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
-            imageView.getLayoutParams().height= dpToPx((int)Math.ceil(50.0 * (4.0/this.height)));
+
             //imageView.getLayoutParams().width= 60;
            // imageView.getLayoutParams().height= 60;
 
         }
+        ImageView imageView = (ImageView)v.findViewById(R.id.grid_item_piece);
+        imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.height)));
+        imageView.getLayoutParams().height= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
 
         if (item.name.equals("WhiteField")) {
             picture.setImageResource(R.drawable.shape_white);

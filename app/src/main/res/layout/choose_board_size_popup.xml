@@ -2,31 +2,76 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/dialog_shape">
+
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="fill_parent"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:paddingTop="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/choose_board_size_title_shape">
+        <TextView
+            android:id="@+id/chooseBoardSizeDialogTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/chooseBoardSizeDialog"
+            android:textSize="20sp"
+            android:paddingBottom="5dp"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/boardWidthLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/boardWidth"
+        android:textSize="18sp"
+        android:paddingLeft="5dp"
+        />
     <EditText
         android:id="@+id/widthTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Board width"
+        android:textSize="17sp"
+        android:paddingLeft="5dp"
+        />
+    <TextView
+        android:id="@+id/boardHeightLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/boardHeight"
+        android:textSize="17sp"
+        android:paddingLeft="5dp"
         />
     <EditText
         android:id="@+id/heightTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Board height"
+        android:textSize="17sp"
         />
+    <LinearLayout
+        android:id="@+id/LinearLayout02"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true">
     <Button
         android:id="@+id/goToCreateMap"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/forrward_icon"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:text="Open" />
     <Button
         android:id="@+id/cancelButton"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/cancel_icon"
         android:text="Cancel" />
+        </LinearLayout>
+
 </LinearLayout>

@@ -30,6 +30,7 @@ public class DatabaseObject  implements java.io.Serializable{
         this.wasHintUses=true;
     }
     public boolean isPuzzleSolved() {return this.isSolved;}
+    public boolean wasHintsUsed() {return this.wasHintUses;}
     public int[][]getBoard(){
         return this.object;
     }

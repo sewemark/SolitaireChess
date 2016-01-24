@@ -45,7 +45,7 @@ public class PuzzleTypeFragment extends Fragment {
             ArrayList<DataContainer> lista = new ArrayList<DataContainer>();
             //lista.add(new DataContainer("",false));
             for(int i =0;i<databaseObjects.length;i++){
-                lista.add(new DataContainer(databaseObjects[i].getFileName(), databaseObjects[i].isPuzzleSolved()));
+                lista.add(new DataContainer(databaseObjects[i].getFileName(), databaseObjects[i].isPuzzleSolved(),databaseObjects[i].wasHintsUsed()));
             }
 
             ChoosMapListViewAdapter adapter = new ChoosMapListViewAdapter(this.getActivity(),lista);

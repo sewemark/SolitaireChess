@@ -24,7 +24,7 @@ public class GameActivity  extends Activity {
     GameBoardAdapter gameBoardAdapter=null;
     IDatabaseContextController databaseContextController;
     String boardName;
-   //public PuzzleType boardType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +37,6 @@ public class GameActivity  extends Activity {
         Button previousButton = (Button) findViewById(R.id.previousButton);
         final TextView textView = (TextView) findViewById(R.id.puzzleHardnessLevel);
 
-
-      //
-      //  String boardName= "dsa";
         if(getIntent().getExtras()!=null) {
             boardName = (String) getIntent().getExtras().get("boardName");
             PuzzleType boardType =  PuzzleType.valueOf(getIntent().getExtras().getString("boardType"));
@@ -53,7 +50,8 @@ public class GameActivity  extends Activity {
 
         }
         else{
-           // gridView.setAdapter(new GameBoardAdapter(this, "1E",PuzzleType.EASY));
+          //TODO
+            //redirect to board menu
         }
 
         undoButton.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +76,7 @@ public class GameActivity  extends Activity {
             @Override
             public void onClick(View v){
                 gameBoardAdapter.setNextBoard();
-                textView.setText(gameBoardAdapter.puzzleType.toString());
+                textView.setText(gameBoardAdapter.getCurrentPuzzleType().toString());
                 textView.invalidate();
             }
 
@@ -88,7 +86,7 @@ public class GameActivity  extends Activity {
             public void onClick(View v){
 
                 gameBoardAdapter.setPreviousBoard();
-                textView.setText(gameBoardAdapter.puzzleType.toString());
+                textView.setText(gameBoardAdapter.getCurrentPuzzleType().toString());
                 textView.invalidate();
             }
         });

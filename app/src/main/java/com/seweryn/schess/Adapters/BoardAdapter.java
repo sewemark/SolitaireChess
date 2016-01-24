@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.seweryn.schess.Controllers.IBoardLogicController;
 import com.seweryn.schess.Models.Vector;
 import com.seweryn.schess.R;
 import com.seweryn.schess.Static.Lodash;
-
 import java.lang.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ public class BoardAdapter extends  BaseAdapter {
 
     public BoardAdapter(Context _context, int _width, int _height) {
         this.context = _context;
-
         this.width = _width;
         this.height = _height;
         boardLayoutInflater = LayoutInflater.from(context);
@@ -122,9 +119,6 @@ public class BoardAdapter extends  BaseAdapter {
     }
 
     private final class MyTouchListener implements View.OnTouchListener {
-
-
-
 
         public boolean onTouch(View view, MotionEvent motionEvent) {
 

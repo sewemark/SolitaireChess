@@ -5,4 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="transprtent">#80000000</color>
     <color name="backgroundcolor">#A1887F</color>
+    <color name="backgroundcolorDark">#A37F6F</color>
+    <color name="backgroundcolorLighter">#E09873</color>
+    <color name="backgroundcolorMedium">#AED1D6</color>
+    <color name="backgroundcolorBright">#314570</color>
+    <color name="backgroundcolorBrighter">#7584AD</color>
 </resources>

@@ -28,19 +28,23 @@ public class ChoosMapListViewAdapter extends ArrayAdapter<DataContainer> {
     @Override
     public View getView(int position,View view,ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
-        View rowView=inflater.inflate(R.layout.choose_map_listview_item, null,true);
-
+        View rowView=inflater.inflate(R.layout.choose_map_listview_item, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.boardName);
         ImageView wasSolvedImage = (ImageView) rowView.findViewById(R.id.wasSolved);
-
+        ImageView wasHintsUsed = (ImageView) rowView.findViewById(R.id.wasHintsUsed);
         txtTitle.setText(tabsInfo.get(position).boardname);
-        if(tabsInfo.get(position).wasSolved){
-            wasSolvedImage.setBackgroundResource(R.drawable.checked);
-        }else{
-            wasSolvedImage.setBackgroundResource(0);
-        }
+        setTruOrFalseView(wasSolvedImage,tabsInfo.get(position).wasSolved);
+        setTruOrFalseView(wasHintsUsed,tabsInfo.get(position).hintsUsed);
+
         return rowView;
 
     };
+    public void setTruOrFalseView(View view,boolean value){
+        if(value){
+            view.setBackgroundResource(R.drawable.checked_icon);
+        }else{
+            view.setBackgroundResource(R.drawable.no);
+        }
+    }
 
 }
