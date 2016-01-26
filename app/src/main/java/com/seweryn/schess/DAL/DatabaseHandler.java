@@ -3,10 +3,10 @@ package com.seweryn.schess.DAL;
 import android.content.Context;
 
 import com.seweryn.schess.Enums.PuzzleType;
-import com.seweryn.schess.DFSTree;
-import com.seweryn.schess.ISearchTree;
+import com.seweryn.schess.SearchAlgoritm.DFSTree;
+import com.seweryn.schess.SearchAlgoritm.ISearchTree;
 import com.seweryn.schess.Models.DatabaseObject;
-import com.seweryn.schess.SolutionFinder;
+import com.seweryn.schess.SearchAlgoritm.SolutionFinder;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,25 +26,22 @@ public class DatabaseHandler {
     private Context context;
     private String rootPath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private final String rootDirectory ="puzzles68";
+    private final String rootDirectory ="puzzles71";
 
     public  void CreateDatabaseIfNotExists() {
 
         File parrentDir = new File(context.getCacheDir() + "/"  + rootDirectory);
-
         if (!parrentDir.exists()) {
             parrentDir.mkdir();
-
             for (int i = 0; i < puzzleDirectories.length; i++) {
+               // File childDir = new File(getDatabasePath() + "/" + puzzleDirectories[i]);
                 File childDir = new File(context.getCacheDir() + "/" + rootDirectory + "/" + puzzleDirectories[i]);
                 if (!childDir.exists()) {
                     childDir.mkdir();
                 }
-
             }
             InitializaDataBase();
         }
-
       }
     public void updatePuzzle(DatabaseObject objectToUpdate){
         try{
@@ -59,6 +56,22 @@ public class DatabaseHandler {
         catch(Exception ex){
 
         }
+    }
+    public  void resetDatabase(){
+        File parrentDir = new File(context.getCacheDir() + "/"  + rootDirectory);
+        if(parrentDir.exists()){
+            DeleteFolderRecursive(parrentDir);
+        }
+        CreateDatabaseIfNotExists();
+    }
+    private void DeleteFolderRecursive(File fileOrDirectory) {
+
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                DeleteFolderRecursive(child);
+
+        fileOrDirectory.delete();
+
     }
      public  void savePuzzle(PuzzleType puzleType, int[][] puzzleToSave ) {
          try{
@@ -76,7 +89,7 @@ public class DatabaseHandler {
              oos.writeObject(objectToSave);
              oos.close();
              fos.close();
-             String [] pliki = parrentDir.list();
+
          }
          catch (Exception ex){
 
@@ -141,6 +154,9 @@ public class DatabaseHandler {
 
 
     }
+    //private String getDatabasePath(){
+       // return context.getCacheDir() + "/"  + rootDirectory;
+ //   }
     public  String[] getPuzzleListByType(PuzzleType puzzleType){
         File parrentDir = new File(context.getCacheDir().toString() + '/' + rootDirectory + '/' + puzzleType.toString());
         if(parrentDir.exists())

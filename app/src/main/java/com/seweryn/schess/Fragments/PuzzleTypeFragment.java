@@ -1,4 +1,4 @@
-package com.seweryn.schess;
+package com.seweryn.schess.Fragments;
 
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -19,6 +19,7 @@ import com.seweryn.schess.Adapters.ChoosMapListViewAdapter;
 import com.seweryn.schess.Enums.PuzzleType;
 import com.seweryn.schess.Models.DataContainer;
 import com.seweryn.schess.Models.DatabaseObject;
+import com.seweryn.schess.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,14 +37,10 @@ public class PuzzleTypeFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.puzzletype_fragment, container, false);
 
         ListView easyGridView = (ListView)rootView.findViewById(R.id.chooseMapList);
-      //  String[] easyPuzzles = controller.getPuzzleListByType(PuzzleType.EASY);
-        //this.helperFunction(easyPuzzles,"E");
-        //String[] mediumPuzzles = controller.getPuzzleListByType(PuzzleType.MEDIUM);
-        //this.helperFunction(mediumPuzzles, "M");
+
         DatabaseObject[] databaseObjects = (DatabaseObject[])getArguments().getSerializable("list");
         if(databaseObjects!=null) {
             ArrayList<DataContainer> lista = new ArrayList<DataContainer>();
-            //lista.add(new DataContainer("",false));
             for(int i =0;i<databaseObjects.length;i++){
                 lista.add(new DataContainer(databaseObjects[i].getFileName(), databaseObjects[i].isPuzzleSolved(),databaseObjects[i].wasHintsUsed()));
             }
@@ -53,11 +50,9 @@ public class PuzzleTypeFragment extends Fragment {
             easyGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long id) {
-                FragmentActivity fra = getActivity();
                 Intent chooseBoard = new Intent(getActivity(), GameActivity.class);
                 TextView boardNameTextView = (TextView)v.findViewById(R.id.boardName);
                 chooseBoard.putExtra("boardName", (boardNameTextView.getText()));
-               String val = getArguments().getString("type");
                 chooseBoard.putExtra("boardType", getArguments().getString("type"));;
 
                 getActivity().startActivity(chooseBoard);

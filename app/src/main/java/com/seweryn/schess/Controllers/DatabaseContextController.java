@@ -23,6 +23,11 @@ public class DatabaseContextController implements IDatabaseContextController {
     }
 
     @Override
+    public void resetDatabase() {
+        handler.resetDatabase();
+    }
+
+    @Override
     public String getNextBoardName(String t1) {
         return "2E";
     }

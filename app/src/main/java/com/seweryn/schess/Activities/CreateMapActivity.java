@@ -5,7 +5,6 @@ package com.seweryn.schess.Activities;
  */
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,19 +18,20 @@ import android.widget.PopupWindow;
 
 import com.seweryn.schess.Adapters.CreateMapAdapter;
 import com.seweryn.schess.Adapters.CreateMapPopupListViewAdapter;
-import com.seweryn.schess.Controllers.BoardLogicController;
 import com.seweryn.schess.Controllers.DatabaseContextController;
+import com.seweryn.schess.Controllers.IBoardLogicController;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
+import com.seweryn.schess.Controllers.SCBoardLogicController;
 import com.seweryn.schess.Dialogs.PuzzleHardnessClasificationDialog;
 import com.seweryn.schess.Dialogs.PuzzleHardnessDialog;
 import com.seweryn.schess.Enums.PieceType;
 import com.seweryn.schess.Enums.PuzzleType;
-import com.seweryn.schess.DFSTree;
-import com.seweryn.schess.ISearchTree;
-import com.seweryn.schess.PuzzleTypeCalsificator;
+import com.seweryn.schess.IPuzzleTypeCalsificator;
+import com.seweryn.schess.SearchAlgoritm.DFSTree;
+import com.seweryn.schess.SearchAlgoritm.ISearchTree;
+import com.seweryn.schess.SearchAlgoritm.PuzzleTypeCalsificator;
 import com.seweryn.schess.R;
-import com.seweryn.schess.SolutionFinder;
-import com.seweryn.schess.Static.IPuzzleTypeCalsificator;
+import com.seweryn.schess.SearchAlgoritm.SolutionFinder;
 
 
 public class CreateMapActivity extends Activity {
@@ -61,7 +61,8 @@ public class CreateMapActivity extends Activity {
 
         }
         gridView.setNumColumns(boardWidth);
-        final CreateMapAdapter gridViewAdapter = new CreateMapAdapter(this,new BoardLogicController(),boardWidth,boardHeight);
+        IBoardLogicController _boardLogicController = new SCBoardLogicController().getBoardLogicController();
+        final CreateMapAdapter gridViewAdapter = new CreateMapAdapter(this,_boardLogicController,boardWidth,boardHeight);
         gridView.setAdapter(gridViewAdapter);
         gridViewAdapter.notifyDataSetChanged();
         boardLayoutInflater = LayoutInflater.from(this);
@@ -97,7 +98,6 @@ public class CreateMapActivity extends Activity {
             }
         });
         Button saveButton = (Button) findViewById(R.id.saveButton);
-        Button cancelButton = (Button) findViewById(R.id.cancelButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,14 +127,6 @@ public class CreateMapActivity extends Activity {
                 }
             }
         });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
 }
 

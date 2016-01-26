@@ -33,7 +33,7 @@ public class CreateMapAdapter extends  BoardAdapter {
     private int width;
     private int height;
     public CreateMapAdapter(Context context,IBoardLogicController _boardLogicController, int _width, int _height) {
-        super(context, _width, _height);
+        super(context,_boardLogicController, _width,_height);
         boardLogicController = _boardLogicController;
         this.context = context;
         this.width = _width;
@@ -43,37 +43,7 @@ public class CreateMapAdapter extends  BoardAdapter {
     }
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View v = view;
-        ImageView picture;
-        int resource;
-        if (v == null) {
-            v = boardLayoutInflater.inflate(R.layout.grid_item_blue, viewGroup, false);
-            v.setTag(R.id.picture, v.findViewById(R.id.picture));
-        }
-        picture = (ImageView) v.getTag(R.id.picture);
-        Item item = getItem(i);
-        Vector position = Vector.convertToVector(width, height, i);
-        int tabValue = boardLogicController.getBoard()[position.getY()][position.getX()];
-        if(tabValue>0) {
-            resource = Lodash.getResource(tabValue);
-            v.findViewById(R.id.grid_item_piece).setBackgroundResource(resource);
-            v.findViewById(R.id.grid_item_piece).setTag(tabValue);
-        }else if(tabValue==0){
-            resource = Lodash.getResource(tabValue);
-            v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
-            v.findViewById(R.id.grid_item_piece).setTag(tabValue);
-        }
-
-        ImageView imageView = (ImageView)v.findViewById(R.id.grid_item_piece);
-        imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.height)));
-        imageView.getLayoutParams().height= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
-
-        if (item.name.equals("WhiteField")) {
-            picture.setImageResource(R.drawable.shape_white);
-        } else {
-            picture.setImageResource(R.drawable.shape);
-        }
-        return v;
+        return super.getView(i, view,viewGroup);
     }
 
     private final class MyTouchListener implements View.OnTouchListener {

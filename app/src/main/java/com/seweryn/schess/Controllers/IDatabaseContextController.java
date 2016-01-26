@@ -19,6 +19,7 @@ public interface IDatabaseContextController {
      DatabaseObject readNextPuzzle(PuzzleType puzzleType, String boardName);
      DatabaseObject readPreviousPuzzle(PuzzleType puzzleType, String boardName);
      PuzzleType getNextPuzzleType(PuzzleType t1);
+     void resetDatabase();
 
      String getNextBoardName(String t1);
 }

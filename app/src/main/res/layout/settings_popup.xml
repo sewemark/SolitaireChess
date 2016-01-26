@@ -16,12 +16,29 @@
             android:id="@+id/chooseSettingsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/windDialogHeader"
+            android:text="@string/chooseBoardSizeDialog"
             android:textSize="20sp"
             android:paddingBottom="5dp"
             />
     </LinearLayout>
 
+        <Switch
+            android:id="@+id/hintsSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/hintsTurnedOn" />
+
+
+    <Button
+        android:id="@+id/resetDatabaseButton"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Reset ddatabase" />
     <LinearLayout
         android:id="@+id/LinearLayout02"
         android:layout_height="wrap_content"

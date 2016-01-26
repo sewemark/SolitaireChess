@@ -11,8 +11,14 @@
     <string name="boardWidth">Board Width</string>
     <string name="boardHeight">Board Height</string>
     <string name="chooseBoardSizeDialog">Board size dialog</string>
+    <string name="hintsSwitched">Hints</string>
     <string name="cancel">Cancel</string>
-    <string name="ok">Ok</string>\
+    <string name="addPieceDialog">Add piece dialog</string>
+    <string name="hintsTurnedOn">Hints turned on</string>
+    <string name="ok">Ok</string>
+    <string name="windDialogHeader">Win dialog</string>
+    <string name="save">Save</string>
+    <string name="menu">Menu</string>
     <string name="puzzle_hardness">Puzzle Hardness</string>
     <string name="negativmess">The puzzle you created has no solution. Reinvent the puzzle</string>
 </resources>

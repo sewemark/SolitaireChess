@@ -1,10 +1,12 @@
-package com.seweryn.schess;
+package com.seweryn.schess.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.seweryn.schess.R;
 
 /**
  * Created by sew on 2016-01-20.

@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.seweryn.schess.R;
-import com.seweryn.schess.Activities.SCMainMenuActivity;
+import com.seweryn.schess.Activities.MainMenuActivity;
 
 /**
  * Created by sew on 2015-12-21.
@@ -30,15 +30,14 @@ public class PuzzleHardnessClasificationDialog  extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        startActivity(new Intent(getActivity(),SCMainMenuActivity.class));
+                        startActivity(new Intent(getActivity(),MainMenuActivity.class));
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
+
                     }
                 });
-        // Create the AlertDialog object and return it
         return builder.create();
     }
 }

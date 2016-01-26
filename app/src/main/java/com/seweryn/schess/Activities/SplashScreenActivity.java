@@ -9,7 +9,7 @@ import android.os.Handler;
 
 import com.seweryn.schess.R;
 
-public class MainActivity extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Thread(){
             @Override
              public void run() {
-                Intent mainMenu = new Intent(MainActivity.this, SCMainMenuActivity.class);
-                MainActivity.this.startActivity(mainMenu);
-                MainActivity.this.finish();
+                Intent mainMenu = new Intent(SplashScreenActivity.this, MainMenuActivity.class);
+                SplashScreenActivity.this.startActivity(mainMenu);
+                SplashScreenActivity.this.finish();
                 overridePendingTransition(R.animator.fadein, R.animator.fadeout);
 
                   }

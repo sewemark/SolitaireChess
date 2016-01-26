@@ -1,4 +1,4 @@
-package com.seweryn.schess;
+package com.seweryn.schess.SearchAlgoritm;
 
 import java.util.List;
 

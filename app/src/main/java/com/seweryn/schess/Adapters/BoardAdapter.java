@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.seweryn.schess.Controllers.IBoardLogicController;
 import com.seweryn.schess.Models.Vector;
 import com.seweryn.schess.R;
 import com.seweryn.schess.Static.Lodash;
@@ -28,13 +30,14 @@ public class BoardAdapter extends  BaseAdapter {
     protected final Context context;
     protected int width;
     protected int height;
+    private IBoardLogicController boardLogicController;
 
-
-    public BoardAdapter(Context _context, int _width, int _height) {
+    public BoardAdapter(Context _context,IBoardLogicController _boardLogicController, int _width, int _height) {
         this.context = _context;
         this.width = _width;
         this.height = _height;
         boardLayoutInflater = LayoutInflater.from(context);
+        this.boardLogicController = _boardLogicController;
         setBackgroundFields();
     }
     private void setBackgroundFields(){
@@ -83,21 +86,31 @@ public class BoardAdapter extends  BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = view;
         ImageView picture;
-        TextView name;
         int resource;
-        if (v == null) {
+        if (v == null ||  v.findViewById(R.id.grid_item_piece)==null) {
             v = boardLayoutInflater.inflate(R.layout.grid_item_blue, viewGroup, false);
             v.setTag(R.id.picture, v.findViewById(R.id.picture));
         }
         picture = (ImageView) v.getTag(R.id.picture);
         Item item = getItem(i);
         Vector position = Vector.convertToVector(width, height, i);
-        int tabValue = board[position.getX()][position.getY()];
+        int tabValue = boardLogicController.getBoard()[position.getY()][position.getX()];
         if(tabValue>0) {
             resource = Lodash.getResource(tabValue);
             v.findViewById(R.id.grid_item_piece).setBackgroundResource(resource);
             v.findViewById(R.id.grid_item_piece).setTag(tabValue);
+        }else if(tabValue==0){
+            resource = Lodash.getResource(tabValue);
+            v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
+            v.findViewById(R.id.grid_item_piece).setTag(tabValue);
         }
+
+        ImageView imageView = (ImageView)v.findViewById(R.id.grid_item_piece);
+        imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.height)));
+        imageView.getLayoutParams().height= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
+        ImageView hintImageView = (ImageView)v.findViewById(R.id.hint_image);
+        hintImageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
+        hintImageView.getLayoutParams().height= dpToPx((int)Math.ceil(50.0 * (4.0/this.height)));
         if (item.name.equals("WhiteField")) {
             picture.setImageResource(R.drawable.shape_white);
         } else {

@@ -1,4 +1,4 @@
-package com.seweryn.schess;
+package com.seweryn.schess.SearchAlgoritm;
 
 /**
  * Created by sew on 2016-01-03.

@@ -4,28 +4,26 @@ package com.seweryn.schess.Adapters;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.seweryn.schess.Activities.ChooseMapActivity;
-import com.seweryn.schess.Adapters.BoardAdapter;
-import com.seweryn.schess.Controllers.BoardLogicController;
-import com.seweryn.schess.Controllers.DatabaseContextController;
+import com.seweryn.schess.Activities.GameActivity;
 import com.seweryn.schess.Controllers.IBoardLogicController;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
+import com.seweryn.schess.Controllers.IMoveRulesController;
 import com.seweryn.schess.Enums.PieceType;
 import com.seweryn.schess.Enums.PuzzleType;
-import com.seweryn.schess.Logic.MoveLogic;
 import com.seweryn.schess.Models.DatabaseObject;
 import com.seweryn.schess.Models.Move;
 import com.seweryn.schess.Models.Solution;
@@ -43,75 +41,43 @@ import java.util.List;
 public final class GameBoardAdapter extends BoardAdapter {
 
 
-     MoveLogic logic = new MoveLogic();
-    IBoardLogicController boardLogic;
+    IMoveRulesController moveLogicController;
+    IBoardLogicController boardLogicController;
     IDatabaseContextController databaseContextController;
+    protected SharedPreferences sharedpreferences;
+    public static final String ApplicationPreferences = "SCPreferences" ;
     DatabaseObject databaseObject;
     public PuzzleType puzzleType;
     String boardName;
      GridView gridView;
      List<Solution> solutions;
      Deque<Move> moves;
-     public GameBoardAdapter(Context context,GridView _gridView , IBoardLogicController _boardLogicController,IDatabaseContextController _databaseController, String _boardName,   PuzzleType _puzleType) {
-         super(context, _databaseController.read(_puzleType,_boardName).getBoard()[0].length,  _databaseController.read(_puzleType,_boardName).getBoard().length);
+     public GameBoardAdapter(Context context,GridView _gridView ,IMoveRulesController _moveRulesController, IBoardLogicController _boardLogicController,IDatabaseContextController _databaseController, String _boardName,   PuzzleType _puzleType) {
+         super(context,_boardLogicController, _databaseController.read(_puzleType,_boardName).getBoard()[0].length,  _databaseController.read(_puzleType,_boardName).getBoard().length);
          this.gridView = _gridView;
          this.databaseContextController = _databaseController;
-         this.boardLogic = _boardLogicController;
+         this.moveLogicController = _moveRulesController;
+         this.boardLogicController = _boardLogicController;
          this.boardName = _boardName;
+         sharedpreferences = context.getSharedPreferences(ApplicationPreferences, context.MODE_PRIVATE);
          this.puzzleType = _puzleType;
          databaseObject = databaseContextController.read(puzzleType,boardName);
          initializeBoard(databaseObject);
      }
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View v = view;
-        ImageView picture;
-        TextView name;
-        int resource=0;
-        if (v == null || v.findViewById(R.id.grid_item_piece)==null) {
-            v = boardLayoutInflater.inflate(R.layout.grid_item_blue, viewGroup, false);
-            v.setTag(R.id.picture, v.findViewById(R.id.picture));
-        }
-        v.setOnDragListener(new GameBoardDragListener());
-        Vector position = Vector.convertToVector(width, height, i);
-        int tabValue = boardLogic.getBoard()[position.getY()][position.getX()];
-        //int tempValue = board01[1][2];
-
-        if(tabValue>0){
-            resource = Lodash.getResource(tabValue);
-
-            v.findViewById(R.id.grid_item_piece).setBackgroundResource(resource);
-            v.findViewById(R.id.grid_item_piece).setTag(tabValue);
-            v.findViewById(R.id.grid_item_piece).setOnTouchListener(new MyTouchListener());
-        }else{
-            v.findViewById(R.id.grid_item_piece).setBackgroundResource(0);
-            v.findViewById(R.id.grid_item_piece).setTag(-2);
-        }
-        ImageView imageView2 = (ImageView)v.findViewById(R.id.grid_item_piece);
-        imageView2.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
-        imageView2.getLayoutParams().height= dpToPx((int)Math.ceil(50.0 * (4.0/this.height)));
-      ;
-
-        ImageView imageView = (ImageView)v.findViewById(R.id.hint_image);
-        imageView.getLayoutParams().width= dpToPx((int)Math.ceil(60.0 * (4.0/this.width)));
-        imageView.getLayoutParams().height= dpToPx((int)Math.ceil(50.0 * (4.0/this.height)));
-        picture = (ImageView) v.getTag(R.id.picture);
-        Item item = getItem(i);
-        if (item.name.equals("WhiteField")) {
-            picture.setImageResource(R.drawable.shape_white);
-        } else {
-            picture.setImageResource(R.drawable.shape);
-        }
-        //name.setText(item.name);
-        return v;
+       View v=super.getView(i,view,viewGroup);
+       v.setOnDragListener(new GameBoardDragListener());
+       v.findViewById(R.id.grid_item_piece).setOnTouchListener(new MyTouchListener());
+       return  v;
     }
     public void initializeBoard(DatabaseObject databaseObject){
         //DatabaseObject databaseObject = databaseContextController.read(puzzleType,boardName);
-        this.boardLogic.setBoard(databaseObject.getBoard());
+        this.boardLogicController.setBoard(databaseObject.getBoard());
         this.boardName = databaseObject.getFileName();
         this.puzzleType = databaseObject.getPuzzleType();
-        gridView.setNumColumns(boardLogic.getBoard()[0].length);
-        this.board = Lodash.deepCopyIntMatrix(boardLogic.getBoard());
+        gridView.setNumColumns(boardLogicController.getBoard()[0].length);
+        this.board = Lodash.deepCopyIntMatrix(boardLogicController.getBoard());
         this.solutions = databaseObject.getSolutions();
         if(this.solutions.size()>0)
             Collections.reverse(this.solutions.get(0).boards);
@@ -135,7 +101,7 @@ public final class GameBoardAdapter extends BoardAdapter {
     }
     public void setHintsBackground(int position, boolean showHints, PieceType pieceType){
 
-         Integer[] possiblePositions = logic.PossibleMoves(this.width,this.height,Vector.convertToVector(this.width, this.height, position),pieceType);
+         Integer[] possiblePositions = moveLogicController.PossibleMoves(this.width,this.height,Vector.convertToVector(this.width, this.height, position),pieceType);
          for(int i =0;i<possiblePositions.length;i++){
              View view = getChildFromFrameLayout(possiblePositions[i], 2);
              int resource=0;
@@ -156,11 +122,15 @@ public final class GameBoardAdapter extends BoardAdapter {
         FrameLayout frameLayout = (FrameLayout)gridView.getChildAt(frameLayoutPosition);
         frameLayout.addView(view);
     }
-    private void checkIfWin(){
-        if(boardLogic.checkIfWinPosition()){
+    private void checkIfWin() throws InterruptedException {
+        if(boardLogicController.checkIfWinPosition()){
             databaseObject.setSolved();
             databaseContextController.update(databaseObject);
             showWinDialog(gridView);
+
+            Intent mainMenu = new Intent(context, ChooseMapActivity.class);
+
+            context.startActivity(mainMenu);
         }
     }
     private void setView(View view, int resource, int tag){
@@ -184,25 +154,25 @@ public final class GameBoardAdapter extends BoardAdapter {
             View view= getChildFromFrameLayout(lastMove.destinatioPosition,1);
             setView(view, Lodash.getResource(lastMove.pieceType), lastMove.pieceType);
 
-            boardLogic.setPieceAtPosition(lastMove.sourPositon, lastMove.beatedPieceType);
-            boardLogic.setPieceAtPosition(lastMove.destinatioPosition, lastMove.pieceType);
+            boardLogicController.setPieceAtPosition(lastMove.sourPositon, lastMove.beatedPieceType);
+            boardLogicController.setPieceAtPosition(lastMove.destinatioPosition, lastMove.pieceType);
         }
     }
-    public void performNextMove(){
+    public void performNextMove() throws InterruptedException {
         for(int i=0;i<this.solutions.size();i++){
             for(int j=0;j<this.solutions.get(i).boards.size();j++){
-                if(Lodash.areBoardsEqual(this.solutions.get(i).boards.get(j),boardLogic.getBoard())) {
+                if(Lodash.areBoardsEqual(this.solutions.get(i).boards.get(j), boardLogicController.getBoard())) {
                     if (j+ 1 < this.solutions.get(i).boards.size()) {
-                         Move m = Move.extractMove(boardLogic.getBoard(), this.solutions.get(i).boards.get(j + 1));
+                         Move m = Move.extractMove(boardLogicController.getBoard(), this.solutions.get(i).boards.get(j + 1));
                          View viewToDelete = popChildFromFrameLayout(m.sourPositon, 2);
                         if(m.destinatioPosition>=0) {
 
                             View view = getChildFromFrameLayout(m.destinatioPosition,1);
                             setView(view,Lodash.getResource(m.pieceType),m.pieceType);
-                            boardLogic.setPieceAtPosition(m.destinatioPosition, m.pieceType);
+                            boardLogicController.setPieceAtPosition(m.destinatioPosition, m.pieceType);
 
                         }
-                        boardLogic.setPieceAtPosition(m.sourPositon, 0);
+                        boardLogicController.setPieceAtPosition(m.sourPositon, 0);
                         moves.push(new Move(viewToDelete,m.beatedPieceType, m.pieceType,m.sourPositon, m.destinatioPosition));
                         databaseObject.setHintsUsed();
                         checkIfWin();
@@ -213,12 +183,17 @@ public final class GameBoardAdapter extends BoardAdapter {
         }
         this.undoMove();
     }
-    public void showWinDialog(View v){
+    public void showWinDialog(View v) throws InterruptedException {
         View layout = boardLayoutInflater.inflate(R.layout.win_popup,(ViewGroup)v.findViewById(R.id.popup));
-        PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
+        final PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
         pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
-        Intent mainMenu = new Intent(context, ChooseMapActivity.class);
-        context.startActivity(mainMenu);
+        Button cancelButton = (Button)layout.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pwindo.dismiss();
+            }
+        });
     }
     public PuzzleType getCurrentPuzzleType(){
         return  this.puzzleType;
@@ -249,28 +224,34 @@ public final class GameBoardAdapter extends BoardAdapter {
                    //  GridView gridView = (GridView)owner.getParent();
                      int position = gridView.getPositionForView(view);
                       owner.removeView(view);
-                     PieceType pieceType =  Lodash.getPiecType((int) view.getTag());
-                     Integer[] possiblePositions = logic.PossibleMoves(width, height, Vector.convertToVector(width, height, position),pieceType );
-                     setHintsBackground( position, false, Lodash.getPiecType((int) view.getTag()));
-                     FrameLayout container = (FrameLayout) v;
-                     int destinationPosition =  gridView.getPositionForView(container);
-                     if(!Lodash.HasElement(possiblePositions,destinationPosition) ||  (boardLogic.getPieceAtPosition(destinationPosition)<=0 )){
-                         owner.addView(view);
-                     }
-                     else {
-                     int tempValue = boardLogic.getPieceAtPosition(destinationPosition);
-                     boardLogic.removePiece(position, destinationPosition, (int) view.getTag());
-                         if (container.getChildCount() > 2) {
-                             View viewToDelete = container.getChildAt(2);
-                             container.removeViewAt(2);
-                             moves.push(new Move(viewToDelete, tempValue, boardLogic.getPieceAtPosition(destinationPosition), position, destinationPosition));
+                     int viewTag = (int) view.getTag();
+                     if(viewTag>0) {
+                         PieceType pieceType = Lodash.getPiecType(viewTag);
+                         Integer[] possiblePositions = moveLogicController.PossibleMoves(width, height, Vector.convertToVector(width, height, position), pieceType);
+                         if (sharedpreferences.getBoolean("HintsSwitched", true))
+                             setHintsBackground(position, false, Lodash.getPiecType((int) view.getTag()));
+                         FrameLayout container = (FrameLayout) v;
+                         int destinationPosition = gridView.getPositionForView(container);
+                         if (!Lodash.HasElement(possiblePositions, destinationPosition) || (boardLogicController.getPieceAtPosition(destinationPosition) <= 0)) {
+                             owner.addView(view);
+                         } else {
+                             int tempValue = boardLogicController.getPieceAtPosition(destinationPosition);
+                             boardLogicController.removePiece(position, destinationPosition, (int) view.getTag());
+                             if (container.getChildCount() > 2) {
+                                 View viewToDelete = container.getChildAt(2);
+                                 container.removeViewAt(2);
+                                 moves.push(new Move(viewToDelete, tempValue, boardLogicController.getPieceAtPosition(destinationPosition), position, destinationPosition));
+                             }
+                             container.addView(view);
+
+                             try {
+                                 checkIfWin();
+                             } catch (InterruptedException e) {
+                                 e.printStackTrace();
+                             }
                          }
-                         container.addView(view);
-
-                     checkIfWin();
+                         view.setVisibility(View.VISIBLE);
                      }
-                     view.setVisibility(View.VISIBLE);
-
                      break;
                  case DragEvent.ACTION_DRAG_ENDED:
                      v.setBackgroundDrawable(normalShape);
@@ -290,7 +271,8 @@ public final class GameBoardAdapter extends BoardAdapter {
                 View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                 view.startDrag(data, shadowBuilder, view, 0);
                 view.setVisibility(View.INVISIBLE);
-                setHintsBackground(gridView.getPositionForView(view), true, Lodash.getPiecType((int) view.getTag()));
+                if(sharedpreferences.getBoolean("HintsSwitched",true))
+                    setHintsBackground(gridView.getPositionForView(view), true, Lodash.getPiecType((int) view.getTag()));
                 return true;
             } else {
                 return false;

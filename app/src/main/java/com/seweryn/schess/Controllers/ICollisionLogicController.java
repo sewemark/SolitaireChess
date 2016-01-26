@@ -9,5 +9,4 @@ import java.util.List;
  */
 public interface  ICollisionLogicController<T> {
      List<T> checkIfCollision(T source, T destination);
-     Directions getDirection(T diffrence);
 }

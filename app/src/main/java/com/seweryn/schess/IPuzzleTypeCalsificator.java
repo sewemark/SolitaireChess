@@ -1,4 +1,4 @@
-package com.seweryn.schess.Static;
+package com.seweryn.schess;
 
 import com.seweryn.schess.Enums.PuzzleType;
 

@@ -15,6 +15,7 @@ public class DatabaseObject  implements java.io.Serializable{
     private String fileName;
     private boolean isSolved;
     private boolean wasHintUses;
+
     public DatabaseObject(int[][] _object, List<Solution> _solutions, PuzzleType _puzzleType, String _fileName){
         this.object = Lodash.deepCopyIntMatrix(_object);
         this.solutions = _solutions;

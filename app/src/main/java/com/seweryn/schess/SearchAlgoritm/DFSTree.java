@@ -1,5 +1,6 @@
-package com.seweryn.schess;
+package com.seweryn.schess.SearchAlgoritm;
 
+import com.seweryn.schess.Logic.MoveRulesLogic;
 import com.seweryn.schess.Models.Solution;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class DFSTree implements ISearchTree<Solution> {
     private int NumOfSolutions;
     public int numOfSol =-1;
     public DFSTree(int[][] board){
-        rootNode = new LinkedListNode(board,null,true,-1);
+        rootNode = new LinkedListNode(board, new MoveRulesLogic(),null,true,-1);
         solutions = new ArrayList<>();
         currentNode  = rootNode;
         maxDepth = 0;
@@ -34,7 +35,7 @@ public class DFSTree implements ISearchTree<Solution> {
 
        if(!this.currentNode.WasExpanded()) {
                this.currentNode.expandChild();
-               this.expadnedCount++;
+
                if(checkIfRootHasChild()) {
                   return NO_SOLUTION;
               }
@@ -100,6 +101,7 @@ public class DFSTree implements ISearchTree<Solution> {
 
     private void updateTreeProperties(){
         maxDepth++;
+        expadnedCount++;
         if(this.currentNode.childes.size()>maxWidth){
             maxWidth=this.currentNode.childes.size();
         }

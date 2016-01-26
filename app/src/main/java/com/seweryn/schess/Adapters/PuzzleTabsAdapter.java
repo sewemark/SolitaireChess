@@ -1,7 +1,6 @@
 package com.seweryn.schess.Adapters;
 ;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentManager;
         import android.support.v4.app.FragmentStatePagerAdapter;
@@ -9,9 +8,7 @@ import android.support.v4.app.Fragment;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
 import com.seweryn.schess.Enums.PuzzleType;
 import com.seweryn.schess.Models.DatabaseObject;
-import com.seweryn.schess.PuzzleTypeFragment;
-
-import java.util.List;
+import com.seweryn.schess.Fragments.PuzzleTypeFragment;
 
 
 public class PuzzleTabsAdapter extends FragmentStatePagerAdapter   {

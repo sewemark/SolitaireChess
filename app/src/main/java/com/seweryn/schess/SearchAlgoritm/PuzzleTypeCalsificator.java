@@ -1,7 +1,7 @@
-package com.seweryn.schess;
+package com.seweryn.schess.SearchAlgoritm;
 
 import com.seweryn.schess.Enums.PuzzleType;
-import com.seweryn.schess.Static.IPuzzleTypeCalsificator;
+import com.seweryn.schess.IPuzzleTypeCalsificator;
 
 /**
  * Created by sew on 2016-01-24.

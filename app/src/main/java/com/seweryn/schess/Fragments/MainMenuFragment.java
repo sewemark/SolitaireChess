@@ -1,4 +1,4 @@
-package com.seweryn.schess;
+package com.seweryn.schess.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -14,7 +14,6 @@ import android.widget.PopupWindow;
 import com.seweryn.schess.Activities.ChooseMapActivity;
 import com.seweryn.schess.Activities.CreateMapActivity;
 import com.seweryn.schess.Activities.GameActivity;
-import com.seweryn.schess.Activities.SCMainMenuActivity;
 import com.seweryn.schess.R;
 
 /**

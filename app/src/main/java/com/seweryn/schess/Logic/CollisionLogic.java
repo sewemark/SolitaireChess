@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by sew on 2015-12-20.
  */
-public class CollisionLogic {
+public class CollisionLogic implements ICollisionLogic {
 
     public CollisionLogic(){
 
@@ -29,7 +29,7 @@ public class CollisionLogic {
           }
         return possibleCollisions;
     }
-    public  Directions getDirection(Vector diffrence){
+    private   Directions getDirection(Vector diffrence){
             if(diffrence.getX() ==0 && diffrence.getY() >0){
                 return Directions.S;
             }
