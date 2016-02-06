@@ -10,17 +10,17 @@ import java.util.List;
  * Created by sew on 2015-12-07.
  */
 public class DFSTree implements ISearchTree<Solution> {
-    private LinkedListNode rootNode;
-    private LinkedListNode currentNode;
+    private SearchTreeNode rootNode;
+    private SearchTreeNode currentNode;
     private List<Solution> solutions;
     private final  int NO_SOLUTION =0;
     private int maxDepth;
     private int maxWidth;
     public  int expadnedCount=0;
-    private int NumOfSolutions;
+    private int numOfSolutions;
     public int numOfSol =-1;
     public DFSTree(int[][] board){
-        rootNode = new LinkedListNode(board, new MoveRulesLogic(),null,true,-1);
+        rootNode = new SearchTreeNode(board, new MoveRulesLogic(),null,true,-1);
         solutions = new ArrayList<>();
         currentNode  = rootNode;
         maxDepth = 0;
@@ -33,7 +33,7 @@ public class DFSTree implements ISearchTree<Solution> {
 
     public int Search(){
 
-       if(!this.currentNode.WasExpanded()) {
+       if(!this.currentNode.wasExpanded()) {
                this.currentNode.expandChild();
 
                if(checkIfRootHasChild()) {
@@ -49,7 +49,7 @@ public class DFSTree implements ISearchTree<Solution> {
         }
         else{
              if(checkIfSolutionFounded()) {
-                 NumOfSolutions++;
+                 numOfSolutions++;
                  extractSolution();
              }
              if(checkIfCanGoTowardsRoot()){
@@ -58,10 +58,10 @@ public class DFSTree implements ISearchTree<Solution> {
                   Search();
              }
             else{
-                 return NumOfSolutions;
+                 return numOfSolutions;
              }
         }
-        return  NumOfSolutions;
+        return numOfSolutions;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class DFSTree implements ISearchTree<Solution> {
     }
 
     private  void extractSolution(){
-        LinkedListNode pointer = this.currentNode;
+        SearchTreeNode pointer = this.currentNode;
         Solution solution =new Solution();
         while (pointer !=null){
             solution.boards.add(pointer.board);
@@ -108,11 +108,11 @@ public class DFSTree implements ISearchTree<Solution> {
     }
 
     private boolean checkIfRootHasChild(){
-        return  this.currentNode.childes.size()==0 && this.currentNode.IsRoot()==true;
+        return  this.currentNode.childes.size()==0 && this.currentNode.isRoot()==true;
     }
 
     private boolean checkIfCanGoTowardsRoot(){
-       return this.currentNode.parent !=null && !this.currentNode.IsRoot();
+       return this.currentNode.parent !=null && !this.currentNode.isRoot();
     }
 
     private boolean checkIfSolutionFounded(){

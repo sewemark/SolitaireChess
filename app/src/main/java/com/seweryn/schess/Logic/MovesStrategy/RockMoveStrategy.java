@@ -22,12 +22,14 @@ public class RockMoveStrategy extends MoveStrategy implements IMoveStrategy {
         for(int i =0 ;i < this.width; i++){
             Vector vector = xLine.plus(new Vector(i*1, 0));
             if(checkRange(vector))
-                listOfPossibleMoves.add(Vector.convertToScalar(width, height,vector));
+                if(!vector.equals(piecePosition))
+                 listOfPossibleMoves.add(Vector.convertToScalar(width, height,vector));
         }
         for(int i =0 ;i < this.height; i++){
             Vector vector = yLine.plus(new Vector(0, i));
             if(checkRange(vector))
-                listOfPossibleMoves.add(Vector.convertToScalar(width, height,vector));
+                if(!vector.equals(piecePosition))
+                    listOfPossibleMoves.add(Vector.convertToScalar(width, height,vector));
         }
         return toIntArray(listOfPossibleMoves);
     }

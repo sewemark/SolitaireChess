@@ -9,15 +9,6 @@ import java.util.List;
  * Created by sew on 2016-01-24.
  */
 public class KnightMoveStrategy extends  MoveStrategy implements IMoveStrategy {
-    Vector[] horseVectors = {new Vector(2,1),
-            new Vector(-2,1),
-            new Vector(2,-1),
-            new Vector(-2,-1),
-            new Vector(-1,2),
-            new Vector(-1,-2),
-            new Vector(1,2),
-            new Vector(1,-2)
-    };
     public KnightMoveStrategy(int _width, int _height) {
         super(_width, _height);
     }
@@ -32,4 +23,14 @@ public class KnightMoveStrategy extends  MoveStrategy implements IMoveStrategy {
         }
         return toIntArray(listOfPossibleMoves);
     }
+
+    Vector[] horseVectors = {new Vector(2,1),
+            new Vector(-2,1),
+            new Vector(2,-1),
+            new Vector(-2,-1),
+            new Vector(-1,2),
+            new Vector(-1,-2),
+            new Vector(1,2),
+            new Vector(1,-2)
+    };
 }

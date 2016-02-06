@@ -20,13 +20,13 @@ public abstract class MoveStrategy  {
             position= position.plus(vector);
         }
         return position;
-    }  public Integer[] toIntArray(List<Integer> list){
+    }
+    public Integer[] toIntArray(List<Integer> list){
         Integer[] ret = new Integer[list.size()];
         for(int i = 0;i < ret.length;i++)
             ret[i] = list.get(i);
         return ret;
     }
-
 
     public boolean checkRange(Vector position){
         if(position.getX()>= 0 && position.getX() < this.width){

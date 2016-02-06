@@ -7,6 +7,7 @@ import com.seweryn.schess.Models.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by sew on 2015-12-20.
  */

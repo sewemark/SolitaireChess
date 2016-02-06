@@ -106,20 +106,16 @@ public class CreateMapActivity extends Activity {
 
                     ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
                     int solutionNumber = handler.getNumberOfResults();
-                    System.out.println("solution number " + solutionNumber);
-                    System.out.println(handler.getTreeLeaves());
-
                     if (solutionNumber <= 0) {
-                        System.out.println("Nie ma rozwiazania");
                         PuzzleHardnessDialog dialog = new
                                 PuzzleHardnessDialog();
-                        dialog.show(getFragmentManager(), "dialog");
+                        dialog.show(getFragmentManager(), "There is no solution for this board");
                     } else {
                         PuzzleType type = puzzleTypeCalsificator.clasify(solutionNumber,handler.getTreeWidth(),handler.getTreeLeaves());
                         PuzzleHardnessClasificationDialog dialog = new
                                 PuzzleHardnessClasificationDialog();
                         dialog.setPuzleType(type.toString());
-                        dialog.show(getFragmentManager(), "dialog");
+                        dialog.show(getFragmentManager(), "Board was classified");
                         databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
 
                     }

@@ -1,6 +1,12 @@
 package com.seweryn.schess.Controllers;
 
+import com.seweryn.schess.Enums.PieceType;
+import com.seweryn.schess.Logic.CollisionLogic;
 import com.seweryn.schess.Models.Vector;
+import com.seweryn.schess.Static.Lodash;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sew on 2016-01-02.
@@ -39,6 +45,57 @@ public class BoardLogicController implements  IBoardLogicController {
     public void setPieceAtPosition(int position, int pieceValue){
         Vector positionVector = Vector.convertToVector(boardWidth, boardHeight, position);
          this.board[positionVector.getY()][positionVector.getX()]= pieceValue;
+    }
+    public boolean canMove(int destinationPosition,Vector currentPieceVector, PieceType currentPieceType){
+        CollisionLogic logic = new CollisionLogic();
+
+        Vector destinationVector = Vector.convertToVector(board[0].length, board.length, destinationPosition);
+        if (destinationVector.equals(currentPieceVector)) {
+
+            return false;
+        }
+        if(board[destinationVector.getY()][destinationVector.getX()] != 0) {
+            if(currentPieceType!= PieceType.HORSE) {
+                List<Vector> listOfPossibleCollistions = logic.checkIfCollision(currentPieceVector, destinationVector);
+                for (int j = 0; j < listOfPossibleCollistions.size(); j++) {
+                    Vector v = listOfPossibleCollistions.get(j);
+                    if (board[v.getY()][v.getX()] != 0) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else{
+                Vector v = Vector.convertToVector(board[0].length, board.length, destinationPosition);
+                if (board[v.getY()][v.getX()] != 0) {
+                    return true;
+                }
+                else return false;
+            }
+        }
+        else
+            return false;
+    }
+    public Vector[] getPiecePositions(){
+
+        List<Vector> pieces = new ArrayList<>();
+
+        for(int i=0;i < board.length;i++){
+            for(int j=0; j<board[0].length;j++){
+                if(board[i][j] !=0){
+                    pieces.add(new Vector(j,i));
+                }
+            }
+        }
+        return pieces.toArray(new Vector[pieces.size()]);
+    }
+    public int[][] performMove(int destinationPosition,Vector currentPiecePosition){
+        Vector destinationVector = Vector.convertToVector(board[0].length, board.length, destinationPosition);
+        int[][]temp = Lodash.deepCopyIntMatrix(board);
+        int value = board[currentPiecePosition.getY()][currentPiecePosition.getX()];
+        temp[destinationVector.getY()][destinationVector.getX()] =value;
+        temp[currentPiecePosition.getY()][currentPiecePosition.getX()]=0;
+        return  temp;
     }
 
     @Override

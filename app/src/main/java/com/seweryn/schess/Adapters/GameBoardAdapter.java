@@ -127,9 +127,7 @@ public final class GameBoardAdapter extends BoardAdapter {
             databaseObject.setSolved();
             databaseContextController.update(databaseObject);
             showWinDialog(gridView);
-
             Intent mainMenu = new Intent(context, ChooseMapActivity.class);
-
             context.startActivity(mainMenu);
         }
     }
@@ -218,12 +216,10 @@ public final class GameBoardAdapter extends BoardAdapter {
                      v.setBackgroundDrawable(normalShape);
                      break;
                  case DragEvent.ACTION_DROP:
-                     // Dropped, reassign View to ViewGroup
                      View view = (View) event.getLocalState();
                      ViewGroup owner = (ViewGroup) view.getParent();
-                   //  GridView gridView = (GridView)owner.getParent();
                      int position = gridView.getPositionForView(view);
-                      owner.removeView(view);
+                     owner.removeView(view);
                      int viewTag = (int) view.getTag();
                      if(viewTag>0) {
                          PieceType pieceType = Lodash.getPiecType(viewTag);
