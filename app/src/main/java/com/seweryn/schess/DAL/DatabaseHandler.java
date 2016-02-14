@@ -21,14 +21,15 @@ public class DatabaseHandler {
     public DatabaseHandler(Context _context) {
         this.context = _context;
         rootPath = this.context.getCacheDir().toString();
-        this.CreateDatabaseIfNotExists();
+        this.createDatabaseIfNotExists();
+        this.initializaDataBase();
     }
     private Context context;
     private String rootPath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private final String rootDirectory ="puzzles71";
+    private final String rootDirectory ="puzzles72";
 
-    public  void CreateDatabaseIfNotExists() {
+    public  void createDatabaseIfNotExists() {
 
         File parrentDir = new File(context.getCacheDir() + "/"  + rootDirectory);
         if (!parrentDir.exists()) {
@@ -40,7 +41,6 @@ public class DatabaseHandler {
                     childDir.mkdir();
                 }
             }
-            InitializaDataBase();
         }
       }
     public void updatePuzzle(DatabaseObject objectToUpdate){
@@ -62,7 +62,7 @@ public class DatabaseHandler {
         if(parrentDir.exists()){
             DeleteFolderRecursive(parrentDir);
         }
-        CreateDatabaseIfNotExists();
+        createDatabaseIfNotExists();
     }
     private void DeleteFolderRecursive(File fileOrDirectory) {
 
@@ -164,9 +164,11 @@ public class DatabaseHandler {
         else
             return  new String[]{};
     }
-    public void InitializaDataBase(){
+    public void initializaDataBase(){
         InitializeEasyPuzzleDataBase();
         InitializeMediumPuzzleDataBase();
+        InitializeHardPuzzleDataBase();
+        InitializeVeryHardPuzzleDataBase();
     }
     public void InitializeEasyPuzzleDataBase(){
         int[][] board01 = {{0, 0, 0, 2},
@@ -191,8 +193,8 @@ public class DatabaseHandler {
                 {0, 0 , 0, 0}};
         savePuzzle(PuzzleType.EASY,board01);
         savePuzzle(PuzzleType.EASY,board02);
-        savePuzzle(PuzzleType.EASY,board03);
-        savePuzzle(PuzzleType.EASY,board04);
+        savePuzzle(PuzzleType.EASY, board03);
+        savePuzzle(PuzzleType.EASY, board04);
         savePuzzle(PuzzleType.EASY, board05);
     }
     public void InitializeMediumPuzzleDataBase(){
@@ -221,6 +223,60 @@ public class DatabaseHandler {
         savePuzzle(PuzzleType.MEDIUM,board03);
         savePuzzle(PuzzleType.MEDIUM,board04);
         savePuzzle(PuzzleType.MEDIUM,board05);
+    }
+    public void InitializeHardPuzzleDataBase(){
+        int[][] board01 = {{2, 0, 0, 0},
+                {0, 3, 5, 4},
+                {0, 0, 3, 2},
+                {4, 0 , 0, 0}};
+        int[][] board02 = {{0, 0, 5, 0},
+                {4, 0, 0, 0},
+                {0, 3, 0, 0},
+                {0, 0 , 2, 0}};
+        int[][] board03 = {{1, 0, 2, 0},
+                {0, 0, 0, 0},
+                {0, 5, 0, 0},
+                {3, 0 , 0, 0}};
+        int[][] board04 = {{0, 5, 0, 0},
+                {0, 0, 0, 1},
+                {0, 0, 5, 0},
+                {3, 0 , 0, 0}};
+        int[][] board05 = {{0, 4, 0, 0},
+                {0, 1, 0, 0},
+                {3, 0, 1, 0},
+                {0, 0 , 0, 0}};
+        savePuzzle(PuzzleType.HARD,board01);
+        savePuzzle(PuzzleType.HARD,board02);
+        savePuzzle(PuzzleType.HARD,board03);
+        savePuzzle(PuzzleType.HARD,board04);
+        savePuzzle(PuzzleType.HARD,board05);
+    }
+    public void InitializeVeryHardPuzzleDataBase(){
+        int[][] board01 = {{2, 0, 0, 0},
+                {0, 3, 5, 4},
+                {0, 0, 3, 2},
+                {4, 0 , 0, 0}};
+        int[][] board02 = {{0, 0, 5, 0},
+                {4, 0, 0, 0},
+                {0, 3, 0, 0},
+                {0, 0 , 2, 0}};
+        int[][] board03 = {{1, 0, 2, 0},
+                {0, 0, 0, 0},
+                {0, 5, 0, 0},
+                {3, 0 , 0, 0}};
+        int[][] board04 = {{0, 5, 0, 0},
+                {0, 0, 0, 1},
+                {0, 0, 5, 0},
+                {3, 0 , 0, 0}};
+        int[][] board05 = {{0, 4, 0, 0},
+                {0, 1, 0, 0},
+                {3, 0, 1, 0},
+                {0, 0 , 0, 0}};
+        savePuzzle(PuzzleType.VERYHARD,board01);
+        savePuzzle(PuzzleType.VERYHARD,board02);
+        savePuzzle(PuzzleType.VERYHARD,board03);
+        savePuzzle(PuzzleType.VERYHARD,board04);
+        savePuzzle(PuzzleType.VERYHARD,board05);
     }
 }
 

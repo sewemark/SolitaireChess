@@ -23,8 +23,6 @@ public class CollisionLogic implements ICollisionLogic {
           Vector vector= Lodash.getVectorForDirection(direction);
           sourcePosition= sourcePosition.plus(vector);
           while(!sourcePosition.equals(destinationPosition)){
-
-
               possibleCollisions.add(sourcePosition);
               sourcePosition= sourcePosition.plus(vector);
           }

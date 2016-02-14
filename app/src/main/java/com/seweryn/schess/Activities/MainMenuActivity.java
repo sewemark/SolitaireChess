@@ -18,27 +18,32 @@ import com.seweryn.schess.Controllers.IDatabaseContextController;
 import com.seweryn.schess.Controllers.SCDatabaseContextController;
 import com.seweryn.schess.Enums.PuzzleType;
 import com.seweryn.schess.R;
+import com.seweryn.schess.Static.Lodash;
 
 
 public class MainMenuActivity extends AppCompatActivity {
     private  LayoutInflater boardLayoutInflater;
     protected SharedPreferences sharedpreferences;
     IDatabaseContextController databaseContextController;
+    int popupWindowWidth;
+    int popupWindowHeight;
+
     public static final String ApplicationPreferences = "SCPreferences" ;
     @Override
     public void onCreate(Bundle savedInstanceeState) {
 
         super.onCreate(savedInstanceeState);
         setContentView(R.layout.menu_main);
-
+         popupWindowWidth = Lodash.dpToPx(220, getBaseContext());
+         popupWindowHeight =Lodash.dpToPx(250, getBaseContext());
         boardLayoutInflater = LayoutInflater.from(this);
         databaseContextController = new SCDatabaseContextController().getDatabaseContextContrller(this);
         Button selectChallengeButton  = (Button)findViewById(R.id.Button01);
         Button quickPlayButton = (Button) findViewById(R.id.Button02);
         Button createMapButton = (Button) findViewById(R.id.Button04);
         Button settingsButton = (Button) findViewById(R.id.Button03);
-        sharedpreferences = getSharedPreferences(ApplicationPreferences, this.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedpreferences.edit();
+        //sharedpreferences = getSharedPreferences(ApplicationPreferences, this.MODE_PRIVATE);
+      //  final SharedPreferences.Editor editor = sharedpreferences.edit();
         boardLayoutInflater = LayoutInflater.from(this);
         quickPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +60,8 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final View layout = boardLayoutInflater.inflate(R.layout.choose_board_size_popup,(ViewGroup)v.findViewById(R.id.popup));
-                final PopupWindow pwindo = new PopupWindow(layout, 350, 460, true);
+
+                final PopupWindow pwindo = new PopupWindow(layout, popupWindowWidth, popupWindowHeight, true);
                 pwindo.showAtLocation(layout, Gravity.CENTER,0, 0);
                 Button cancelButton = (Button)layout.findViewById(R.id.cancelButton);
                 cancelButton.setOnClickListener(new View.OnClickListener(){
@@ -94,8 +100,9 @@ public class MainMenuActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final View layout = boardLayoutInflater.inflate(R.layout.settings_popup,(ViewGroup)v.findViewById(R.id.popup));
-                final PopupWindow pwindo = new PopupWindow(layout, 350, 460, true);
+                final View layout = boardLayoutInflater.inflate(R.layout.settings_popup, (ViewGroup) v.findViewById(R.id.popup));
+
+                final PopupWindow pwindo = new PopupWindow(layout, popupWindowWidth, popupWindowHeight, true);
                 pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
                 final Switch hintsSwitch = (Switch) layout.findViewById(R.id.hintsSwitch);
 
@@ -128,8 +135,8 @@ public class MainMenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        editor.putBoolean("HintsSwitched", turnOnHints[0]);
-                        editor.commit();
+                        //editor.putBoolean("HintsSwitched", turnOnHints[0]);
+                  //      editor.commit();
                         pwindo.dismiss();
                     }
                 });

@@ -13,6 +13,7 @@
         <activity
             android:name=".Activities.SplashScreenActivity"
             android:label="@string/app_name"
+            android:launchMode="singleInstance"
             android:parentActivityName=".Activities.MainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -23,23 +24,27 @@
         </activity>
         <activity
             android:name=".Activities.MainMenuActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name">
 
         </activity>
         <activity
             android:name=".Activities.GameActivity"
             android:parentActivityName=".Activities.MainMenuActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name">
 
         </activity>
         <activity
             android:name=".Activities.CreateMapActivity"
+            android:launchMode="singleInstance"
             android:parentActivityName=".Activities.SplashScreenActivity"
             android:label="@string/app_name">
 
         </activity>
         <activity
             android:name=".Activities.ChooseMapActivity"
+            android:launchMode="singleInstance"
             android:parentActivityName=".Activities.MainMenuActivity"
             android:label="@string/app_name">
         </activity>

@@ -1,5 +1,8 @@
 package com.seweryn.schess.Static;
 
+import android.content.Context;
+import android.util.DisplayMetrics;
+
 import com.seweryn.schess.Enums.Directions;
 import com.seweryn.schess.Enums.PieceType;
 import com.seweryn.schess.Models.Vector;
@@ -105,5 +108,15 @@ public class Lodash {
                 break;
         }
         return  resource;
+    }
+    public static int dpToPx(int dp,Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
+    }
+    public static int pxToDp(int px,Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return dp;
     }
 }

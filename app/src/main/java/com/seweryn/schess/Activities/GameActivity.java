@@ -62,10 +62,6 @@ public class GameActivity  extends Activity {
 
         }
 
-          //TODO
-            System.out.println("dasad");
-
-
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,9 +81,11 @@ public class GameActivity  extends Activity {
         menuButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent mainMenu = new Intent(GameActivity.this, MainMenuActivity.class);
+
+               Intent mainMenu = new Intent(GameActivity.this, MainMenuActivity.class);
 
                 GameActivity.this.startActivity(mainMenu);
+                GameActivity.this.finish();
 
             }
         });
@@ -124,7 +122,10 @@ public class GameActivity  extends Activity {
                 textView.invalidate();
             }
         });
-
-
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        this.finish();
     }
 }

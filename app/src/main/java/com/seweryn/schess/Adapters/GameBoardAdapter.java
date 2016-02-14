@@ -48,6 +48,7 @@ public final class GameBoardAdapter extends BoardAdapter {
     public static final String ApplicationPreferences = "SCPreferences" ;
     DatabaseObject databaseObject;
     public PuzzleType puzzleType;
+    Context contex;
     String boardName;
      GridView gridView;
      List<Solution> solutions;
@@ -55,6 +56,7 @@ public final class GameBoardAdapter extends BoardAdapter {
      public GameBoardAdapter(Context context,GridView _gridView ,IMoveRulesController _moveRulesController, IBoardLogicController _boardLogicController,IDatabaseContextController _databaseController, String _boardName,   PuzzleType _puzleType) {
          super(context,_boardLogicController, _databaseController.read(_puzleType,_boardName).getBoard()[0].length,  _databaseController.read(_puzleType,_boardName).getBoard().length);
          this.gridView = _gridView;
+         context=context;
          this.databaseContextController = _databaseController;
          this.moveLogicController = _moveRulesController;
          this.boardLogicController = _boardLogicController;
@@ -127,8 +129,6 @@ public final class GameBoardAdapter extends BoardAdapter {
             databaseObject.setSolved();
             databaseContextController.update(databaseObject);
             showWinDialog(gridView);
-            Intent mainMenu = new Intent(context, ChooseMapActivity.class);
-            context.startActivity(mainMenu);
         }
     }
     private void setView(View view, int resource, int tag){
@@ -182,14 +182,30 @@ public final class GameBoardAdapter extends BoardAdapter {
         this.undoMove();
     }
     public void showWinDialog(View v) throws InterruptedException {
-        View layout = boardLayoutInflater.inflate(R.layout.win_popup,(ViewGroup)v.findViewById(R.id.popup));
-        final PopupWindow pwindo = new PopupWindow(layout, 300, 370, true);
+        View layout = boardLayoutInflater.inflate(R.layout.win_popup, (ViewGroup) v.findViewById(R.id.popup));
+        int popupWindowWidth = Lodash.dpToPx(220, context);
+        int popupWindowHeight =Lodash.dpToPx(250, context);
+        final PopupWindow pwindo = new PopupWindow(layout, popupWindowWidth,popupWindowHeight, true);
         pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
-        Button cancelButton = (Button)layout.findViewById(R.id.cancelButton);
+        Button nextButton = (Button)layout.findViewById(R.id.nextBoardButton);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                setNextBoard();
+                pwindo.dismiss();
+            }
+        });
+        Button cancelButton = (Button)layout.findViewById(R.id.goBackMenuButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                 Intent mainMenu = new Intent(context, ChooseMapActivity.class);
+                context.startActivity(mainMenu);
+
                 pwindo.dismiss();
+
             }
         });
     }
