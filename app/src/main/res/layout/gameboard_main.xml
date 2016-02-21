@@ -18,7 +18,24 @@
             android:layout_height="40dp"
             android:drawableLeft="@drawable/menu_icon_24dp"
             android:text="@string/menu"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/timeElapsedHeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="25sp"
+            android:textColor="@color/backgroundcolorBrighter"
+            android:text="@string/timeElapsedValue" />
+        <TextView
+            android:id="@+id/timeElapsedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="25sp"
+            android:layout_marginLeft="7dp"
+            android:textColor="@color/backgroundcolorBrighter"
+             />
+    </LinearLayout>
     <GridView
         android:id="@+id/gridview"
         android:tag="gridview"

@@ -19,15 +19,23 @@ import java.io.ObjectInputStream;
  */
 public class DatabaseHandler {
     public DatabaseHandler(Context _context) {
-        this.context = _context;
+         this.context = _context;
+         setRootPate();
+         this.createDatabaseIfNotExists();
+
+    }
+
+    private void setRootPate() {
         rootPath = this.context.getCacheDir().toString();
-        this.createDatabaseIfNotExists();
-        this.initializaDataBase();
+    }
+
+    public DatabaseHandler(){
+
     }
     private Context context;
     private String rootPath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private final String rootDirectory ="puzzles72";
+    private final String rootDirectory ="puzzles179";
 
     public  void createDatabaseIfNotExists() {
 
@@ -41,6 +49,7 @@ public class DatabaseHandler {
                     childDir.mkdir();
                 }
             }
+            this.initializaDataBase();
         }
       }
     public void updatePuzzle(DatabaseObject objectToUpdate){

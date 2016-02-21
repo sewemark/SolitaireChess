@@ -4,6 +4,7 @@ package com.seweryn.schess.Activities;
  * Created by sew on 2015-11-20.
  */
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ public class CreateMapActivity extends Activity {
     private IDatabaseContextController databaseContextController;
     private IBoardLogicController boardLogiController;
     private IPuzzleTypeCalsificator puzzleTypeCalsificator;
+    private  ProgressDialog ringProgressDialog;
     private final  int defaltWidth =4;
     private final  int defaltHeight =4;
     private int boardWidth;
@@ -73,7 +75,7 @@ public class CreateMapActivity extends Activity {
                     try {
                         View layout = boardLayoutInflater.inflate(R.layout.add_piece_popup,(ViewGroup)v.findViewById(R.id.popup));
                         int popupWindowWidth =Lodash.dpToPx(220, getBaseContext());
-                        int popupWindowHeight =Lodash.dpToPx(250,getBaseContext());
+                        int popupWindowHeight =Lodash.dpToPx(400,getBaseContext());
                         pwindo = new PopupWindow(layout, popupWindowWidth, popupWindowHeight, true);
                         ListView popupListView = (ListView)layout.findViewById(R.id.addPieceListView);
                         CreateMapPopupListViewAdapter listViewAdapter = new CreateMapPopupListViewAdapter(CreateMapActivity.this,PieceType.values());
@@ -105,8 +107,9 @@ public class CreateMapActivity extends Activity {
             public void onClick(View v) {
 
                 try {
-
+                    showRingProgressDialog();
                     ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
+                    closeRingProgressDialog();
                     if (handler.getNumberOfResults() <= 0) {
                         shnoNoSolutionDialog();
                     }
@@ -147,6 +150,26 @@ public class CreateMapActivity extends Activity {
         PuzzleHardnessDialog dialog = new
                 PuzzleHardnessDialog();
         dialog.show(getFragmentManager(), "There is no solution for this board");
+    }
+    private void showRingProgressDialog(){
+
+            ringProgressDialog = ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Downloading Image ...", true);
+            ringProgressDialog.setCancelable(true);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // Here you should write your time consuming task...
+                        // Let the progress ring for 10 seconds...
+                        Thread.sleep(10000);
+                    } catch (Exception e) {
+                    }
+                    ringProgressDialog.dismiss();
+                }
+            }).start();
+        }
+    private void closeRingProgressDialog(){
+        ringProgressDialog.dismiss();
     }
 }
 

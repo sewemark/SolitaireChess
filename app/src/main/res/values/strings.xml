@@ -19,6 +19,7 @@
     <string name="windDialogHeader">Win dialog</string>
     <string name="save">Save</string>
     <string name="menu">Menu</string>
+    <string name="timeElapsedValue">Time</string>
     <string name="youWin">Congratulations you solved the puzzle</string>
     <string name="puzzle_hardness">Puzzle Hardness</string>
     <string name="negativmess">The puzzle you created has no solution. Reinvent the puzzle</string>

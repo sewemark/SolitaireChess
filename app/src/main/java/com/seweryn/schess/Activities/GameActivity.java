@@ -8,6 +8,8 @@ import android.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -32,6 +34,12 @@ public class GameActivity  extends Activity {
     IMoveRulesController moveRulesController;
     IBoardLogicController boardLogicController;
     String boardName;
+    private TextView timeElapsedTextView;
+    private long startTime = 0L;
+    private Handler customHandler = new Handler();
+    long timeInMilliseconds = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +53,15 @@ public class GameActivity  extends Activity {
         Button menuButton = (Button) findViewById(R.id.menuButton);
         Button selectChallengeButton = (Button) findViewById(R.id.selectChallengButton);
         Button previousButton = (Button) findViewById(R.id.previousButton);
+        timeElapsedTextView = (TextView)findViewById(R.id.timeElapsedTextView);
         final TextView textView = (TextView) findViewById(R.id.puzzleHardnessLevel);
+        setTimer();
 
         if(getIntent().getExtras()!=null) {
+
             boardName = (String) getIntent().getExtras().get("boardName");
             PuzzleType boardType =  PuzzleType.valueOf(getIntent().getExtras().getString("boardType"));
-            databaseContextController = new SCDatabaseContextController().getDatabaseContextContrller(this);
-            moveRulesController = new SCMoveRulesController().getMoveRulesController();
-            boardLogicController = new SCBoardLogicController().getBoardLogicController();
+            injectControllers();
             DatabaseObject databaseObject = databaseContextController.read(boardType, boardName);
             gameBoardAdapter = new GameBoardAdapter(this,gridView,moveRulesController,boardLogicController,databaseContextController,boardName, boardType);
 
@@ -82,8 +91,8 @@ public class GameActivity  extends Activity {
             @Override
             public void onClick(View v){
 
-               Intent mainMenu = new Intent(GameActivity.this, MainMenuActivity.class);
-
+                Intent mainMenu = new Intent(GameActivity.this, MainMenuActivity.class);
+                customHandler.removeCallbacks(updateTimerThread);
                 GameActivity.this.startActivity(mainMenu);
                 GameActivity.this.finish();
 
@@ -95,6 +104,7 @@ public class GameActivity  extends Activity {
                 Intent mainMenu = new Intent(GameActivity.this, ChooseMapActivity.class);
                 GameActivity.this.startActivity(mainMenu);
                 GameActivity.this.finish();
+                customHandler.removeCallbacks(updateTimerThread);
 
             }
         });
@@ -108,6 +118,7 @@ public class GameActivity  extends Activity {
             @Override
             public void onClick(View v){
                 gameBoardAdapter.setNextBoard();
+                setTimer();
                 textView.setText(gameBoardAdapter.getCurrentPuzzleType().toString());
                 textView.invalidate();
             }
@@ -118,14 +129,43 @@ public class GameActivity  extends Activity {
             public void onClick(View v){
 
                 gameBoardAdapter.setPreviousBoard();
+                setTimer();
                 textView.setText(gameBoardAdapter.getCurrentPuzzleType().toString());
                 textView.invalidate();
             }
         });
     }
+    private void setTimer(){
+        startTime = SystemClock.uptimeMillis();
+        customHandler.removeCallbacks(updateTimerThread);
+        customHandler.postDelayed(updateTimerThread, 0);
+    }
+
     @Override
     public void onStop(){
         super.onStop();
+        customHandler.removeCallbacks(updateTimerThread);
         this.finish();
     }
+    private Runnable updateTimerThread = new Runnable() {
+        public void run() {
+            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int milliseconds = (int) (updatedTime % 1000);
+            timeElapsedTextView.setText("" + mins + ":"
+                            + String.format("%02d", secs) + ":"
+                            + String.format("%03d", milliseconds));
+            customHandler.postDelayed(this, 0);
+        }
+    };
+    private void injectControllers(){
+        databaseContextController = new SCDatabaseContextController().getDatabaseContextContrller(this);
+        moveRulesController = new SCMoveRulesController().getMoveRulesController();
+        boardLogicController = new SCBoardLogicController().getBoardLogicController();
+    }
+
+
 }

@@ -19,6 +19,7 @@ import android.widget.PopupWindow;
 
 import com.seweryn.schess.Activities.ChooseMapActivity;
 import com.seweryn.schess.Activities.GameActivity;
+import com.seweryn.schess.Activities.MainMenuActivity;
 import com.seweryn.schess.Controllers.IBoardLogicController;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
 import com.seweryn.schess.Controllers.IMoveRulesController;
@@ -75,7 +76,8 @@ public final class GameBoardAdapter extends BoardAdapter {
     }
     public void initializeBoard(DatabaseObject databaseObject){
         //DatabaseObject databaseObject = databaseContextController.read(puzzleType,boardName);
-        this.boardLogicController.setBoard(databaseObject.getBoard());
+
+        this.boardLogicController.setBoard(Lodash.deepCopyIntMatrix(databaseObject.getBoard()));
         this.boardName = databaseObject.getFileName();
         this.puzzleType = databaseObject.getPuzzleType();
         gridView.setNumColumns(boardLogicController.getBoard()[0].length);
@@ -201,7 +203,7 @@ public final class GameBoardAdapter extends BoardAdapter {
             @Override
             public void onClick(View v) {
 
-                 Intent mainMenu = new Intent(context, ChooseMapActivity.class);
+                 Intent mainMenu = new Intent(context, MainMenuActivity.class);
                 context.startActivity(mainMenu);
 
                 pwindo.dismiss();

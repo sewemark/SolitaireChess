@@ -42,8 +42,8 @@ public class MainMenuActivity extends AppCompatActivity {
         Button quickPlayButton = (Button) findViewById(R.id.Button02);
         Button createMapButton = (Button) findViewById(R.id.Button04);
         Button settingsButton = (Button) findViewById(R.id.Button03);
-        //sharedpreferences = getSharedPreferences(ApplicationPreferences, this.MODE_PRIVATE);
-      //  final SharedPreferences.Editor editor = sharedpreferences.edit();
+        sharedpreferences = getSharedPreferences(ApplicationPreferences, this.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedpreferences.edit();
         boardLayoutInflater = LayoutInflater.from(this);
         quickPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +82,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         mainMenu.putExtra("BoardWidth", Integer.valueOf(boardWidthTextView.getText().toString()));
                         mainMenu.putExtra("BoardHeight", Integer.valueOf(boardHeightTextView.getText().toString()));
                         MainMenuActivity.this.startActivity(mainMenu);
+                        pwindo.dismiss();
                     }
                 });
 
@@ -135,8 +136,8 @@ public class MainMenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        //editor.putBoolean("HintsSwitched", turnOnHints[0]);
-                  //      editor.commit();
+                        editor.putBoolean("HintsSwitched", turnOnHints[0]);
+                        editor.commit();
                         pwindo.dismiss();
                     }
                 });
