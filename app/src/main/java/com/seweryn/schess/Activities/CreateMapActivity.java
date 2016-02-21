@@ -107,9 +107,9 @@ public class CreateMapActivity extends Activity {
             public void onClick(View v) {
 
                 try {
-                    showRingProgressDialog();
+                  //  showRingProgressDialog();
                     ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
-                    closeRingProgressDialog();
+                   // closeRingProgressDialog();
                     if (handler.getNumberOfResults() <= 0) {
                         shnoNoSolutionDialog();
                     }
@@ -144,6 +144,7 @@ public class CreateMapActivity extends Activity {
                 PuzzleHardnessClasificationDialog();
         dialog.setPuzleType(type.toString());
         dialog.show(getFragmentManager(), "Board was classified");
+
     }
 
     private void shnoNoSolutionDialog() {
@@ -170,6 +171,11 @@ public class CreateMapActivity extends Activity {
         }
     private void closeRingProgressDialog(){
         ringProgressDialog.dismiss();
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        this.finish();
     }
 }
 

@@ -28,40 +28,45 @@ public class DFSTree implements ISearchTree<Solution> {
     }
     @Override
     public void run() {
-     this.numOfSol=  this.Search();
+     this.numOfSol=  this.search();
     }
 
-    public int Search(){
+    public int search(){
+        try {
+            if (!this.currentNode.wasExpanded()) {
+                this.currentNode.expandChild();
 
-       if(!this.currentNode.wasExpanded()) {
-               this.currentNode.expandChild();
+                if (checkIfRootHasChild()) {
+                    return NO_SOLUTION;
+                }
+                updateTreeProperties();
+            }
 
-               if(checkIfRootHasChild()) {
-                  return NO_SOLUTION;
-              }
-              updateTreeProperties();
-       }
-
-        if(this.currentNode.childes.size()>0){
-            this.currentNode = this.currentNode.childes.get(0);
-            this.currentNode.parent.childes.remove(0);
-            Search();
+            if (this.currentNode.childes.size() > 0) {
+                this.currentNode = this.currentNode.childes.get(0);
+                this.currentNode.parent.childes.remove(0);
+                search();
+            } else {
+                if (checkIfSolutionFounded()) {
+                    numOfSolutions++;
+                    extractSolution();
+                }
+                if (checkIfCanGoTowardsRoot()) {
+                    this.currentNode.childes.removeAll(this.currentNode.childes);
+                    this.currentNode = this.currentNode.parent;
+                    search();
+                } else {
+                    return numOfSolutions;
+                }
+            }
+            return numOfSolutions;
         }
-        else{
-             if(checkIfSolutionFounded()) {
-                 numOfSolutions++;
-                 extractSolution();
-             }
-             if(checkIfCanGoTowardsRoot()){
-                  this.currentNode.childes.removeAll(this.currentNode.childes);
-                  this.currentNode = this.currentNode.parent;
-                  Search();
-             }
-            else{
-                 return numOfSolutions;
-             }
+        catch(Exception ex){
+            System.out.println(ex.toString());
         }
-        return numOfSolutions;
+        finally{
+            return numOfSolutions;
+        }
     }
 
     @Override

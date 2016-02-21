@@ -31,6 +31,7 @@ public class PuzzleHardnessClasificationDialog  extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
 
                         startActivity(new Intent(getActivity(),MainMenuActivity.class));
+
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
