@@ -119,4 +119,25 @@ public class Lodash {
         int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return dp;
     }
+    public static Integer[][] intToIntegerArray(int[][] intArray){
+        Integer[][] newArray = new Integer[intArray.length][intArray[0].length];
+        for (int i=0;i<intArray.length;i++) {
+            for(int j =0;j<intArray[0].length;j++) {
+                newArray[i][j] = Integer.valueOf(intArray[i][j]);
+
+            }
+        }
+        return  newArray;
+    }
+    public static int[][] integerToIntArray(Integer[][] intArray){
+        int[][] newArray = new int[intArray.length][intArray[0].length];
+        for (int i=0;i<intArray.length;i++) {
+            for(int j =0;j<intArray[0].length;j++) {
+                newArray[i][j] = Integer.valueOf(intArray[i][j]);
+
+            }
+        }
+        return  newArray;
+    }
+
 }

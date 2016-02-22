@@ -6,6 +6,7 @@ package com.seweryn.schess.Activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import com.seweryn.schess.SearchAlgoritm.ISearchTree;
 import com.seweryn.schess.SearchAlgoritm.PuzzleTypeCalsificator;
 import com.seweryn.schess.R;
 import com.seweryn.schess.SearchAlgoritm.SolutionFinder;
+//import com.seweryn.schess.SolutionFinderTask;
 import com.seweryn.schess.Static.Lodash;
 
 
@@ -68,7 +70,9 @@ public class CreateMapActivity extends Activity {
         gridView.setAdapter(gridViewAdapter);
         gridViewAdapter.notifyDataSetChanged();
         boardLayoutInflater = LayoutInflater.from(this);
-
+        ringProgressDialog= new ProgressDialog(this);
+        ringProgressDialog.setIndeterminate(true);
+        ringProgressDialog.setMessage("I am thinking");
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
@@ -105,15 +109,21 @@ public class CreateMapActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+             //   showRingProgressDialog();
+               try {
+                   ringProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution ...", true);
+                   SolutionFinderTask solutionFinderTask = new SolutionFinderTask(context);
+                   Integer [][]inte = Lodash.intToIntegerArray(gridViewAdapter.boardLogicController.getBoard());
+                   solutionFinderTask.execute(inte);
+                   ISearchTree handler = solutionFinderTask.get();
+                 //  ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
 
-                try {
-                  //  showRingProgressDialog();
-                    ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
-                   // closeRingProgressDialog();
                     if (handler.getNumberOfResults() <= 0) {
+                        closeRingProgressDialog();
                         shnoNoSolutionDialog();
                     }
                     else {
+
                         PuzzleType type = puzzleTypeCalsificator.clasify(handler.getNumberOfResults(),handler.getTreeWidth(),handler.getTreeLeaves());
                         showClasificationDialog(type);
                         databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
@@ -121,6 +131,7 @@ public class CreateMapActivity extends Activity {
                     }
                 } catch (Exception e) {
                 }
+
             }
         });
     }
@@ -153,21 +164,7 @@ public class CreateMapActivity extends Activity {
         dialog.show(getFragmentManager(), "There is no solution for this board");
     }
     private void showRingProgressDialog(){
-
-            ringProgressDialog = ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Downloading Image ...", true);
-            ringProgressDialog.setCancelable(true);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        // Here you should write your time consuming task...
-                        // Let the progress ring for 10 seconds...
-                        Thread.sleep(10000);
-                    } catch (Exception e) {
-                    }
-                    ringProgressDialog.dismiss();
-                }
-            }).start();
+        ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution ...", true);
         }
     private void closeRingProgressDialog(){
         ringProgressDialog.dismiss();
@@ -176,6 +173,31 @@ public class CreateMapActivity extends Activity {
     public void onStop(){
         super.onStop();
         this.finish();
+    }
+    private class SolutionFinderTask extends AsyncTask<Integer[][],Void, ISearchTree> {
+        private Context context;
+        public SolutionFinderTask(Context context) {
+        }
+        @Override
+        protected void onPreExecute() {
+
+    ringProgressDialog.show();
+
+            // progressDialog = new ProgressDialog(context);
+            // progressDialog.show("Please wait ...", "Finding solution ...", true);
+        }
+
+        @Override
+        protected ISearchTree doInBackground(Integer[][]...parms) {
+            ISearchTree searchTree= SolutionFinder.findSolution(new DFSTree(Lodash.integerToIntArray(parms[0])));
+                return  searchTree;
+        }
+
+        @Override
+        protected void onPostExecute(ISearchTree v) {
+            ringProgressDialog.dismiss();
+        }
+
     }
 }
 
