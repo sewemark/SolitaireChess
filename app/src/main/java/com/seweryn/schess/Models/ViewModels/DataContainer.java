@@ -1,4 +1,4 @@
-package com.seweryn.schess.Models;
+package com.seweryn.schess.Models.ViewModels;
 
 /**
  * Created by sew on 2016-01-19.

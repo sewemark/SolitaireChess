@@ -1,7 +1,6 @@
 package com.seweryn.schess.Adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.seweryn.schess.Models.DataContainer;
+import com.seweryn.schess.Models.ViewModels.DataContainer;
 import com.seweryn.schess.R;
 
 import java.util.ArrayList;

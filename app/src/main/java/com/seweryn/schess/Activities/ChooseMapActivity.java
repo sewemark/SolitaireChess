@@ -25,10 +25,15 @@ public class ChooseMapActivity extends AppCompatActivity  {
     String puzzleTabNames[] = {"EASY","MEDIUM", "HARD", "VERY HARD"};
     public ChooseMapActivity(){
     }
+    /**
+     * overridden oncreate method that injects controllers and
+     * sets UI event handlers
+     * @param  savedInstanceeState bundle
+     * */
     @Override
     public void onCreate(Bundle savedInstanceeState) {
         super.onCreate(savedInstanceeState);
-        controller = new DatabaseContextController(this);
+        injectControllers();
 
         setContentView(R.layout.choose_map);
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -78,5 +83,11 @@ public class ChooseMapActivity extends AppCompatActivity  {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    /**
+     * method that instantiates proper instances of controllers to interfaces
+     **/
+    public void injectControllers(){
+        controller = new DatabaseContextController(this);
     }
 }

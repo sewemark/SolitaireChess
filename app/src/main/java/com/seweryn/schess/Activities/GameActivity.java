@@ -38,7 +38,12 @@ public class GameActivity  extends Activity {
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
-
+    /**
+     * overridden oncreate method that injects controllers
+     * set up control adapters
+     * and sets UI event handlers
+     * @param  savedInstanceState bundle
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,8 +146,8 @@ public class GameActivity  extends Activity {
     @Override
     public void onStop(){
         super.onStop();
-        timerHandler.removeCallbacks(updateTimerThread);
         this.finish();
+        timerHandler.removeCallbacks(updateTimerThread);
     }
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
@@ -153,11 +158,14 @@ public class GameActivity  extends Activity {
             seconds = seconds % 60;
             int milliseconds = (int) (updatedTime % 1000);
             timeElapsedTextView.setText("" + minutes + ":"
-                            + String.format("%02d", minutes) + ":"
-                            + String.format("%03d", milliseconds));
-            timerHandler.postDelayed(this, 0);
+                            + String.format("%02d", seconds));
+            gameBoardAdapter.updateTime(timeElapsedTextView.getText().toString());
+            timerHandler.postDelayed(this, 1000);
         }
     };
+    /**
+     * method that instantiates proper instances of controllers to interfaces
+     **/
     private void injectControllers(){
         databaseContextController = new SCDatabaseContextController().getDatabaseContextContrller(this);
         moveRulesController = new SCMoveRulesController().getMoveRulesController();

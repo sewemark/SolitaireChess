@@ -14,7 +14,7 @@ import com.seweryn.schess.R;
 public class CreateBoardSizeChooserDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.negativmess)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

@@ -16,6 +16,12 @@ import java.util.Map;
  */
 public class Lodash {
 
+    /**
+     * generic method that checks if element of generic type is array
+     * @param  array generic array to look for element
+     * @param  element element to find
+     * @return  boolean value that indicates if element is in array
+     * */
     public static <T> boolean  HasElement(T[] array, T element){
         for(int i=0;i<array.length;i++){
             if(array[i].equals(element))
@@ -23,6 +29,11 @@ public class Lodash {
         }
         return  false;
     }
+    /**
+     *  method that returns vecotr that lead to particular direction in cartesian
+     * @param  direction
+     * @return  vector object for particular direction
+     * */
     public static Vector getVectorForDirection(Directions direction){
 
         Map<Directions,Vector>  map =  new HashMap<Directions,Vector>();
@@ -36,16 +47,26 @@ public class Lodash {
         map.put(Directions.NW, new Vector(-1,-1));
         return  map.get(direction);
     }
+    /**
+     *  method that return piece type for particular integer value
+     * @param  key integer value  represents some piece type
+     * @return  piece type for particular key value
+     * */
     public static PieceType getPiecType(int key){
         Map<Integer,PieceType> map =  new HashMap<Integer,PieceType>();
         map.put(1,PieceType.KING);
-        map.put(2,PieceType.TOWER);
+        map.put(2,PieceType.ROCK);
         map.put(3,PieceType.PAWN);
         map.put(4,PieceType.BISHOP);
-        map.put(5,PieceType.HORSE);
+        map.put(5,PieceType.KNIGHT);
         map.put(6, PieceType.QUEEN);
         return map.get(key);
     }
+    /**
+     *  method that returns deep copy of two dimensionl integer array
+     * @param  input source integer array
+     * @return  deep copy of input array
+     * */
     public static int[][] deepCopyIntMatrix(int[][] input) {
         if (input == null)
             return null;
@@ -55,6 +76,12 @@ public class Lodash {
         }
         return result;
     }
+    /**
+     *  method that checks if two two dimensional integer arrays are equal(store the same values)
+     * @param  board  integer array
+     * @param  nextboard  integer array
+     * @return  boolean value that indicates if input arrays are equal
+     * */
     public static boolean areBoardsEqual(int[][] board, int[][]nextboard){
         if(board.length != nextboard.length)
             return false;
@@ -70,26 +97,34 @@ public class Lodash {
         return  true;
     }
 
-
+    /**
+     *  method that returns drawable resource for particular piece type
+     * @param  pieceType  piece type
+     * @return  drawable resource
+     * */
     public static int getResource(PieceType pieceType){
         int resource = 0;
 
         if(pieceType ==PieceType.KING)
             resource = R.drawable.king_white;
-        else if(pieceType == PieceType.TOWER)
+        else if(pieceType == PieceType.ROCK)
             resource = R.drawable.rock_white;
         else if(pieceType == PieceType.PAWN)
             resource=R.drawable.pawn_white;
         else if(pieceType == PieceType.BISHOP)
             resource = R.drawable.bishop_white;
-        else if(pieceType == PieceType.HORSE)
+        else if(pieceType == PieceType.KNIGHT)
             resource = R.drawable.knight_white;
         else if(pieceType == PieceType.QUEEN)
             resource = R.drawable.queen_white;
 
         return  resource;
     }
-
+    /**
+     *  method that returns drawable resource for particular piece type value
+     * @param  tabValue  piece type value
+     * @return  drawable resource
+     * */
     public static int getResource(int tabValue){
         int resource = 0;
         switch (tabValue){
@@ -109,16 +144,33 @@ public class Lodash {
         }
         return  resource;
     }
+    /**
+     *  method that dp value to px value
+     * @param  dp  value in density independent unit
+     * @param context
+     * @return  input dp value converted to px value
+     * */
     public static int dpToPx(int dp,Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
     }
+    /**
+     *  method that px value to dp vale
+     * @param  px  value in pixel unit
+     * @param context
+     * @return  input px value converted to dp value
+     * */
     public static int pxToDp(int px,Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return dp;
     }
+    /**
+     *  method convert two dimensional integer array to Integer array
+     * @param  intArray  integer array
+     * @return  two dimensional Integer array
+     * */
     public static Integer[][] intToIntegerArray(int[][] intArray){
         Integer[][] newArray = new Integer[intArray.length][intArray[0].length];
         for (int i=0;i<intArray.length;i++) {
@@ -129,6 +181,11 @@ public class Lodash {
         }
         return  newArray;
     }
+    /**
+     *  method convert two dimensional Integer array to integer array
+     * @param  intArray  Integer array
+     * @return  two dimensional integer array
+     * */
     public static int[][] integerToIntArray(Integer[][] intArray){
         int[][] newArray = new int[intArray.length][intArray[0].length];
         for (int i=0;i<intArray.length;i++) {

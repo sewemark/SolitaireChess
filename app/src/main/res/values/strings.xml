@@ -14,10 +14,11 @@
     <string name="hintsSwitched">Hints</string>
     <string name="cancel">Cancel</string>
     <string name="addPieceDialog">Add piece dialog</string>
-    <string name="hintsTurnedOn">Hints turned on</string>
+    <string name="hintsTurnedOn">Hints turned</string>
     <string name="ok">Ok</string>
     <string name="windDialogHeader">Win dialog</string>
     <string name="save">Save</string>
+    <string name="timeElapsedHeader">Time elapsed</string>
     <string name="menu">Menu</string>
     <string name="timeElapsedValue">Time</string>
     <string name="youWin">Congratulations you solved the puzzle</string>

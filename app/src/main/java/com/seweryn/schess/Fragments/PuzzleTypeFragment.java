@@ -1,28 +1,22 @@
 package com.seweryn.schess.Fragments;
 
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.seweryn.schess.Activities.GameActivity;
 import com.seweryn.schess.Adapters.ChoosMapListViewAdapter;
-import com.seweryn.schess.Enums.PuzzleType;
-import com.seweryn.schess.Models.DataContainer;
+import com.seweryn.schess.Models.ViewModels.DataContainer;
 import com.seweryn.schess.Models.DatabaseObject;
 import com.seweryn.schess.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by sew on 2016-01-16.

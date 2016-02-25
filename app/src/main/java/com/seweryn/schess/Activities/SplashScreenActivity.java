@@ -10,7 +10,12 @@ import android.os.Handler;
 import com.seweryn.schess.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
-
+    /**
+     * overridden oncreate method that
+     * set up control adapters
+     * and sets UI event handlers
+     * @param  savedInstanceeState bundle
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

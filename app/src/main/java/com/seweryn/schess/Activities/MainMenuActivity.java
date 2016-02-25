@@ -29,6 +29,12 @@ public class MainMenuActivity extends AppCompatActivity {
     int popupWindowHeight;
 
     public static final String ApplicationPreferences = "SCPreferences" ;
+    /**
+     * overridden oncreate method that
+     * set up control adapters
+     * and sets UI event handlers
+     * @param  savedInstanceeState bundle
+     * */
     @Override
     public void onCreate(Bundle savedInstanceeState) {
 

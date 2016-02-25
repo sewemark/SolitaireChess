@@ -13,13 +13,10 @@ public interface IDatabaseContextController {
      DatabaseObject read(PuzzleType puzzleType, String boardName);
      void save(PuzzleType puzzleType, int[][] t1);
      void update(DatabaseObject databaseObject);
-     String[] getPuzzleList();
      String[] getPuzzleListByType(PuzzleType t1);
      DatabaseObject[] getPuzzleObjectByType(PuzzleType t1);
      DatabaseObject readNextPuzzle(PuzzleType puzzleType, String boardName);
      DatabaseObject readPreviousPuzzle(PuzzleType puzzleType, String boardName);
-     PuzzleType getNextPuzzleType(PuzzleType t1);
      void resetDatabase();
 
-     String getNextBoardName(String t1);
 }

@@ -20,7 +20,6 @@ import android.widget.PopupWindow;
 
 import com.seweryn.schess.Adapters.CreateMapAdapter;
 import com.seweryn.schess.Adapters.CreateMapPopupListViewAdapter;
-import com.seweryn.schess.Controllers.DatabaseContextController;
 import com.seweryn.schess.Controllers.IBoardLogicController;
 import com.seweryn.schess.Controllers.IDatabaseContextController;
 import com.seweryn.schess.Controllers.SCBoardLogicController;
@@ -35,10 +34,11 @@ import com.seweryn.schess.SearchAlgoritm.ISearchTree;
 import com.seweryn.schess.SearchAlgoritm.PuzzleTypeCalsificator;
 import com.seweryn.schess.R;
 import com.seweryn.schess.SearchAlgoritm.SolutionFinder;
-//import com.seweryn.schess.SolutionFinderTask;
 import com.seweryn.schess.Static.Lodash;
 
-
+/**
+ *
+ */
 public class CreateMapActivity extends Activity {
     private  LayoutInflater boardLayoutInflater;
     private Context context;
@@ -57,6 +57,13 @@ public class CreateMapActivity extends Activity {
 
 
     }
+
+    /**
+     * overridden oncreate method that injects controllers
+     * set up control adapters
+     * and sets UI event handlers
+     * @param  savedInstanceState bundle
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +77,8 @@ public class CreateMapActivity extends Activity {
         gridView.setAdapter(gridViewAdapter);
         gridViewAdapter.notifyDataSetChanged();
         boardLayoutInflater = LayoutInflater.from(this);
-        ringProgressDialog= new ProgressDialog(this);
-        ringProgressDialog.setIndeterminate(true);
+        ringProgressDialog= new ProgressDialog(CreateMapActivity.this);
+       // ringProgressDialog.setIndeterminate(true);
         ringProgressDialog.setMessage("I am thinking");
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -111,37 +118,43 @@ public class CreateMapActivity extends Activity {
             public void onClick(View v) {
              //   showRingProgressDialog();
                try {
-                   ringProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution ...", true);
-                   SolutionFinderTask solutionFinderTask = new SolutionFinderTask(context);
+                    ProgressDialog d =ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution", true);
+                 //  ringProgressDialog = ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution ...", true);
+                   SolutionFinderTask solutionFinderTask = new SolutionFinderTask(context,d);
                    Integer [][]inte = Lodash.intToIntegerArray(gridViewAdapter.boardLogicController.getBoard());
                    solutionFinderTask.execute(inte);
                    ISearchTree handler = solutionFinderTask.get();
                  //  ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
 
-                    if (handler.getNumberOfResults() <= 0) {
-                        closeRingProgressDialog();
-                        shnoNoSolutionDialog();
+                  if (handler.getNumberOfResults() <= 0) {
+                      // d.dismiss();
+                      showNoSolutionDialog();
+
                     }
                     else {
 
                         PuzzleType type = puzzleTypeCalsificator.clasify(handler.getNumberOfResults(),handler.getTreeWidth(),handler.getTreeLeaves());
                         showClasificationDialog(type);
-                        databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
-
-                    }
+                      databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
+                      ringProgressDialog.dismiss();
+                      }
                 } catch (Exception e) {
                 }
 
             }
         });
     }
-
+    /**
+     * method that instantiates proper instances of controllers to interfaces
+     **/
     private void injectControllers() {
         puzzleTypeCalsificator = new PuzzleTypeCalsificator();
         boardLogiController = new SCBoardLogicController().getBoardLogicController();
         databaseContextController = new SCDatabaseContextController().getDatabaseContextContrller(this);
     }
-
+    /**
+     * method that gets board height and width from intent extras
+     **/
     private  void getBoardSizeFromExtras(){
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -150,25 +163,26 @@ public class CreateMapActivity extends Activity {
 
         }
     }
+    /**
+     * method that show puzzle clasificator dialog
+     **/
     private void showClasificationDialog(PuzzleType type) {
         PuzzleHardnessClasificationDialog dialog = new
-                PuzzleHardnessClasificationDialog();
+        PuzzleHardnessClasificationDialog();
         dialog.setPuzleType(type.toString());
         dialog.show(getFragmentManager(), "Board was classified");
 
     }
 
-    private void shnoNoSolutionDialog() {
+    /**
+     * method that show no solution dialog
+     **/
+    private void showNoSolutionDialog() {
         PuzzleHardnessDialog dialog = new
                 PuzzleHardnessDialog();
         dialog.show(getFragmentManager(), "There is no solution for this board");
     }
-    private void showRingProgressDialog(){
-        ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution ...", true);
-        }
-    private void closeRingProgressDialog(){
-        ringProgressDialog.dismiss();
-    }
+
     @Override
     public void onStop(){
         super.onStop();
@@ -176,26 +190,26 @@ public class CreateMapActivity extends Activity {
     }
     private class SolutionFinderTask extends AsyncTask<Integer[][],Void, ISearchTree> {
         private Context context;
-        public SolutionFinderTask(Context context) {
+        private ProgressDialog progressDialog;
+        public SolutionFinderTask(Context context, ProgressDialog progressDialog) {
+          //  ringProgressDialog = new ProgressDialog(context);
+            this.progressDialog = progressDialog;
         }
         @Override
         protected void onPreExecute() {
 
-    ringProgressDialog.show();
-
-            // progressDialog = new ProgressDialog(context);
-            // progressDialog.show("Please wait ...", "Finding solution ...", true);
         }
 
         @Override
         protected ISearchTree doInBackground(Integer[][]...parms) {
             ISearchTree searchTree= SolutionFinder.findSolution(new DFSTree(Lodash.integerToIntArray(parms[0])));
-                return  searchTree;
+            return  searchTree;
         }
 
         @Override
         protected void onPostExecute(ISearchTree v) {
-            ringProgressDialog.dismiss();
+           // ringProgressDialog.dismiss();
+           //progressDialog.dismiss();
         }
 
     }

@@ -12,10 +12,20 @@ import java.util.List;
  */
 public class CollisionLogicController implements  ICollisionLogicController<Vector> {
     private ICollisionLogic logic;
+    /**
+     * @param  _logic collision logic
+     * */
     public CollisionLogicController(ICollisionLogic _logic){
      logic =  _logic;
     }
 
+    /**
+     * checks if for path from source to destination position any possible collision positions
+     * may occur
+     * @param  sourcePosition source position a piece
+     * @param  destinationPosition destination position of a piece
+     * @return  list of vector objects that contain possible collision positions
+     * */
     @Override
     public List<Vector> checkIfCollision(Vector sourcePosition, Vector destinationPosition) {
 

@@ -9,8 +9,8 @@ import java.util.List;
  * Created by sew on 2016-01-03.
  */
 public class DatabaseObject  implements java.io.Serializable{
-    private  int[][] object;
-    private  List<Solution> solutions;
+    private int[][] object;
+    private List<Solution> solutions;
     private PuzzleType puzzleType;
     private String fileName;
     private boolean isSolved;
@@ -35,7 +35,7 @@ public class DatabaseObject  implements java.io.Serializable{
     public int[][]getBoard(){
         return this.object;
     }
-    public  String getFileName(){
+    public String getFileName(){
        return this.fileName;
     }
     public PuzzleType getPuzzleType(){

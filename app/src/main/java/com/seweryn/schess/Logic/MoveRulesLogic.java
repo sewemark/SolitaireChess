@@ -2,7 +2,6 @@ package com.seweryn.schess.Logic;
 
 import com.seweryn.schess.Enums.PieceType;
 import com.seweryn.schess.Logic.MovesStrategy.IMoveStrategy;
-import com.seweryn.schess.Models.Vector;
 import com.seweryn.schess.Logic.MovesStrategy.BishopMoveStrategy;
 import com.seweryn.schess.Logic.MovesStrategy.KingMoveStrategy;
 import com.seweryn.schess.Logic.MovesStrategy.KnightMoveStrategy;
@@ -19,26 +18,22 @@ public class MoveRulesLogic implements IMoveRulesLogic {
 
     }
     public IMoveStrategy getMoveStrategy(int width, int height, PieceType pieceType){
-        IMoveStrategy moveStrategy=null;
-        if(pieceType==PieceType.KING) {
-            moveStrategy =new KingMoveStrategy(width,height);
-        }
-        else if(pieceType == PieceType.TOWER){
-            moveStrategy =new RockMoveStrategy(width,height);
-        }
-        else if (pieceType == PieceType.PAWN) {
-            moveStrategy= new PawnMoveStrategy(width,height);
-        }
-        else if(pieceType == pieceType.BISHOP){
-            moveStrategy= new BishopMoveStrategy(width,height);
-        }
-        else if(pieceType == pieceType.HORSE){
-            moveStrategy= new KnightMoveStrategy(width,height);
-        }
-        else if(pieceType ==pieceType.QUEEN){
-            moveStrategy= new QueenMoveStrategy(width,height);
-        }
-       return  moveStrategy;
+       switch(pieceType){
+           case KING:
+               return new KingMoveStrategy(width,height);
+           case ROCK:
+               return  new RockMoveStrategy(width,height);
+           case PAWN:
+               return  new PawnMoveStrategy(width,height);
+           case BISHOP:
+               return new BishopMoveStrategy(width,height);
+           case QUEEN:
+               return new QueenMoveStrategy(width,height);
+           case KNIGHT:
+               return new KnightMoveStrategy(width,height);
+           default:
+               throw new AssertionError();
+       }
     }
 
 }
