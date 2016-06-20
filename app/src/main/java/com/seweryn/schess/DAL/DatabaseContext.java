@@ -95,11 +95,12 @@ public class DatabaseContext implements IDatabaseContext {
         }
         else
         {
+            String[] puzzleNames =  getPuzzleListByType(getPuzzleType(puzzleType, prevOrNext));
             if(prevOrNext==1) {
-                return readPuzzle(getPuzzleType(puzzleType, prevOrNext), getPuzzleListByType(getPuzzleType(puzzleType, prevOrNext))[0]);
+                return readPuzzle(getPuzzleType(puzzleType, prevOrNext),puzzleNames[0]);
             }
                 else
-                return  readPuzzle(getPuzzleType(puzzleType,prevOrNext),getPuzzleListByType(getPuzzleType(puzzleType,prevOrNext))[0]);
+                return  readPuzzle(getPuzzleType(puzzleType,prevOrNext),puzzleNames[puzzleNames.length-1]);
 
         }
 
@@ -111,16 +112,20 @@ public class DatabaseContext implements IDatabaseContext {
      * @return PuzzleType puzzle type of the next to actua puzzle type
      * */
     public  PuzzleType getPuzzleType(PuzzleType puzzleType, int prevOrNext){
+        PuzzleType type=  null;
         for(int i=0;i<PuzzleType.values().length;i++){
             if(PuzzleType.values()[i]==puzzleType){
                 if(( (i+prevOrNext) <puzzleType.values().length) && ((i+prevOrNext) >=0)){
-                    PuzzleType type =  PuzzleType.values()[i+prevOrNext];
-                    return type;
+                     type =  PuzzleType.values()[i+prevOrNext];
+                }
+                else if(i+prevOrNext<0){
+                    type = puzzleType.values()[puzzleType.values().length-1];
                 }
             }
         }
-        return PuzzleType.values()[0];
-
+        if(type==null)
+            return  PuzzleType.values()[0];
+        return  type;
     }
     /**
      * method read puzzle of particular type and name from database
@@ -134,6 +139,7 @@ public class DatabaseContext implements IDatabaseContext {
             FileInputStream fis = new FileInputStream(fileToRead);
             ObjectInputStream iis = new ObjectInputStream(fis);
             DatabaseObject databaseObject= (DatabaseObject)iis.readObject();
+
             return  databaseObject;
         }
         catch (Exception ex){

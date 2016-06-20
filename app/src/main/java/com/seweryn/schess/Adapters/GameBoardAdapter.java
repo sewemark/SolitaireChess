@@ -48,6 +48,7 @@ public final class GameBoardAdapter extends BoardAdapter {
     public static final String ApplicationPreferences = "SCPreferences" ;
     DatabaseObject databaseObject;
     public PuzzleType puzzleType;
+    public boolean wasReversed = false;
     private String time;
     Context contex;
     String boardName;
@@ -74,17 +75,38 @@ public final class GameBoardAdapter extends BoardAdapter {
        v.findViewById(R.id.grid_item_piece).setOnTouchListener(new MyTouchListener());
        return  v;
     }
+    public void tryReverse(List<Solution> listOfSolutions){
+        for(int i=0;i<listOfSolutions.size();i++){
+            if(checkForReverse(listOfSolutions.get(i).boards)){
+                Collections.reverse(listOfSolutions.get(i).boards);
+            }
+        }
+    }
+
+    private boolean checkForReverse(List<int[][]> boards) {
+        int [][]firstBoard = boards.get(0);
+        int numOfPiec=0;
+        for(int i=0;i<firstBoard.length;i++){
+            for (int j =0;j<firstBoard[i].length;j++){
+                if(firstBoard[i][j] !=0)
+                    numOfPiec++;
+            }
+        }
+        if(numOfPiec ==1)
+            return true;
+        return  false;
+    }
+
     public void initializeBoard(DatabaseObject databaseObject){
         //DatabaseObject databaseObject = databaseContextController.read(puzzleType,boardName);
-
+        this.databaseObject =databaseObject;
         this.boardLogicController.setBoard(Lodash.deepCopyIntMatrix(databaseObject.getBoard()));
         this.boardName = databaseObject.getFileName();
         this.puzzleType = databaseObject.getPuzzleType();
         gridView.setNumColumns(boardLogicController.getBoard()[0].length);
         this.board = Lodash.deepCopyIntMatrix(boardLogicController.getBoard());
         this.solutions = databaseObject.getSolutions();
-        if(this.solutions.size()>0)
-            Collections.reverse(this.solutions.get(0).boards);
+        tryReverse(this.solutions);
         moves= new ArrayDeque<Move>();
 
     }
@@ -95,10 +117,12 @@ public final class GameBoardAdapter extends BoardAdapter {
 
 
     }
+
     public void setNextBoard() {
         initializeBoard(databaseContextController.readNextPuzzle(puzzleType, boardName));
         this.notifyDataSetChanged();
     }
+
     public void setPreviousBoard(){
         initializeBoard(databaseContextController.readPreviousPuzzle(puzzleType,boardName));
         this.notifyDataSetChanged();
@@ -122,10 +146,12 @@ public final class GameBoardAdapter extends BoardAdapter {
         else
             return frameLayout.findViewById(R.id.hint_image);
     }
+
     private void addChildToFrameLayout(int frameLayoutPosition, View view){
         FrameLayout frameLayout = (FrameLayout)gridView.getChildAt(frameLayoutPosition);
         frameLayout.addView(view);
     }
+
     private void checkIfWin() throws InterruptedException {
         if(boardLogicController.checkIfWinPosition()){
             databaseObject.setSolved();
@@ -158,6 +184,7 @@ public final class GameBoardAdapter extends BoardAdapter {
             boardLogicController.setPieceAtPosition(lastMove.destinationPiecePosition, lastMove.beatingPieceTypeValue);
         }
     }
+
     public void performNextMove() throws InterruptedException {
         for(int i=0;i<this.solutions.size();i++){
             for(int j=0;j<this.solutions.get(i).boards.size();j++){
@@ -183,6 +210,7 @@ public final class GameBoardAdapter extends BoardAdapter {
         }
         this.undoMove();
     }
+
     public void showWinDialog(View v) throws InterruptedException {
         View layout = boardLayoutInflater.inflate(R.layout.win_popup, (ViewGroup) v.findViewById(R.id.popup));
         int popupWindowWidth = Lodash.dpToPx(220, context);
@@ -248,7 +276,6 @@ public final class GameBoardAdapter extends BoardAdapter {
                              setHintsBackground(position, false, Lodash.getPiecType((int) view.getTag()));
                          FrameLayout container = (FrameLayout) v;
                          int destinationPosition = gridView.getPositionForView(container);
-                         int a = destinationPosition;
                          if (!Lodash.HasElement(possiblePositions, destinationPosition) || (boardLogicController.getPieceAtPosition(destinationPosition) <= 0)) {
                              owner.addView(view);
                          } else {

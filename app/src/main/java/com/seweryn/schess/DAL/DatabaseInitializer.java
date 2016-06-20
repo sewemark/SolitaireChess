@@ -30,7 +30,7 @@ public class DatabaseInitializer implements IDatabaseInitializer {
                 {5, 0 , 0, 0}};
         int[][] board02 = {{0, 2, 0, 5},
                 {0, 5, 0, 0},
-                {3, 0, 5, 0},
+                {3, 0, 2, 0},
                 {0, 0 , 0, 0}};
         int[][] board03 = {{1, 0, 2, 0},
                 {0, 0, 0, 0},

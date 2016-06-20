@@ -23,18 +23,26 @@ public class ChooseMapActivity extends AppCompatActivity  {
     private PuzzleTabsAdapter puzzleTabsAdapter;
     private ActionBar actionBar;
     String puzzleTabNames[] = {"EASY","MEDIUM", "HARD", "VERY HARD"};
+
     public ChooseMapActivity(){
     }
+
     /**
      * overridden oncreate method that injects controllers and
      * sets UI event handlers
      * @param  savedInstanceeState bundle
      * */
+
     @Override
     public void onCreate(Bundle savedInstanceeState) {
         super.onCreate(savedInstanceeState);
         injectControllers();
+    }
 
+    @Override
+    public void onResume() {
+
+        super.onResume();
         setContentView(R.layout.choose_map);
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(puzzleTabsAdapter);

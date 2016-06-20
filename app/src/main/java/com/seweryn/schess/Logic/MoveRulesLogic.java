@@ -21,7 +21,7 @@ public class MoveRulesLogic implements IMoveRulesLogic {
        switch(pieceType){
            case KING:
                return new KingMoveStrategy(width,height);
-           case ROCK:
+           case ROOK:
                return  new RockMoveStrategy(width,height);
            case PAWN:
                return  new PawnMoveStrategy(width,height);

@@ -19,7 +19,6 @@ public class DatabaseManager implements IDatabaseManager {
      * method that creates database if it does not exist
      * */
     public  void createDatabaseIfNotExists() {
-
         File parrentDir = new File(dbInfo.getDatabasePath());
             if (!parrentDir.exists()) {
             parrentDir.mkdir();

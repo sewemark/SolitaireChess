@@ -48,7 +48,6 @@ public class PuzzleTypeFragment extends Fragment {
                 TextView boardNameTextView = (TextView)v.findViewById(R.id.boardName);
                 chooseBoard.putExtra("boardName", (boardNameTextView.getText()));
                 chooseBoard.putExtra("boardType", getArguments().getString("type"));;
-
                 getActivity().startActivity(chooseBoard);
                 startActivity(chooseBoard);
 

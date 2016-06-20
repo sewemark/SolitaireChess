@@ -12,5 +12,4 @@ public interface ISearchTree<T>  extends Runnable {
     int getTreeHeight();
     int getTreeLeaves();
     List<T> getSolutoins();
-
 }

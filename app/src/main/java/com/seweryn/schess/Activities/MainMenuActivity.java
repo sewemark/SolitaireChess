@@ -85,10 +85,17 @@ public class MainMenuActivity extends AppCompatActivity {
                         Intent mainMenu = new Intent(MainMenuActivity.this, CreateMapActivity.class);
                         EditText boardWidthTextView = (EditText) layout.findViewById(R.id.widthTextView);
                         EditText boardHeightTextView = (EditText) layout.findViewById(R.id.heightTextView);
-                        mainMenu.putExtra("BoardWidth", Integer.valueOf(boardWidthTextView.getText().toString()));
-                        mainMenu.putExtra("BoardHeight", Integer.valueOf(boardHeightTextView.getText().toString()));
-                        MainMenuActivity.this.startActivity(mainMenu);
-                        pwindo.dismiss();
+                        int width = Lodash.tryParse(boardWidthTextView.getText().toString());
+                        int height = Lodash.tryParse(boardHeightTextView.getText().toString());
+                        if(checkIfBoardDimension(width, height)) {
+                            mainMenu.putExtra("BoardWidth", width);
+                            mainMenu.putExtra("BoardHeight", height);
+                            MainMenuActivity.this.startActivity(mainMenu);
+                            pwindo.dismiss();
+                        }
+                        else{
+                            pwindo.dismiss();
+                        }
                     }
                 });
 
@@ -149,6 +156,16 @@ public class MainMenuActivity extends AppCompatActivity {
                 });
             }
         });
+
+
     }
+    public boolean checkIfBoardDimension(int width, int height){
+         if(width <1 || width >20)
+             return false;
+        if(height<1 || height >20)
+            return  false;
+        return  true;
+    }
+
 
 }

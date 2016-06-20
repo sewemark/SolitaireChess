@@ -55,7 +55,7 @@ public class Lodash {
     public static PieceType getPiecType(int key){
         Map<Integer,PieceType> map =  new HashMap<Integer,PieceType>();
         map.put(1,PieceType.KING);
-        map.put(2,PieceType.ROCK);
+        map.put(2,PieceType.ROOK);
         map.put(3,PieceType.PAWN);
         map.put(4,PieceType.BISHOP);
         map.put(5,PieceType.KNIGHT);
@@ -107,7 +107,7 @@ public class Lodash {
 
         if(pieceType ==PieceType.KING)
             resource = R.drawable.king_white;
-        else if(pieceType == PieceType.ROCK)
+        else if(pieceType == PieceType.ROOK)
             resource = R.drawable.rock_white;
         else if(pieceType == PieceType.PAWN)
             resource=R.drawable.pawn_white;
@@ -195,6 +195,18 @@ public class Lodash {
             }
         }
         return  newArray;
+    }
+    /**
+     *  method convert string to int
+     * @param  String value
+     * @return  Interger value
+     * */
+    public static Integer tryParse(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
 }
