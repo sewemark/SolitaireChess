@@ -1,5 +1,6 @@
 package com.seweryn.schess.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import com.seweryn.schess.Controllers.IDatabaseContextController;
@@ -136,8 +138,22 @@ public class MainMenuActivity extends AppCompatActivity {
                 resetDatabaseButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        databaseContextController.resetDatabase();
-                    }
+                        final ProgressDialog progressBar = new ProgressDialog(v.getContext());
+                        progressBar.setCancelable(true);
+                        progressBar.setMessage("Reseting database ...");
+                        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressBar.setProgress(0);
+                        progressBar.setMax(100);
+                        progressBar.show();
+                        new Thread(new Runnable() {
+                            public void run() {
+                                databaseContextController.resetDatabase();
+                                progressBar.dismiss();
+                            }
+
+                        }).start();
+                    }//end of onClick method
+
                 });
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -148,7 +164,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 settingsSaveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         editor.putBoolean("HintsSwitched", turnOnHints[0]);
                         editor.commit();
                         pwindo.dismiss();

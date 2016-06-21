@@ -6,6 +6,7 @@ package com.seweryn.schess.Activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -69,6 +70,8 @@ public class CreateMapActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_map_main);
         final GridView gridView = (GridView) findViewById(R.id.createMapGridView);
+        final Button mainMenu = (Button)findViewById(R.id.menuButton);
+
         Button saveButton = (Button) findViewById(R.id.saveButton);
         getBoardSizeFromExtras();
         gridView.setNumColumns(boardWidth);
@@ -83,66 +86,80 @@ public class CreateMapActivity extends Activity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
-                    try {
-                        View layout = boardLayoutInflater.inflate(R.layout.add_piece_popup,(ViewGroup)v.findViewById(R.id.popup));
-                        int popupWindowWidth =Lodash.dpToPx(220, getBaseContext());
-                        int popupWindowHeight =Lodash.dpToPx(400,getBaseContext());
-                        pwindo = new PopupWindow(layout, popupWindowWidth, popupWindowHeight, true);
-                        ListView popupListView = (ListView)layout.findViewById(R.id.addPieceListView);
-                        CreateMapPopupListViewAdapter listViewAdapter = new CreateMapPopupListViewAdapter(CreateMapActivity.this,PieceType.values());
-                        popupListView.setAdapter(listViewAdapter);
-                        pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
-                        popupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            public void onItemClick(AdapterView<?> av, View view, int i, long l) {
-                                gridViewAdapter.boardLogicController.setPieceAtPosition(position, i);
-                                gridViewAdapter.notifyDataSetChanged();
+                try {
+                    View layout = boardLayoutInflater.inflate(R.layout.add_piece_popup, (ViewGroup) v.findViewById(R.id.popup));
+                    int popupWindowWidth = Lodash.dpToPx(220, getBaseContext());
+                    int popupWindowHeight = Lodash.dpToPx(450, getBaseContext());
+                    pwindo = new PopupWindow(layout, popupWindowWidth, popupWindowHeight, true);
+                    ListView popupListView = (ListView) layout.findViewById(R.id.addPieceListView);
+                    CreateMapPopupListViewAdapter listViewAdapter = new CreateMapPopupListViewAdapter(CreateMapActivity.this, PieceType.values());
+                    popupListView.setAdapter(listViewAdapter);
+                    pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+                    popupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> av, View view, int i, long l) {
+                            gridViewAdapter.boardLogicController.setPieceAtPosition(position, i);
+                            gridViewAdapter.notifyDataSetChanged();
 
-                            }
-                        });
-                        Button btnClosePopup = (Button) layout.findViewById(R.id.popupCloseButton);
-                        btnClosePopup.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                pwindo.dismiss();
+                        }
+                    });
+                    Button btnClosePopup = (Button) layout.findViewById(R.id.popupCloseButton);
+                    btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            pwindo.dismiss();
 
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        mainMenu.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-             //   showRingProgressDialog();
-               try {
-                    ProgressDialog d =ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution", true);
-                 //  ringProgressDialog = ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution ...", true);
-                   SolutionFinderTask solutionFinderTask = new SolutionFinderTask(context,d);
-                   Integer [][]inte = Lodash.intToIntegerArray(gridViewAdapter.boardLogicController.getBoard());
-                   solutionFinderTask.execute(inte);
-                   ISearchTree handler = solutionFinderTask.get();
-                 //  ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
+            public  void onClick(View v){
+                Intent  intent = new Intent(CreateMapActivity.this,MainMenuActivity.class);
+                CreateMapActivity.this.startActivity(intent);
+            }
+        });
+        class SaveButtonOnClickListner implements View.OnClickListener
+        {
 
-                  if (handler.getNumberOfResults() <= 0) {
-                      // d.dismiss();
-                      showNoSolutionDialog();
+            CreateMapActivity activity;
+            public SaveButtonOnClickListner(CreateMapActivity activity) {
+                this.activity = activity;
+            }
+
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    SolutionFinderTask solutionFinderTask = new SolutionFinderTask(this.activity);
+                    Integer [][]inte = Lodash.intToIntegerArray(gridViewAdapter.boardLogicController.getBoard());
+
+                    solutionFinderTask.execute(inte);
+                    ISearchTree handler = solutionFinderTask.get();
+                    //  ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
+
+                    if (handler.getNumberOfResults() <= 0) {
+                        // d.dismiss();
+                        showNoSolutionDialog();
 
                     }
                     else {
 
                         PuzzleType type = puzzleTypeCalsificator.clasify(handler.getNumberOfResults(),handler.getTreeWidth(),handler.getTreeLeaves());
                         showClasificationDialog(type);
-                      databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
-                      ringProgressDialog.dismiss();
-                      }
+                        databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
+                        ringProgressDialog.dismiss();
+                    }
                 } catch (Exception e) {
                 }
-
             }
-        });
+
+        };
+        saveButton.setOnClickListener(new SaveButtonOnClickListner(this));
     }
     /**
      * method that instantiates proper instances of controllers to interfaces
@@ -169,6 +186,7 @@ public class CreateMapActivity extends Activity {
     private void showClasificationDialog(PuzzleType type) {
         PuzzleHardnessClasificationDialog dialog = new
         PuzzleHardnessClasificationDialog();
+        dialog.setCancelable(false);
         dialog.setPuzleType(type.toString());
         dialog.show(getFragmentManager(), "Board was classified");
 
@@ -189,15 +207,20 @@ public class CreateMapActivity extends Activity {
         this.finish();
     }
     private class SolutionFinderTask extends AsyncTask<Integer[][],Void, ISearchTree> {
-        private Context context;
         private ProgressDialog progressDialog;
-        public SolutionFinderTask(Context context, ProgressDialog progressDialog) {
-          //  ringProgressDialog = new ProgressDialog(context);
-            this.progressDialog = progressDialog;
+        public SolutionFinderTask(CreateMapActivity activity) {
+            progressDialog = new ProgressDialog(activity);
+
         }
         @Override
         protected void onPreExecute() {
 
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Finding a solution ...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setProgress(0);
+            progressDialog.setMax(100);
+            progressDialog.show();
         }
 
         @Override
@@ -208,8 +231,9 @@ public class CreateMapActivity extends Activity {
 
         @Override
         protected void onPostExecute(ISearchTree v) {
-           // ringProgressDialog.dismiss();
-           //progressDialog.dismiss();
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
 
     }

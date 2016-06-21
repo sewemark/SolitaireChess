@@ -13,6 +13,11 @@ public  class BishopMoveStrategy extends MoveStrategy  implements IMoveStrategy{
         super(_width, _height);
     }
 
+    /**
+     * returns possible move for the piece that is at particular position
+     * @param  Vector piecePosition current position of the piece
+     * @return  returns array of possible piece moves
+     */
     @Override
     public Integer[] getMoveForPiece(Vector piecePosition) {
         Vector leftCorner = getLastCoordinate(piecePosition,new Vector(-1,1));

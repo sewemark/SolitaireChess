@@ -75,6 +75,13 @@ public final class GameBoardAdapter extends BoardAdapter {
        v.findViewById(R.id.grid_item_piece).setOnTouchListener(new MyTouchListener());
        return  v;
     }
+
+    /**
+     * check if list of solutions should be reversed and reverse it
+     * returns piece value and at particular position
+     * @param  listOfSolutions  list of solutions
+     * @return  returns reversed list of solution
+     */
     public void tryReverse(List<Solution> listOfSolutions){
         for(int i=0;i<listOfSolutions.size();i++){
             if(checkForReverse(listOfSolutions.get(i).boards)){
@@ -82,7 +89,12 @@ public final class GameBoardAdapter extends BoardAdapter {
             }
         }
     }
-
+    /**
+     * check if particular piece form particular position can move to destination position
+     * returns piece value and at particular position
+     * @param  boards of solutions
+     * @return  returns the booleann value that inidcates if boards should be reversed
+     */
     private boolean checkForReverse(List<int[][]> boards) {
         int [][]firstBoard = boards.get(0);
         int numOfPiec=0;
@@ -97,6 +109,11 @@ public final class GameBoardAdapter extends BoardAdapter {
         return  false;
     }
 
+    /**
+     * method that initializes the board
+     * returns void
+     * @return  void
+     */
     public void initializeBoard(DatabaseObject databaseObject){
         //DatabaseObject databaseObject = databaseContextController.read(puzzleType,boardName);
         this.databaseObject =databaseObject;
@@ -110,6 +127,10 @@ public final class GameBoardAdapter extends BoardAdapter {
         moves= new ArrayDeque<Move>();
 
     }
+    /**
+     * method that reset current board
+     * @return  void
+     */
     public void resetBoard(){
        // boardLogic.setBoard(this.board);
         initializeBoard(databaseContextController.read(puzzleType, boardName));
@@ -118,15 +139,30 @@ public final class GameBoardAdapter extends BoardAdapter {
 
     }
 
+    /**
+     * method that set next board
+     * @return  void
+     */
     public void setNextBoard() {
         initializeBoard(databaseContextController.readNextPuzzle(puzzleType, boardName));
         this.notifyDataSetChanged();
     }
 
+    /**
+     * method that set previous board
+     * @return  void
+     */
     public void setPreviousBoard(){
         initializeBoard(databaseContextController.readPreviousPuzzle(puzzleType,boardName));
         this.notifyDataSetChanged();
     }
+    /**
+     * set hint pieces on proper positions on board
+     * @param  position actual position of piece
+     * @param  showHints flag that indicates if hints should be showed
+     * @param  pieceType piece type
+     * @return  void
+     */
     public void setHintsBackground(int position, boolean showHints, PieceType pieceType){
 
          Integer[] possiblePositions = moveLogicController.PossibleMoves(this.width,this.height,Vector.convertToVector(this.width, this.height, position),pieceType);
@@ -139,6 +175,14 @@ public final class GameBoardAdapter extends BoardAdapter {
              setView(view,resource,-1);
          }
      }
+
+    /**
+     * return appropriate view from frameLayout
+     * returns piece value and at particular position
+     * @param  frameLayoutPosition position of the frameLayout
+     * @param  childResourceId resource id indicates the imageView to be returned
+     * @return  View at the position
+     */
     private View getChildFromFrameLayout(int frameLayoutPosition, int childResourceId){
         FrameLayout frameLayout = (FrameLayout)gridView.getChildAt(frameLayoutPosition);
         if(childResourceId==1)
@@ -146,12 +190,23 @@ public final class GameBoardAdapter extends BoardAdapter {
         else
             return frameLayout.findViewById(R.id.hint_image);
     }
+    /**
+     * add view to frame layout
+     * returns piece value and at particular position
+     * @param  frameLayoutPosition position of the frameLayout
+     * @param  view view to add
+     * @return  void
+     */
 
     private void addChildToFrameLayout(int frameLayoutPosition, View view){
         FrameLayout frameLayout = (FrameLayout)gridView.getChildAt(frameLayoutPosition);
         frameLayout.addView(view);
     }
 
+    /**
+     * checks if board is win and saves information about current win board
+     * @return  void
+     */
     private void checkIfWin() throws InterruptedException {
         if(boardLogicController.checkIfWinPosition()){
             databaseObject.setSolved();
@@ -159,12 +214,27 @@ public final class GameBoardAdapter extends BoardAdapter {
             showWinDialog(gridView);
         }
     }
+    /**
+     * set view background
+     * returns piece value and at particular position
+     * @param  view view to set background to
+     * @param  resource resource of the background
+     * @param  tag  piece tag
+     * @return  void
+     */
     private void setView(View view, int resource, int tag){
        if(view != null) {
            view.setBackgroundResource(resource);
            view.setTag(tag);
        }
     }
+    /**
+     * pops child from frameLayout
+     * returns piece value and at particular position
+     * @param  frameLayoutPosition position of the frameLayout
+     * @param  childId id of the view to pop
+     * @return  void
+     */
     private View popChildFromFrameLayout(int frameLayoutPosition,int childId){
         FrameLayout frameLayout = (FrameLayout)gridView.getChildAt(frameLayoutPosition);
         View viewToDelete = frameLayout.getChildAt(childId);
@@ -172,6 +242,10 @@ public final class GameBoardAdapter extends BoardAdapter {
         return  viewToDelete;
     }
 
+    /**
+     * undo last user move
+     * @return  void
+     */
     public void undoMove(){
         if(this.moves.size()>0){
             Move lastMove = moves.pop();
@@ -185,6 +259,10 @@ public final class GameBoardAdapter extends BoardAdapter {
         }
     }
 
+    /**
+     * perform next move for the user
+     * @return  void
+     */
     public void performNextMove() throws InterruptedException {
         for(int i=0;i<this.solutions.size();i++){
             for(int j=0;j<this.solutions.get(i).boards.size();j++){
@@ -211,6 +289,10 @@ public final class GameBoardAdapter extends BoardAdapter {
         this.undoMove();
     }
 
+    /**
+     * shos win dialog if user has solved the board
+     * @return  void
+     */
     public void showWinDialog(View v) throws InterruptedException {
         View layout = boardLayoutInflater.inflate(R.layout.win_popup, (ViewGroup) v.findViewById(R.id.popup));
         int popupWindowWidth = Lodash.dpToPx(220, context);
@@ -241,6 +323,10 @@ public final class GameBoardAdapter extends BoardAdapter {
             }
         });
     }
+    /**
+     * return current puzzleType
+     * @return  PuzzleType puzzle type
+     */
     public PuzzleType getCurrentPuzzleType(){
         return  this.puzzleType;
     }
@@ -318,9 +404,6 @@ public final class GameBoardAdapter extends BoardAdapter {
         return !dragEvent.getResult();
     }
 
-    public void updateTime(String _time){
-        this.time = _time;
-    }
     private final class MyTouchListener implements View.OnTouchListener {
 
         public boolean onTouch(View view, MotionEvent motionEvent) {

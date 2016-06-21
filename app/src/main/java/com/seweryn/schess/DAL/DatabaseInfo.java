@@ -15,7 +15,7 @@ public  class DatabaseInfo implements IDatabaseInfo {
     private  String rootPath;
     private String databasePath;
     private final String[] puzzleDirectories ={"EASY","MEDIUM","HARD","VERYHARD"};
-    private   static final String databaseName ="puzzles185";
+    private   static final String databaseName ="puzzles3";
     public String getDatabaseName(){
         return databaseName;
     }

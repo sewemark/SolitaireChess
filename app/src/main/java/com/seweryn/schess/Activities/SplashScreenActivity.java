@@ -11,7 +11,7 @@ import com.seweryn.schess.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
     /**
-     * overridden oncreate method that
+     * overridden onCreate method that
      * set up control adapters
      * and sets UI event handlers
      * @param  savedInstanceeState bundle

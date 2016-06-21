@@ -9,7 +9,7 @@ public class SolutionFinder {
            ISearchTree tree = _tree;
            //int solutionNumber = handler.DFSSearch();
            ThreadGroup group = new ThreadGroup("threadGroup");
-           Thread t = new Thread(group, tree, "YourThreadName", 100000000000L);
+           Thread t = new Thread(group, tree, "YourThreadName", 1000000000000L);
            t.start();
            t.join();
            return  tree;

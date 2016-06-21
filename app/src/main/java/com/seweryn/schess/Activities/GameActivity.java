@@ -39,7 +39,7 @@ public class GameActivity  extends Activity {
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
     /**
-     * overridden oncreate method that injects controllers
+     * overridden onCreate method that injects controllers
      * set up control adapters
      * and sets UI event handlers
      * @param  savedInstanceState bundle
@@ -159,7 +159,6 @@ public class GameActivity  extends Activity {
             int milliseconds = (int) (updatedTime % 1000);
             timeElapsedTextView.setText("" + minutes + ":"
                             + String.format("%02d", seconds));
-            gameBoardAdapter.updateTime(timeElapsedTextView.getText().toString());
             timerHandler.postDelayed(this, 1000);
         }
     };

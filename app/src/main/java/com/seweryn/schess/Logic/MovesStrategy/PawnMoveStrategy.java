@@ -17,6 +17,11 @@ public class PawnMoveStrategy extends  MoveStrategy implements IMoveStrategy {
         super(_width, _height);
     }
 
+    /**
+     * returns possible move for the piece that is at particular position
+     * @param  Vector piecePosition current position of the piece
+     * @return  returns array of possible piece moves
+     */
     @Override
     public Integer[] getMoveForPiece(Vector piecePosition) {
         List<Integer> listOfPossibleMoves = new LinkedList<Integer>();

@@ -32,6 +32,7 @@ public class BoardAdapter extends  BaseAdapter {
     protected int height;
     private IBoardLogicController boardLogicController;
 
+
     public BoardAdapter(Context _context,IBoardLogicController _boardLogicController, int _width, int _height) {
         this.context = _context;
         this.width = _width;
@@ -40,6 +41,11 @@ public class BoardAdapter extends  BaseAdapter {
         this.boardLogicController = _boardLogicController;
         setBackgroundFields();
     }
+    /**
+     * checks proper board background
+     * goal position
+     * @return  void
+     */
     private void setBackgroundFields(){
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -62,6 +68,11 @@ public class BoardAdapter extends  BaseAdapter {
             }
         }
     }
+    /**
+     * method that converts dp to Px
+     * @param int dp value in dp
+     * @return  int value in interger
+     */
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = this.context.getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));

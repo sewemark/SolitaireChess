@@ -42,7 +42,7 @@ public class BoardLogicController implements  IBoardLogicController {
      * @param  position the position of the piece the remove
      * @param  destinationPosition the position of the piece to set a piece
      * @param  newPieceValue piece type value to set
-     * @return  boolean that indicates if the state is a goal state
+     * @return  void
      */
     public void removePiece(int position, int destinationPosition, int newPieceValue){
         Vector destinationVector = Vector.convertToVector(boardWidth, boardHeight, destinationPosition);

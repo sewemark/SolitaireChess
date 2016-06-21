@@ -17,6 +17,13 @@ public class MoveRulesLogic implements IMoveRulesLogic {
     public MoveRulesLogic(){
 
     }
+    /**
+     * method that returns proper move strategy for a piece
+     * @param  int width of the board
+     * @param  int height of the board
+     * @param  PieceType piece type
+     * @return  returns the move strategy class for a particular piece type
+     */
     public IMoveStrategy getMoveStrategy(int width, int height, PieceType pieceType){
        switch(pieceType){
            case KING:
