@@ -86,7 +86,7 @@ public class CreateMapActivity extends Activity {
                     try {
                         View layout = boardLayoutInflater.inflate(R.layout.add_piece_popup,(ViewGroup)v.findViewById(R.id.popup));
                         int popupWindowWidth =Lodash.dpToPx(220, getBaseContext());
-                        int popupWindowHeight =Lodash.dpToPx(400,getBaseContext());
+                        int popupWindowHeight =Lodash.dpToPx(450,getBaseContext());
                         pwindo = new PopupWindow(layout, popupWindowWidth, popupWindowHeight, true);
                         ListView popupListView = (ListView)layout.findViewById(R.id.addPieceListView);
                         CreateMapPopupListViewAdapter listViewAdapter = new CreateMapPopupListViewAdapter(CreateMapActivity.this,PieceType.values());
