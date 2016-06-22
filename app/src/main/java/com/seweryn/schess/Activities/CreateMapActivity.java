@@ -6,6 +6,7 @@ package com.seweryn.schess.Activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -70,6 +71,7 @@ public class CreateMapActivity extends Activity {
         setContentView(R.layout.create_map_main);
         final GridView gridView = (GridView) findViewById(R.id.createMapGridView);
         Button saveButton = (Button) findViewById(R.id.saveButton);
+        Button mainMenu = (Button) findViewById(R.id.menuButton);
         getBoardSizeFromExtras();
         gridView.setNumColumns(boardWidth);
         injectControllers();
@@ -113,34 +115,35 @@ public class CreateMapActivity extends Activity {
             }
         });
 
+        mainMenu.setOnClickListener(new View.OnClickListener(){
+               @Override
+                public  void onClick(View v){
+                        Intent intent = new Intent(CreateMapActivity.this,MainMenuActivity.class);
+                        CreateMapActivity.this.startActivity(intent);
+                }
+        });
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   showRingProgressDialog();
                try {
-                    ProgressDialog d =ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution", true);
-                 //  ringProgressDialog = ProgressDialog.show(CreateMapActivity.this, "Please wait ...", "Finding solution ...", true);
-                   SolutionFinderTask solutionFinderTask = new SolutionFinderTask(context,d);
+
+                   SolutionFinderTask solutionFinderTask = new SolutionFinderTask();
                    Integer [][]inte = Lodash.intToIntegerArray(gridViewAdapter.boardLogicController.getBoard());
                    solutionFinderTask.execute(inte);
                    ISearchTree handler = solutionFinderTask.get();
-                 //  ISearchTree handler = SolutionFinder.findSolution(new DFSTree(gridViewAdapter.boardLogicController.getBoard()));
 
                   if (handler.getNumberOfResults() <= 0) {
-                      // d.dismiss();
                       showNoSolutionDialog();
-
                     }
-                    else {
+                  else {
 
-                        PuzzleType type = puzzleTypeCalsificator.clasify(handler.getNumberOfResults(),handler.getTreeWidth(),handler.getTreeLeaves());
-                        showClasificationDialog(type);
+                      PuzzleType type = puzzleTypeCalsificator.clasify(handler.getNumberOfResults(),handler.getTreeWidth(),handler.getTreeLeaves());
+                      showClasificationDialog(type);
                       databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
                       ringProgressDialog.dismiss();
-                      }
+                  }
                 } catch (Exception e) {
                 }
-
             }
         });
     }
@@ -189,11 +192,7 @@ public class CreateMapActivity extends Activity {
         this.finish();
     }
     private class SolutionFinderTask extends AsyncTask<Integer[][],Void, ISearchTree> {
-        private Context context;
-        private ProgressDialog progressDialog;
-        public SolutionFinderTask(Context context, ProgressDialog progressDialog) {
-          //  ringProgressDialog = new ProgressDialog(context);
-            this.progressDialog = progressDialog;
+        public SolutionFinderTask() {
         }
         @Override
         protected void onPreExecute() {
@@ -208,8 +207,6 @@ public class CreateMapActivity extends Activity {
 
         @Override
         protected void onPostExecute(ISearchTree v) {
-           // ringProgressDialog.dismiss();
-           //progressDialog.dismiss();
         }
 
     }

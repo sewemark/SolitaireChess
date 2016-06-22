@@ -1,5 +1,6 @@
 package com.seweryn.schess.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -136,8 +137,22 @@ public class MainMenuActivity extends AppCompatActivity {
                 resetDatabaseButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        databaseContextController.resetDatabase();
-                    }
+                        final ProgressDialog progressBar = new ProgressDialog(v.getContext());
+                        progressBar.setCancelable(false);
+                        progressBar.setMessage("Reseting database ...");
+                        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressBar.setProgress(0);
+                        progressBar.setMax(100);
+                        progressBar.show();
+                        new Thread(new Runnable() {
+                            public void run() {
+                                databaseContextController.resetDatabase();
+                                progressBar.dismiss();
+                            }
+
+                        }).start();
+                    }//end of onClick method
+
                 });
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
