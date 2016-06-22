@@ -40,8 +40,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceeState);
         setContentView(R.layout.menu_main);
-         popupWindowWidth = Lodash.dpToPx(220, getBaseContext());
-         popupWindowHeight =Lodash.dpToPx(250, getBaseContext());
+        popupWindowWidth = Lodash.dpToPx(220, getBaseContext());
+        popupWindowHeight =Lodash.dpToPx(250, getBaseContext());
         boardLayoutInflater = LayoutInflater.from(this);
         databaseContextController = new SCDatabaseContextController().getDatabaseContextContrller(this);
         Button selectChallengeButton  = (Button)findViewById(R.id.Button01);
@@ -73,7 +73,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 cancelButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                    pwindo.dismiss();
+                        pwindo.dismiss();
                     }
                 });
                 Button gotToCreateMapButton = (Button)layout.findViewById(R.id.goToCreateMap);
@@ -160,8 +160,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
     public boolean checkIfBoardDimension(int width, int height){
-         if(width <1 || width >20)
-             return false;
+        if(width <1 || width >20)
+            return false;
         if(height<1 || height >20)
             return  false;
         return  true;
