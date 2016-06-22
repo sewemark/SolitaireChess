@@ -31,6 +31,10 @@ public class DFSTree implements ISearchTree<Solution> {
      this.numOfSol=  this.search();
     }
 
+    /**
+     * searches a tree to find solutions for a board
+     * @return int number of solutions for a board
+     */
     public int search(){
         try {
             if (!this.currentNode.wasExpanded()) {
@@ -94,6 +98,10 @@ public class DFSTree implements ISearchTree<Solution> {
         return solutions;
     }
 
+    /**
+     * extracts solution
+     * @return  void
+     */
     private  void extractSolution(){
         SearchTreeNode pointer = this.currentNode;
         Solution solution =new Solution();
@@ -104,6 +112,10 @@ public class DFSTree implements ISearchTree<Solution> {
         solutions.add(0,solution);
     }
 
+    /**
+     * update tree properties
+     * @return  void
+     */
     private void updateTreeProperties(){
         maxDepth++;
         expadnedCount++;
@@ -112,14 +124,26 @@ public class DFSTree implements ISearchTree<Solution> {
         }
     }
 
+    /**
+     * checks if node is a root node
+     * @return  boolean value that indicates if node is a root node
+     */
     private boolean checkIfRootHasChild(){
         return  this.currentNode.childes.size()==0 && this.currentNode.isRoot()==true;
     }
 
+    /**
+     * checks if a node is not root and has parent
+     * @return  boolean value that indicates if backtracking can be performed
+     */
     private boolean checkIfCanGoTowardsRoot(){
        return this.currentNode.parent !=null && !this.currentNode.isRoot();
     }
 
+    /**
+     * checks if a board is a win board
+     * @return  boolean value that indicates if the board is  win board
+     */
     private boolean checkIfSolutionFounded(){
         int numOfPieces =0;
         for(int i=0;i < this.currentNode.board.length;i++){

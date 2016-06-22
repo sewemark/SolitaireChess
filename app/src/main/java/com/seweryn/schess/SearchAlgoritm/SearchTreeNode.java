@@ -40,7 +40,10 @@ public class SearchTreeNode {
         }
         else currentPiece= null;
     }
-
+    /**
+     * expand child elements of a tree leave
+     * @return  void
+     */
     public void expandChild(){
         this.wasExpanded=true;
         Vector[] allPieces = boardLogicController.getPiecePositions();

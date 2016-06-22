@@ -24,18 +24,13 @@ public class PuzzleHardnessClasificationDialog  extends DialogFragment {
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Your puzzle was clasified as" + puzzleType)
+        builder.setCancelable(false);
+        builder.setMessage("Your puzzle was clasified as " + puzzleType)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                         startActivity(new Intent(getActivity(),MainMenuActivity.class));
-
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
 
                     }
                 });

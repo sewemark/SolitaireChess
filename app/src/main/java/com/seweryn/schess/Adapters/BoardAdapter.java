@@ -40,6 +40,12 @@ public class BoardAdapter extends  BaseAdapter {
         this.boardLogicController = _boardLogicController;
         setBackgroundFields();
     }
+
+    /**
+          * checks proper board background
+          * goal position
+          * @return  void
+     */
     private void setBackgroundFields(){
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -62,11 +68,18 @@ public class BoardAdapter extends  BaseAdapter {
             }
         }
     }
+
+    /**
+     +     * method that converts dp to Px
+     +     * @param int dp value in dp
+     +     * @return  int value in interger
+     +     */
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = this.context.getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
     }
+
     @Override
     public int getCount() {
         return boardFileds.size();
@@ -164,7 +177,6 @@ public class BoardAdapter extends  BaseAdapter {
                         v.setBackgroundDrawable(normalShape);
                         break;
                     case DragEvent.ACTION_DROP:
-                        System.out.println("dass");
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
                         v.setBackgroundDrawable(normalShape);
