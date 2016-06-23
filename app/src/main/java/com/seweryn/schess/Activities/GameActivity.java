@@ -37,6 +37,7 @@ public class GameActivity  extends Activity {
     private Handler timerHandler = new Handler();
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
+    PuzzleType boardType;
     long updatedTime = 0L;
     /**
      * overridden oncreate method that injects controllers
@@ -63,7 +64,7 @@ public class GameActivity  extends Activity {
         if(getIntent().getExtras()!=null) {
 
             boardName = (String) getIntent().getExtras().get("boardName");
-            PuzzleType boardType =  PuzzleType.valueOf(getIntent().getExtras().getString("boardType"));
+            boardType =  PuzzleType.valueOf(getIntent().getExtras().getString("boardType"));
             injectControllers();
             DatabaseObject databaseObject = databaseContextController.read(boardType, boardName);
             gameBoardAdapter = new GameBoardAdapter(this,gridView,moveRulesController,boardLogicController,databaseContextController,boardName, boardType);
@@ -119,8 +120,15 @@ public class GameActivity  extends Activity {
         nextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                gameBoardAdapter.setNextBoard();
-                setTimer();
+
+                DatabaseObject databaseObject = databaseContextController.readNextPuzzle(boardType, boardName);
+                boardName = databaseObject.getFileName();
+                boardType = databaseObject.getPuzzleType();
+                gameBoardAdapter = new GameBoardAdapter(GameActivity.this,gridView,moveRulesController,boardLogicController,databaseContextController,boardName, boardType);
+                gridView.setNumColumns(databaseObject.getBoard()[0].length);
+                gridView.setAdapter(gameBoardAdapter);
+                gridView.invalidateViews();
+                gameBoardAdapter.notifyDataSetChanged();
                 textView.setText(gameBoardAdapter.getCurrentPuzzleType().toString());
                 textView.invalidate();
             }
@@ -130,8 +138,15 @@ public class GameActivity  extends Activity {
             @Override
             public void onClick(View v){
 
-                gameBoardAdapter.setPreviousBoard();
-                setTimer();
+                DatabaseObject databaseObject = databaseContextController.readPreviousPuzzle(boardType, boardName);
+                boardName = databaseObject.getFileName();
+                boardType = databaseObject.getPuzzleType();
+                gameBoardAdapter = new GameBoardAdapter(getApplicationContext(),gridView,moveRulesController,boardLogicController,databaseContextController,boardName, boardType);
+                gameBoardAdapter.notifyDataSetChanged();
+                gridView.setNumColumns(databaseObject.getBoard()[0].length);
+                gridView.setAdapter(gameBoardAdapter);
+                gridView.invalidateViews();
+
                 textView.setText(gameBoardAdapter.getCurrentPuzzleType().toString());
                 textView.invalidate();
             }

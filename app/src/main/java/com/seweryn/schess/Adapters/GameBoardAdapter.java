@@ -124,6 +124,9 @@ public final class GameBoardAdapter extends BoardAdapter {
         this.puzzleType = databaseObject.getPuzzleType();
         gridView.setNumColumns(boardLogicController.getBoard()[0].length);
         this.board = Lodash.deepCopyIntMatrix(boardLogicController.getBoard());
+        this.width = board[0].length;
+        this.height = board.length;
+
         this.solutions = databaseObject.getSolutions();
         tryReverse(this.solutions);
         moves= new ArrayDeque<Move>();
@@ -148,7 +151,10 @@ public final class GameBoardAdapter extends BoardAdapter {
      */
     public void setNextBoard() {
         initializeBoard(databaseContextController.readNextPuzzle(puzzleType, boardName));
+        this.gridView.setNumColumns(this.width);
+        this.gridView.invalidateViews();
         this.notifyDataSetChanged();
+
     }
 
     /**
@@ -156,7 +162,9 @@ public final class GameBoardAdapter extends BoardAdapter {
      * @return  void
      */
     public void setPreviousBoard(){
-        initializeBoard(databaseContextController.readPreviousPuzzle(puzzleType,boardName));
+        initializeBoard(databaseContextController.readPreviousPuzzle(puzzleType, boardName));
+        this.gridView.setNumColumns(this.width);
+        this.gridView.invalidateViews();
         this.notifyDataSetChanged();
     }
 

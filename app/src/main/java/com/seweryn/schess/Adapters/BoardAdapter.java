@@ -46,7 +46,7 @@ public class BoardAdapter extends  BaseAdapter {
           * goal position
           * @return  void
      */
-    private void setBackgroundFields(){
+    public void setBackgroundFields(){
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int fieldId = i + j;

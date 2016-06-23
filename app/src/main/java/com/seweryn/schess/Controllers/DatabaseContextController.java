@@ -49,7 +49,7 @@ public class DatabaseContextController implements IDatabaseContextController {
     private void DatabaseSetUp() {
         databaseManager.createDatabaseIfNotExists();
         if(databaseManager.wasCreated()){
-            databaseInitializer.initializaDataBase();
+                databaseInitializer.initializaDataBase();
         }
     }
     /**

@@ -41,7 +41,7 @@ import com.seweryn.schess.Static.Lodash;
  *
  */
 public class CreateMapActivity extends Activity {
-    private  LayoutInflater boardLayoutInflater;
+    private LayoutInflater boardLayoutInflater;
     private Context context;
     private PopupWindow pwindo;
     private IDatabaseContextController databaseContextController;
