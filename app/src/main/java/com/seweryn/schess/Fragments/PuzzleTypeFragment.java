@@ -29,7 +29,6 @@ public class PuzzleTypeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.puzzletype_fragment, container, false);
-
         ListView easyGridView = (ListView)rootView.findViewById(R.id.chooseMapList);
 
         DatabaseObject[] databaseObjects = (DatabaseObject[])getArguments().getSerializable("list");

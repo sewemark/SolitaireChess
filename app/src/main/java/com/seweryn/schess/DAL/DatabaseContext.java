@@ -139,7 +139,6 @@ public class DatabaseContext implements IDatabaseContext {
             FileInputStream fis = new FileInputStream(fileToRead);
             ObjectInputStream iis = new ObjectInputStream(fis);
             DatabaseObject databaseObject= (DatabaseObject)iis.readObject();
-
             return  databaseObject;
         }
         catch (Exception ex){
@@ -159,8 +158,6 @@ public class DatabaseContext implements IDatabaseContext {
             databaseObjects[i] = this.readPuzzle(puzzleType,puzzleByTypeNames[i]);
         }
         return  databaseObjects;
-
-
     }
     /**
      * method read all puzzle names of particular type from database

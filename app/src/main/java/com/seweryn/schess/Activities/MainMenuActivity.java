@@ -1,6 +1,8 @@
 package com.seweryn.schess.Activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -58,7 +60,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 Intent mainMenu = new Intent(MainMenuActivity.this, GameActivity.class);
                 mainMenu.putExtra("boardName", "1E");
                 mainMenu.putExtra("boardType", "EASY");;
-
                 MainMenuActivity.this.startActivity(mainMenu);
 
             }
@@ -67,7 +68,6 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final View layout = boardLayoutInflater.inflate(R.layout.choose_board_size_popup,(ViewGroup)v.findViewById(R.id.popup));
-
                 final PopupWindow pwindo = new PopupWindow(layout, popupWindowWidth, popupWindowHeight, true);
                 pwindo.showAtLocation(layout, Gravity.CENTER,0, 0);
                 Button cancelButton = (Button)layout.findViewById(R.id.cancelButton);
@@ -78,7 +78,6 @@ public class MainMenuActivity extends AppCompatActivity {
                     }
                 });
                 Button gotToCreateMapButton = (Button)layout.findViewById(R.id.goToCreateMap);
-
                 gotToCreateMapButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -116,11 +115,10 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final View layout = boardLayoutInflater.inflate(R.layout.settings_popup, (ViewGroup) v.findViewById(R.id.popup));
-
                 final PopupWindow pwindo = new PopupWindow(layout, popupWindowWidth, popupWindowHeight, true);
                 pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
                 final Switch hintsSwitch = (Switch) layout.findViewById(R.id.hintsSwitch);
-
+                final ProgressDialog progressBar = new ProgressDialog(v.getContext());
                 final boolean[] turnOnHints = {sharedpreferences.getBoolean("HintsSwitched", true)};
                 hintsSwitch.setChecked(turnOnHints[0]);
                 hintsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -137,29 +135,36 @@ public class MainMenuActivity extends AppCompatActivity {
                 resetDatabaseButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final ProgressDialog progressBar = new ProgressDialog(v.getContext());
-                        progressBar.setCancelable(false);
-                        progressBar.setMessage("Reseting database ...");
-                        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        progressBar.setProgress(0);
-                        progressBar.setMax(100);
-                        progressBar.show();
-                        new Thread(new Runnable() {
-                            public void run() {
-                                databaseContextController.resetDatabase();
-                                progressBar.dismiss();
-                            }
+                        try {
 
-                        }).start();
-                    }//end of onClick method
+                            progressBar.setCancelable(false);
+                            progressBar.setMessage("Reseting database ...");
+                            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            progressBar.setProgress(0);
+                            progressBar.setMax(100);
+                            progressBar.show();
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    databaseContextController.resetDatabase();
+                                    progressBar.dismiss();
+                                }
 
+                            }).start();
+                        }
+                        catch (OutOfMemoryError ex){
+                            showOutOfMemoryDialog();
+                            progressBar.dismiss();
+                        }
+                    }
                 });
+
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         pwindo.dismiss();
                     }
                 });
+
                 settingsSaveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -171,9 +176,22 @@ public class MainMenuActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
+
+    private void showOutOfMemoryDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(MainMenuActivity.this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Unfortunately your puzzle is too complicated");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+        alertDialog.show();
+    }
+
     public boolean checkIfBoardDimension(int width, int height){
         if(width <1 || width >20)
             return false;

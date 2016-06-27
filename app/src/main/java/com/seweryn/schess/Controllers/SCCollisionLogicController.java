@@ -7,7 +7,7 @@ import com.seweryn.schess.Logic.CollisionLogic;
  */
 public class SCCollisionLogicController  implements ICollisionLogicInjector{
     /**
-     * method that returns instance of new collision logic oontroller
+     * method that returns instance of new collision logic controller
      * @return class that implements ICollisionLogicController
      * */
     @Override

@@ -25,7 +25,6 @@ public class MoveExtractor {
                         m.destinationPiecePosition = Vector.convertToScalar(board[0].length,board.length,new Vector(i,j));
                         m.defeatedPieceTypeValue = board[j][i];
                     }
-
             }
         }
         return  m;

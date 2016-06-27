@@ -60,6 +60,8 @@ public class Lodash {
         map.put(4,PieceType.BISHOP);
         map.put(5,PieceType.KNIGHT);
         map.put(6, PieceType.QUEEN);
+        map.put(0, PieceType.NOPIECE);
+        map.put(null, PieceType.NOPIECE);
         return map.get(key);
     }
     /**

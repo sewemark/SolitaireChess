@@ -7,7 +7,7 @@ import com.seweryn.schess.Logic.MoveRulesLogic;
  */
 public class SCMoveRulesController implements IMoveRulesControllerInjector {
     /**
-     * method that returns instance of new move rules oontroller
+     * method that returns instance of new move rules controller
      * @return class that implements IMoveRulesController
      * */
     @Override

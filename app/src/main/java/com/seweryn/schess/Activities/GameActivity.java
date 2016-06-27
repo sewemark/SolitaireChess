@@ -32,13 +32,7 @@ public class GameActivity  extends Activity {
     IMoveRulesController moveRulesController;
     IBoardLogicController boardLogicController;
     String boardName;
-    private TextView timeElapsedTextView;
-    private long startTime = 0L;
-    private Handler timerHandler = new Handler();
-    long timeInMilliseconds = 0L;
-    long timeSwapBuff = 0L;
     PuzzleType boardType;
-    long updatedTime = 0L;
     /**
      * overridden oncreate method that injects controllers
      * set up control adapters
@@ -57,9 +51,7 @@ public class GameActivity  extends Activity {
         Button menuButton = (Button) findViewById(R.id.menuButton);
         Button selectChallengeButton = (Button) findViewById(R.id.selectChallengButton);
         Button previousButton = (Button) findViewById(R.id.previousButton);
-        timeElapsedTextView = (TextView)findViewById(R.id.timeElapsedTextView);
         final TextView textView = (TextView) findViewById(R.id.puzzleHardnessLevel);
-        setTimer();
 
         if(getIntent().getExtras()!=null) {
 
@@ -95,7 +87,6 @@ public class GameActivity  extends Activity {
             public void onClick(View v){
 
                 Intent mainMenu = new Intent(GameActivity.this, MainMenuActivity.class);
-                timerHandler.removeCallbacks(updateTimerThread);
                 GameActivity.this.startActivity(mainMenu);
                 GameActivity.this.finish();
 
@@ -107,7 +98,6 @@ public class GameActivity  extends Activity {
                 Intent mainMenu = new Intent(GameActivity.this, ChooseMapActivity.class);
                 GameActivity.this.startActivity(mainMenu);
                 GameActivity.this.finish();
-                timerHandler.removeCallbacks(updateTimerThread);
 
             }
         });
@@ -127,8 +117,6 @@ public class GameActivity  extends Activity {
                 gameBoardAdapter = new GameBoardAdapter(GameActivity.this,gridView,moveRulesController,boardLogicController,databaseContextController,boardName, boardType);
                 gridView.setNumColumns(databaseObject.getBoard()[0].length);
                 gridView.setAdapter(gameBoardAdapter);
-                gridView.invalidateViews();
-                gameBoardAdapter.notifyDataSetChanged();
                 textView.setText(gameBoardAdapter.getCurrentPuzzleType().toString());
                 textView.invalidate();
             }
@@ -138,46 +126,25 @@ public class GameActivity  extends Activity {
             @Override
             public void onClick(View v){
 
-                DatabaseObject databaseObject = databaseContextController.readPreviousPuzzle(boardType, boardName);
+                DatabaseObject databaseObject = (DatabaseObject)databaseContextController.readPreviousPuzzle(boardType, boardName);
                 boardName = databaseObject.getFileName();
                 boardType = databaseObject.getPuzzleType();
-                gameBoardAdapter = new GameBoardAdapter(getApplicationContext(),gridView,moveRulesController,boardLogicController,databaseContextController,boardName, boardType);
-                gameBoardAdapter.notifyDataSetChanged();
-                gridView.setNumColumns(databaseObject.getBoard()[0].length);
-                gridView.setAdapter(gameBoardAdapter);
-                gridView.invalidateViews();
+                gameBoardAdapter = new GameBoardAdapter(GameActivity.this,gridView,moveRulesController,boardLogicController,databaseContextController,boardName, boardType);
 
+                gridView.setNumColumns(databaseObject.getBoard()[0].length);
+                gridView.setAdapter(gameBoardAdapter);;
                 textView.setText(gameBoardAdapter.getCurrentPuzzleType().toString());
                 textView.invalidate();
             }
         });
-    }
-    private void setTimer(){
-        startTime = SystemClock.uptimeMillis();
-        timerHandler.removeCallbacks(updateTimerThread);
-        timerHandler.postDelayed(updateTimerThread, 0);
     }
 
     @Override
     public void onStop(){
         super.onStop();
         this.finish();
-        timerHandler.removeCallbacks(updateTimerThread);
     }
-    private Runnable updateTimerThread = new Runnable() {
-        public void run() {
-            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
-            updatedTime = timeSwapBuff + timeInMilliseconds;
-            int seconds = (int) (updatedTime / 1000);
-            int minutes = seconds / 60;
-            seconds = seconds % 60;
-            int milliseconds = (int) (updatedTime % 1000);
-            timeElapsedTextView.setText("" + minutes + ":"
-                            + String.format("%02d", seconds));
-            gameBoardAdapter.updateTime(timeElapsedTextView.getText().toString());
-            timerHandler.postDelayed(this, 1000);
-        }
-    };
+
     /**
      * method that instantiates proper instances of controllers to interfaces
      **/

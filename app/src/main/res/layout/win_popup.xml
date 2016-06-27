@@ -39,14 +39,6 @@
         android:text="@string/timeElapsedHeader"
         android:paddingLeft="2dp"
         />
-    <TextView
-        android:id="@+id/timeElapsed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="2dp"
-        />
     <LinearLayout
         android:id="@+id/LinearLayout02"
         android:layout_height="wrap_content"
@@ -54,13 +46,13 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/nextBoardButton"
+            android:id="@+id/okButton"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:drawableTop="@drawable/forrward_icon"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Next" />
+            android:text="Ok" />
         <Button
             android:id="@+id/goBackMenuButton"
             android:layout_gravity="center_horizontal"

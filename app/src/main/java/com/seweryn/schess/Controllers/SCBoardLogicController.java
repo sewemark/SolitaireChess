@@ -5,7 +5,7 @@ package com.seweryn.schess.Controllers;
  */
 public class SCBoardLogicController implements  IBoardLogicInjector {
     /**
-     * method that returns instance of new board logic oontroller
+     * method that returns instance of new board logic controller
      * @return class that implements IBoardLogicController
      * */
     @Override

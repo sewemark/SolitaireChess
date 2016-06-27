@@ -4,8 +4,11 @@ package com.seweryn.schess.Activities;
  * Created by sew on 2015-11-20.
  */
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -47,7 +50,6 @@ public class CreateMapActivity extends Activity {
     private IDatabaseContextController databaseContextController;
     private IBoardLogicController boardLogiController;
     private IPuzzleTypeCalsificator puzzleTypeCalsificator;
-    private  ProgressDialog ringProgressDialog;
     private final  int defaltWidth =4;
     private final  int defaltHeight =4;
     private int boardWidth;
@@ -55,10 +57,7 @@ public class CreateMapActivity extends Activity {
 
     public  CreateMapActivity(){
         context =this;
-
-
     }
-
     /**
      * overridden oncreate method that injects controllers
      * set up control adapters
@@ -79,9 +78,6 @@ public class CreateMapActivity extends Activity {
         gridView.setAdapter(gridViewAdapter);
         gridViewAdapter.notifyDataSetChanged();
         boardLayoutInflater = LayoutInflater.from(this);
-        ringProgressDialog= new ProgressDialog(CreateMapActivity.this);
-       // ringProgressDialog.setIndeterminate(true);
-        ringProgressDialog.setMessage("I am thinking");
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
@@ -134,15 +130,18 @@ public class CreateMapActivity extends Activity {
 
                   if (handler.getNumberOfResults() <= 0) {
                       showNoSolutionDialog();
-                    }
+                  }
                   else {
 
                       PuzzleType type = puzzleTypeCalsificator.clasify(handler.getNumberOfResults(),handler.getTreeWidth(),handler.getTreeLeaves());
                       showClasificationDialog(type);
                       databaseContextController.save(type, gridViewAdapter.boardLogicController.getBoard());
-                      ringProgressDialog.dismiss();
                   }
                 } catch (Exception e) {
+                }
+                catch (OutOfMemoryError ex){
+                    showOutOfMemoryDialog();
+
                 }
             }
         });
@@ -180,6 +179,22 @@ public class CreateMapActivity extends Activity {
     /**
      * method that show no solution dialog
      **/
+    private void showOutOfMemoryDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(CreateMapActivity.this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Unfortunately your puzzle is too complicated");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+        alertDialog.show();
+    }
+    /**
+     * method that shows out of memory error
+     **/
     private void showNoSolutionDialog() {
         PuzzleHardnessDialog dialog = new
                 PuzzleHardnessDialog();
@@ -187,6 +202,11 @@ public class CreateMapActivity extends Activity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        this.finish();
+    }
+        @Override
     public void onStop(){
         super.onStop();
         this.finish();

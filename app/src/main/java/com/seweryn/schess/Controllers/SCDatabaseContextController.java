@@ -7,6 +7,10 @@ import android.content.Context;
  */
 public class SCDatabaseContextController implements IDatabaseContextInjector {
 
+    /**
+     * method that returns instance of new board database controller
+     * @return class that implements IDatabaseContextInjector
+     * */
     @Override
     public IDatabaseContextController getDatabaseContextContrller(Context context) {
        return new DatabaseContextController(context);

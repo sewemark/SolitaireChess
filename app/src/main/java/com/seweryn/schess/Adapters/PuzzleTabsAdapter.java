@@ -11,28 +11,28 @@ import com.seweryn.schess.Models.DatabaseObject;
 import com.seweryn.schess.Fragments.PuzzleTypeFragment;
 
 
-public class PuzzleTabsAdapter extends FragmentStatePagerAdapter   {
+public class PuzzleTabsAdapter extends FragmentStatePagerAdapter {
 
     private int numberOfTabs;
     private IDatabaseContextController databaseContextController;
-    public PuzzleTabsAdapter(IDatabaseContextController _databaseController, FragmentManager fragmentManager , int _numberOfTabs) {
+
+    public PuzzleTabsAdapter(IDatabaseContextController _databaseController, FragmentManager fragmentManager, int _numberOfTabs) {
 
         super(fragmentManager);
         this.databaseContextController = _databaseController;
-        this.numberOfTabs  = _numberOfTabs;
+        this.numberOfTabs = _numberOfTabs;
     }
 
     @Override
     public Fragment getItem(int fragmentIndex) {
         Bundle bundle = new Bundle();
-        DatabaseObject[] puzzleList=null;
+        DatabaseObject[] puzzleList = null;
         PuzzleType puzzleType = PuzzleType.values()[fragmentIndex];
         puzzleList = databaseContextController.getPuzzleObjectByType(puzzleType);
-
         bundle.putSerializable("list", puzzleList);
-        bundle.putChar("puzzleType",puzzleType.toString().charAt(0));
-        bundle.putString("type",puzzleType.toString());
-        PuzzleTypeFragment fragment= new PuzzleTypeFragment();
+        bundle.putChar("puzzleType", puzzleType.toString().charAt(0));
+        bundle.putString("type", puzzleType.toString());
+        PuzzleTypeFragment fragment = new PuzzleTypeFragment();
         fragment.setArguments(bundle);
         return fragment;
     }

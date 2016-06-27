@@ -23,7 +23,6 @@ import java.util.List;
 
 public class BoardAdapter extends  BaseAdapter {
 
-
     protected   int[][] board;
     private final List<Item> boardFileds = new ArrayList<Item>();
     protected final LayoutInflater boardLayoutInflater;
@@ -70,10 +69,10 @@ public class BoardAdapter extends  BaseAdapter {
     }
 
     /**
-     +     * method that converts dp to Px
-     +     * @param int dp value in dp
-     +     * @return  int value in interger
-     +     */
+      * method that converts dp to Px
+      * @param int dp value in dp
+      * @return  int value in interger
+      */
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = this.context.getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));

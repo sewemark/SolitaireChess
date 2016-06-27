@@ -197,10 +197,14 @@ public final class GameBoardAdapter extends BoardAdapter {
      */
     private View getChildFromFrameLayout(int frameLayoutPosition, int childResourceId){
         FrameLayout frameLayout = (FrameLayout)gridView.getChildAt(frameLayoutPosition);
-        if(childResourceId==1)
-        return  frameLayout.findViewById(R.id.grid_item_piece);
-        else
+        if(frameLayout == null)
+            return  null;
+        if(childResourceId==1) {
+            return frameLayout.findViewById(R.id.grid_item_piece);
+        }
+        else {
             return frameLayout.findViewById(R.id.hint_image);
+        }
     }
 
     /**
@@ -267,10 +271,12 @@ public final class GameBoardAdapter extends BoardAdapter {
             setView(lastMove.view, Lodash.getResource(lastMove.defeatedPieceTypeValue), lastMove.defeatedPieceTypeValue);
             addChildToFrameLayout(lastMove.orignialPiecePosition, lastMove.view);
             View view= getChildFromFrameLayout(lastMove.destinationPiecePosition,1);
-            setView(view, Lodash.getResource(lastMove.beatingPieceTypeValue), lastMove.beatingPieceTypeValue);
+            if(view !=  null) {
+                setView(view, Lodash.getResource(lastMove.beatingPieceTypeValue), lastMove.beatingPieceTypeValue);
 
-            boardLogicController.setPieceAtPosition(lastMove.orignialPiecePosition, lastMove.defeatedPieceTypeValue);
-            boardLogicController.setPieceAtPosition(lastMove.destinationPiecePosition, lastMove.beatingPieceTypeValue);
+                boardLogicController.setPieceAtPosition(lastMove.orignialPiecePosition, lastMove.defeatedPieceTypeValue);
+                boardLogicController.setPieceAtPosition(lastMove.destinationPiecePosition, lastMove.beatingPieceTypeValue);
+            }
         }
     }
 
@@ -315,14 +321,10 @@ public final class GameBoardAdapter extends BoardAdapter {
         int popupWindowHeight =Lodash.dpToPx(250, context);
         final PopupWindow pwindo = new PopupWindow(layout, popupWindowWidth,popupWindowHeight, true);
         pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
-        Button nextButton = (Button)layout.findViewById(R.id.nextBoardButton);
-        TextView timeTextView = (TextView)layout.findViewById(R.id.timeElapsed);
-        timeTextView.setText(this.time);
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        Button okButton = (Button)layout.findViewById(R.id.okButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                setNextBoard();
                 pwindo.dismiss();
             }
         });
@@ -431,8 +433,9 @@ public final class GameBoardAdapter extends BoardAdapter {
                 View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                 view.startDrag(data, shadowBuilder, view, 0);
                 view.setVisibility(View.INVISIBLE);
-                if(sharedpreferences.getBoolean("HintsSwitched",true))
+                if(sharedpreferences.getBoolean("HintsSwitched",true) && Lodash.getPiecType((int)view.getTag()) != PieceType.NOPIECE){
                     setHintsBackground(gridView.getPositionForView(view), true, Lodash.getPiecType((int) view.getTag()));
+                }
                 return true;
             } else {
                 return false;

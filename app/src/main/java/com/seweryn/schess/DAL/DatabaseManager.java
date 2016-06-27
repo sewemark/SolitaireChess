@@ -53,7 +53,6 @@ public class DatabaseManager implements IDatabaseManager {
         if (fileOrDirectory.isDirectory())
             for (File child : fileOrDirectory.listFiles())
                 deleteFolderRecursive(child);
-
         fileOrDirectory.delete();
 
     }

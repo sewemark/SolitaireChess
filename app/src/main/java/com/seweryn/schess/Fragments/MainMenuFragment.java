@@ -50,7 +50,6 @@ public class MainMenuFragment extends Fragment {
                     }
                 });
                 Button gotToCreateMapButton = (Button)layout.findViewById(R.id.goToCreateMap);
-
                 gotToCreateMapButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

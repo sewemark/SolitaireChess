@@ -15,6 +15,6 @@ public class MoveRulesController implements IMoveRulesController {
     }
     @Override
     public Integer[] PossibleMoves(int width, int height, Vector position, PieceType pieceType) {
-     return  moveLogic.getMoveStrategy(width,  height, pieceType).getMoveForPiece(position);
+        return  moveLogic.getMoveStrategy(width,  height, pieceType).getMoveForPiece(position);
     }
 }
