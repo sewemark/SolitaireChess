@@ -106,8 +106,16 @@ public class MainMenuActivity extends AppCompatActivity {
         selectChallengeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainMenu = new Intent(MainMenuActivity.this, ChooseMapActivity.class);
-                MainMenuActivity.this.startActivity(mainMenu);
+                try {
+
+
+                    Intent mainMenu = new Intent(MainMenuActivity.this, ChooseMapActivity.class);
+                    MainMenuActivity.this.startActivity(mainMenu);
+                }
+                catch(OutOfMemoryError ex ){
+                    Intent mainMenu = new Intent(MainMenuActivity.this, MainMenuActivity.class);
+                    MainMenuActivity.this.startActivity(mainMenu);
+                }
 
             }
         });
